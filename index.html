@@ -311,6 +311,31 @@
         </div>
     </div>
 
+    <!-- Debug Log -->
+    <div id="debug-log"
+        style="position: fixed; bottom: 0; left: 0; width: 100%; height: 150px; background: rgba(0,0,0,0.9); color: #00ff00; overflow: auto; z-index: 9999; font-family: monospace; padding: 10px; font-size: 12px; pointer-events: none; border-top: 1px solid #333;">
+    </div>
+    <script>
+        window.onerror = function (msg, url, line, col, error) {
+            const log = document.getElementById('debug-log');
+            if (log) log.innerHTML += `<div style="color: #ff5555;">[ERROR] ${msg} at line ${line}:${col}</div>`;
+            return false;
+        };
+        const originalLog = console.log;
+        console.log = function (...args) {
+            originalLog.apply(console, args);
+            const log = document.getElementById('debug-log');
+            if (log) log.innerHTML += `<div>[LOG] ${args.join(' ')}</div>`;
+        };
+        const originalError = console.error;
+        console.error = function (...args) {
+            originalError.apply(console, args);
+            const log = document.getElementById('debug-log');
+            if (log) log.innerHTML += `<div style="color: #ff5555;">[ERR] ${args.join(' ')}</div>`;
+        };
+        console.log("Debug mode enabled. Waiting for script...");
+    </script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { initializeFirestore, collection, query, where, onSnapshot, doc, getDoc, getDocs, updateDoc, increment, addDoc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
