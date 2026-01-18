@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F34 DI-Community Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-download:hover {
+            box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.5);
+            transform: scale(1.02);
+        }
+
+        .category-pill {
+            transition: all 0.3s ease;
+        }
+
+        .category-pill.active {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen pb-20">
+    <!-- Ban Message Overlay -->
+    <div id="ban-message" class="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center p-6 hidden">
+        <div class="glass p-12 max-lg w-full text-center border-red-500/20">
+            <div class="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                    </path>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-black mb-4 text-white uppercase tracking-tighter" id="t-banned-title">You are
+                banned</h1>
+            <p class="text-slate-400 mb-8 leading-relaxed" id="t-banned-desc">Your access to the community hub has been
+                restricted due to a violation of our terms.</p>
+            <div class="bg-red-500/5 border border-red-500/10 p-4 rounded-xl mb-8">
+                <p class="text-red-400 font-mono text-sm" id="ban-expiry">Ban expires: --</p>
+            </div>
+            <button id="ban-logout-btn"
+                class="w-full py-4 rounded-2xl bg-white text-black font-bold hover:bg-slate-200 transition-colors">Logout</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <!-- Header -->
+        <header class="max-w-7xl mx-auto px-6 pt-16 pb-12 flex flex-col items-center gap-10">
+            <div class="text-center flex flex-col items-center gap-6">
+                <img src="logo.png" alt="F34 Logo"
+                    class="h-40 w-auto object-contain rounded-3xl shadow-2xl transition-transform hover:scale-105 duration-500">
+                <p class="text-slate-400 text-xl font-light tracking-wide" id="t-subtitle">Discover and download shared
+                    configurations</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center items-center gap-6">
+                <!-- Language Switcher -->
+                <div class="glass p-1.5 flex gap-1 text-[10px] font-bold uppercase tracking-widest">
+                    <button onclick="setLang('en')" id="lang-en"
+                        class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">EN</button>
+                    <button onclick="setLang('ko')" id="lang-ko"
+                        class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">KO</button>
+                    <button onclick="setLang('jp')" id="lang-jp"
+                        class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">JP</button>
+                    <button onclick="setLang('cn')" id="lang-cn"
+                        class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">CN</button>
+                    <button onclick="setLang('es')" id="lang-es"
+                        class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">ES</button>
+                    <button onclick="setLang('fr')" id="lang-fr"
+                        class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">FR</button>
+                    <button onclick="setLang('de')" id="lang-de"
+                        class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">DE</button>
+                    <button onclick="setLang('ru')" id="lang-ru"
+                        class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">RU</button>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <!-- Auth Button / Profile -->
+                    <div id="user-profile" class="hidden flex items-center gap-4">
+                        <button onclick="openProfileModal()"
+                            class="glass pl-2 pr-6 py-2 flex items-center gap-3 hover:bg-white/10 transition-all border border-white/10">
+                            <img id="user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-lg bg-slate-800">
+                            <div class="text-left">
+                                <div id="user-mc-name" class="text-xs font-black tracking-tight leading-none">--</div>
+                                <div id="user-email" class="text-[10px] text-slate-500 font-medium">--</div>
+                            </div>
+                        </button>
+                        <button id="auth-btn-logout"
+                            class="glass p-3 hover:bg-red-500/10 hover:text-red-400 transition-all border border-white/10"
+                            title="Logout">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <button id="auth-btn-login"
+                        class="glass px-8 py-3 font-bold hover:bg-white/10 transition-all border border-white/10 text-sm">
+                        Login with Google
+                    </button>
+
+                    <!-- My Configs Button -->
+                    <button id="my-configs-btn" onclick="openMyConfigsModal()"
+                        class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all hidden text-sm">
+                        My Configs
+                    </button>
+
+                    <button id="t-support" onclick="openSupportModal()"
+                        class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all text-sm">
+                        Support
+                    </button>
+
+                    <a href="admin.html" id="t-admin-panel"
+                        class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all hidden text-sm">
+                        Admin Panel
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Categories -->
+        <div class="max-w-7xl mx-auto px-6 mb-12">
+            <div id="category-list" class="flex flex-wrap gap-2 justify-center">
+                <!-- Categories will be injected here -->
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <main class="max-w-7xl mx-auto px-6">
+            <div id="config-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="col-span-full glass p-20 text-center">
+                    <div id="loading-spinner"
+                        class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4">
+                    </div>
+                    <p class="text-xl text-slate-400 font-light" id="t-loading">Loading configurations...</p>
+                    <p class="text-xs text-slate-600 mt-4" id="debug-status"></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="glass max-w-4xl w-full max-h-[90vh] overflow-y-auto relative z-10 p-8 md:p-12 animate-fade-in">
+            <button onclick="closeModal()"
+                class="absolute top-8 right-8 text-slate-400 hover:text-white transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+            <div id="modal-content">
+                <div class="mb-12">
+                    <h2 id="modal-title" class="text-4xl font-black tracking-tighter mb-2">Config Details</h2>
+                    <div class="h-1 w-20 bg-blue-500 rounded-full"></div>
+                </div>
+                <div id="modal-body" class="space-y-8">
+                    <!-- Details will be injected here -->
+                </div>
+                <div class="mt-12 pt-8 border-t border-white/5 flex justify-end gap-4">
+                    <button onclick="closeModal()"
+                        class="px-8 py-4 rounded-2xl glass font-bold hover:bg-white/5 transition-all"
+                        id="t-close">Close</button>
+                    <button id="modal-download-btn"
+                        class="btn-download px-12 py-4 rounded-2xl font-bold text-white transition-all">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Configs Modal -->
+    <div id="my-configs-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeMyConfigsModal()"></div>
+        <div class="glass max-w-3xl w-full max-h-[80vh] overflow-y-auto relative z-10 p-8 animate-fade-in">
+            <div class="flex justify-between items-start mb-8">
+                <h2 class="text-3xl font-black tracking-tighter" id="t-my-configs-title">My Configurations</h2>
+                <button onclick="closeMyConfigsModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div id="my-configs-list" class="space-y-4">
+                <!-- User configs will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div id="support-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeSupportModal()"></div>
+        <div class="glass max-w-2xl w-full relative z-10 p-8 animate-fade-in">
+            <h2 class="text-3xl font-black mb-6" id="t-support-title">Customer Center</h2>
+            <p class="text-slate-400 mb-6" id="t-support-desc">Have a problem or suggestion? Send us a message.</p>
+            <textarea id="support-message"
+                class="w-full h-40 bg-black/20 border border-white/10 rounded-2xl p-4 text-white focus:outline-none focus:border-blue-500 transition-colors mb-6"
+                placeholder="Describe your issue..."></textarea>
+            <div class="flex justify-end gap-4">
+                <button onclick="closeSupportModal()"
+                    class="px-6 py-3 rounded-xl glass font-bold hover:bg-white/5 transition-all"
+                    id="t-support-cancel">Cancel</button>
+                <button onclick="submitTicket()"
+                    class="btn-download px-8 py-3 rounded-xl font-bold text-white transition-all"
+                    id="t-support-submit">Submit Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeProfileModal()"></div>
+        <div class="glass max-w-2xl w-full relative z-10 p-10 animate-fade-in overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[100px] -z-10"></div>
+
+            <button onclick="closeProfileModal()"
+                class="absolute top-8 right-8 text-slate-400 hover:text-white transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+
+            <div class="flex flex-col md:flex-row gap-10 items-center">
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-blue-500/20 blur-2xl group-hover:bg-blue-500/30 transition-all">
+                    </div>
+                    <img id="profile-body-skin" src="" alt="Skin Body"
+                        class="relative z-10 h-80 w-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                </div>
+
+                <div class="flex-1 text-center md:text-left">
+                    <h2 class="text-4xl font-black tracking-tighter mb-2" id="profile-mc-name">--</h2>
+                    <p class="text-slate-500 font-medium mb-8" id="profile-email">--</p>
+
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="glass p-4 border border-white/5">
+                            <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Status
+                            </div>
+                            <div class="text-green-400 font-bold text-sm">Linked</div>
+                        </div>
+                        <div class="glass p-4 border border-white/5">
+                            <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Account
+                            </div>
+                            <div id="profile-grade" class="text-blue-400 font-bold text-sm">General</div>
+                        </div>
+                    </div>
+
+                    <button id="profile-logout-btn"
+                        class="w-full py-4 rounded-2xl bg-white/5 border border-white/10 font-bold hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all">
+                        Logout Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { initializeFirestore, collection, query, where, onSnapshot, doc, getDoc, getDocs, updateDoc, increment, addDoc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, signInWithPopup, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA827pUzqfTpGpGbT9uKXKEjZo3hYl5ENo",
+            authDomain: "f34-di.firebaseapp.com",
+            projectId: "f34-di",
+            storageBucket: "f34-di.firebasestorage.app",
+            messagingSenderId: "660590227115",
+            appId: "1:660590227115:web:0f1ca3aa9464f2406c11ee"
+        };
+
+        const i18n = {
+            en: {
+                subtitle: "Discover and download shared configurations",
+                loading: "Loading configurations...",
+                noConfigs: "No configurations found yet.",
+                noResults: "No configurations match this category.",
+                login: "Login with Google",
+                linkMod: "Link Minecraft (Login in Mod)",
+                loggedInAs: "Logged in as",
+                logout: "Logout",
+                download: "Download",
+                details: "View Details",
+                loginToDownload: "Login to Download",
+                link: "Link Account",
+                loginAlert: "Please login first.",
+                linkAlert: "Please link your Minecraft account first by logging in through the F34 mod.",
+                modalTitle: "Configuration Details",
+                info: "Information",
+                author: "Author",
+                category: "Category",
+                downloads: "Downloads",
+                description: "Description",
+                noDesc: "No description provided.",
+                buttons: "Buttons",
+                noButtons: "No custom buttons in this config.",
+                raw: "Raw Configuration Data",
+                close: "Close",
+                support: "Support",
+                supportTitle: "Customer Center",
+                supportDesc: "Have a problem or suggestion? Send us a message.",
+                supportSuccess: "Ticket submitted successfully!",
+                supportError: "Failed to submit ticket.",
+                bannedTitle: "You are banned",
+                bannedDesc: "Your access to the community hub has been restricted due to a violation of our terms.",
+                myConfigs: "My Configs",
+                myConfigsTitle: "My Configurations",
+                noMyConfigs: "You haven't deployed any configurations yet.",
+                deleteConfirm: "Are you sure you want to delete this configuration?",
+                deleteSuccess: "Configuration deleted successfully.",
+                deleteError: "Failed to delete configuration.",
+                statusPending: "Pending",
+                statusApproved: "Approved",
+                adminPanel: "Admin Panel",
+                grades: {
+                    General: "General", Wood: "Wood", Stone: "Stone", Coal: "Coal", Copper: "Copper", Iron: "Iron", Gold: "Gold", Diamond: "Diamond", Emerald: "Emerald", Premium: "Premium"
+                },
+                categories: {
+                    All: "All", Adventure: "Adventure", Horror: "Horror", Decoration: "Decoration", Economy: "Economy", Equipment: "Equipment", Food: "Food", "Game Mechanics": "Game Mechanics", Library: "Library", Magic: "Magic", Management: "Management", Minigame: "Minigame", Mobs: "Mobs", Optimization: "Optimization", Social: "Social", Storage: "Storage", Technology: "Technology", Transportation: "Transportation", Utility: "Utility", "World Gen": "World Gen", General: "General", Convenience: "Convenience"
+                }
+            },
+            ko: {
+                subtitle: "공유된 설정을 탐색하고 다운로드하세요",
+                loading: "설정을 불러오는 중...",
+                noConfigs: "아직 공유된 설정이 없습니다.",
+                noResults: "이 카테고리에 해당하는 설정이 없습니다.",
+                login: "Google로 로그인",
+                linkMod: "마인크래프트 연동 필요 (모드에서 로그인)",
+                loggedInAs: "로그인됨:",
+                logout: "로그아웃",
+                download: "다운로드",
+                details: "상세 보기",
+                loginToDownload: "로그인 후 다운로드",
+                link: "계정 연동",
+                loginAlert: "먼저 로그인해주세요.",
+                linkAlert: "F34 모드에서 로그인하여 마인크래프트 계정을 먼저 연동해주세요.",
+                modalTitle: "설정 상세 정보",
+                info: "정보",
+                author: "제작자",
+                category: "카테고리",
+                downloads: "다운로드 수",
+                description: "설명",
+                noDesc: "설명이 없습니다.",
+                buttons: "버튼 구성",
+                noButtons: "이 설정에는 커스텀 버튼이 없습니다.",
+                raw: "원본 데이터",
+                close: "닫기",
+                support: "고객 센터",
+                supportTitle: "고객 센터",
+                supportDesc: "문제나 제안 사항이 있으신가요? 메시지를 보내주세요.",
+                supportSuccess: "문의가 성공적으로 접수되었습니다!",
+                supportError: "문의 접수에 실패했습니다.",
+                bannedTitle: "당신은 차단 되었습니다.",
+                bannedDesc: "이용 약관 위반으로 인해 커뮤니티 허브 접속이 제한되었습니다.",
+                myConfigs: "내 설정",
+                myConfigsTitle: "내가 올린 설정",
+                noMyConfigs: "아직 배포한 설정이 없습니다.",
+                deleteConfirm: "정말로 이 설정을 삭제하시겠습니까?",
+                deleteSuccess: "설정이 삭제되었습니다.",
+                deleteError: "삭제에 실패했습니다.",
+                statusPending: "승인 대기 중",
+                statusApproved: "승인됨",
+                adminPanel: "관리자 패널",
+                grades: {
+                    General: "일반", Wood: "나무", Stone: "돌", Coal: "석탄", Copper: "구리", Iron: "철", Gold: "금", Diamond: "다이아몬드", Emerald: "에메랄드", Premium: "프리미엄"
+                },
+                categories: {
+                    All: "전체", Adventure: "모험", Horror: "공포", Decoration: "장식", Economy: "경제", Equipment: "장비", Food: "음식", "Game Mechanics": "게임 매커즘", Library: "라이브러리", Magic: "마법", Management: "관리", Minigame: "미니게임", Mobs: "몹", Optimization: "최적화", Social: "소셜", Storage: "저장", Technology: "기술", Transportation: "운송", Utility: "유틸리티", "World Gen": "월드 생성", General: "일반", Convenience: "편의"
+                }
+            },
+            jp: {
+                subtitle: "共有された設定を探索してダウンロード",
+                loading: "設定を読み込み中...",
+                noConfigs: "まだ共有された設定はありません。",
+                noResults: "このカテゴリに該当する設定はありません。",
+                login: "Googleでログイン",
+                linkMod: "Minecraft連携が必要 (MODでログイン)",
+                loggedInAs: "로그인중:",
+                logout: "ログアウト",
+                download: "ダウンロード",
+                details: "詳細を見る",
+                loginToDownload: "ログインしてダウンロード",
+                link: "アカウント連携",
+                loginAlert: "まずログインしてください。",
+                linkAlert: "F34 MODでログインして、Minecraftアカウントを先に連携してください。",
+                modalTitle: "設定の詳細情報",
+                info: "情報",
+                author: "作成者",
+                category: "カテゴリー",
+                downloads: "ダウンロード数",
+                description: "説明",
+                noDesc: "説明がありません。",
+                buttons: "ボタン構成",
+                noButtons: "この設定にはカスタムボタンがありません。",
+                raw: "生データ",
+                close: "閉じる",
+                support: "カスタマーセンター",
+                supportTitle: "カスタマーセンター",
+                supportDesc: "問題や提案がありますか？メッセージを送ってください。",
+                supportSuccess: "お問い合わせが正常に受け付けられました！",
+                supportError: "お問い合わせの送信に失敗しました。",
+                bannedTitle: "あなたは禁止されています",
+                bannedDesc: "利用規約違反により、コミュニティハブへのアクセスが制限されています。",
+                myConfigs: "マイ設定",
+                myConfigsTitle: "マイ設定リスト",
+                noMyConfigs: "まだ配布した設定はありません。",
+                deleteConfirm: "本当にこの設定を削除しますか？",
+                deleteSuccess: "設定が削除されました。",
+                deleteError: "削除に失敗しました。",
+                statusPending: "承認待ち",
+                statusApproved: "承認済み",
+                adminPanel: "管理パネル",
+                grades: {
+                    General: "一般", Wood: "木", Stone: "石", Coal: "石炭", Copper: "銅", Iron: "鉄", Gold: "金", Diamond: "ダイヤモンド", Emerald: "エメラルド", Premium: "プレミアム"
+                },
+                categories: {
+                    All: "すべて", Adventure: "冒険", Horror: "ホラー", Decoration: "装飾", Economy: "経済", Equipment: "装備", Food: "食べ物", "Game Mechanics": "ゲームメカニクス", Library: "ライブラリ", Magic: "魔法", Management: "管理", Minigame: "ミニゲーム", Mobs: "モブ", Optimization: "最適化", Social: "ソーシャル", Storage: "ストレージ", Technology: "技術", Transportation: "輸送", Utility: "ユーティリティ", "World Gen": "ワールド生成", General: "一般", Convenience: "便宜"
+                }
+            },
+            cn: {
+                subtitle: "浏览并下载共享配置",
+                loading: "正在加载配置...",
+                noConfigs: "尚无共享配置。",
+                noResults: "没有符合此类别的配置。",
+                login: "使用 Google 登录",
+                linkMod: "需要关联 Minecraft (在模组中登录)",
+                loggedInAs: "已登录为:",
+                logout: "登出",
+                download: "下载",
+                details: "查看详情",
+                loginToDownload: "登录后下载",
+                link: "关联账号",
+                loginAlert: "请先登录。",
+                linkAlert: "请先通过 F34 模组登录以关联您的 Minecraft 账号。",
+                modalTitle: "配置详情",
+                info: "信息",
+                author: "作者",
+                category: "类别",
+                downloads: "下载次数",
+                description: "描述",
+                noDesc: "暂无描述。",
+                buttons: "按钮配置",
+                noButtons: "此配置中没有自定义按钮。",
+                raw: "原始数据",
+                close: "关闭",
+                support: "客服中心",
+                supportTitle: "客服中心",
+                supportDesc: "有问题或建议吗？请给我们留言。",
+                supportSuccess: "工单提交成功！",
+                supportError: "工单提交失败。",
+                bannedTitle: "您已被封禁",
+                bannedDesc: "由于违反我们的条款，您访问社区中心的权限已被限制。",
+                myConfigs: "我的配置",
+                myConfigsTitle: "我的配置列表",
+                noMyConfigs: "您尚未发布任何配置。",
+                deleteConfirm: "您确定要删除此配置吗？",
+                deleteSuccess: "配置已成功删除。",
+                deleteError: "删除失败。",
+                statusPending: "待审批",
+                statusApproved: "已批准",
+                adminPanel: "管理面板",
+                grades: {
+                    General: "普通", Wood: "木头", Stone: "石头", Coal: "煤炭", Copper: "铜", Iron: "铁", Gold: "金", Diamond: "钻石", Emerald: "翡翠", Premium: "高级"
+                },
+                categories: {
+                    All: "全部", Adventure: "冒险", Horror: "恐怖", Decoration: "装饰", Economy: "经济", Equipment: "装备", Food: "食物", "Game Mechanics": "游戏机制", Library: "库", Magic: "魔法", Management: "管理", Minigame: "小游戏", Mobs: "生物", Optimization: "优化", Social: "社交", Storage: "存储", Technology: "技术", Transportation: "运输", Utility: "工具", "World Gen": "世界生成", General: "常规", Convenience: "便捷"
+                }
+            },
+            es: {
+                subtitle: "Descubre y descarga configuraciones compartidas",
+                loading: "Cargando configuraciones...",
+                noConfigs: "Aún no hay configuraciones compartidas.",
+                noResults: "No hay configuraciones que coincidan con esta categoría.",
+                login: "Iniciar sesión con Google",
+                linkMod: "Vincular Minecraft (Iniciar sesión en el Mod)",
+                loggedInAs: "Sesión iniciada como:",
+                logout: "Cerrar sesión",
+                download: "Descargar",
+                details: "Ver detalles",
+                loginToDownload: "Inicia sesión para descargar",
+                link: "Vincular cuenta",
+                loginAlert: "Por favor, inicia sesión primero.",
+                linkAlert: "Por favor, vincula tu cuenta de Minecraft primero iniciando sesión a través del mod F34.",
+                modalTitle: "Detalles de la configuración",
+                info: "Información",
+                author: "Autor",
+                category: "Categoría",
+                downloads: "Descargas",
+                description: "Descripción",
+                noDesc: "No se proporcionó descripción.",
+                buttons: "Botones",
+                noButtons: "No hay botones personalizados en esta configuración.",
+                raw: "Datos sin procesar",
+                close: "Cerrar",
+                support: "Soporte",
+                supportTitle: "Centro de Atención",
+                supportDesc: "¿Tienes un problema o sugerencia? Envíanos un mensaje.",
+                supportSuccess: "¡Ticket enviado con éxito!",
+                supportError: "Error al enviar el ticket.",
+                bannedTitle: "Estás baneado",
+                bannedDesc: "Tu acceso al centro de la comunidad ha sido restringido debido a una violación de nuestros términos.",
+                myConfigs: "Mis Configs",
+                myConfigsTitle: "Mis Configuraciones",
+                noMyConfigs: "Aún no has desplegado ninguna configuración.",
+                deleteConfirm: "¿Estás seguro de que quieres eliminar esta configuración?",
+                deleteSuccess: "Configuración eliminada con éxito.",
+                deleteError: "Error al eliminar la configuración.",
+                statusPending: "Pendiente",
+                statusApproved: "Aprobada",
+                adminPanel: "Panel de Admin",
+                grades: {
+                    General: "General", Wood: "Madera", Stone: "Piedra", Coal: "Carbón", Copper: "Cobre", Iron: "Hierro", Gold: "Oro", Diamond: "Diamante", Emerald: "Esmeralda", Premium: "Premium"
+                },
+                categories: {
+                    All: "Todo", Adventure: "Aventura", Horror: "Terror", Decoration: "Decoración", Economy: "Economía", Equipment: "Equipamiento", Food: "Comida", "Game Mechanics": "Mecánicas", Library: "Biblioteca", Magic: "Magia", Management: "Gestión", Minijuego: "Minijuego", Mobs: "Criaturas", Optimization: "Optimización", Social: "Social", Storage: "Almacenamiento", Technology: "Tecnología", Transportation: "Transporte", Utility: "Utilidad", "World Gen": "Gen. de Mundo", General: "General", Convenience: "Conveniencia"
+                }
+            },
+            fr: {
+                subtitle: "Découvrez et téléchargez des configurations partagées",
+                loading: "Chargement des configurations...",
+                noConfigs: "Aucune configuration partagée pour le moment.",
+                noResults: "Aucune configuration ne correspond à cette catégorie.",
+                login: "Se connecter avec Google",
+                linkMod: "Lier Minecraft (Se connecter dans le Mod)",
+                loggedInAs: "Connecté en tant que :",
+                logout: "Déconnexion",
+                download: "Télécharger",
+                details: "Voir les détails",
+                loginToDownload: "Connectez-vous pour télécharger",
+                link: "Lier le compte",
+                loginAlert: "Veuillez d'abord vous connecter.",
+                linkAlert: "Veuillez d'abord lier votre compte Minecraft en vous connectant via le mod F34.",
+                modalTitle: "Détails de la configuration",
+                info: "Information",
+                author: "Auteur",
+                category: "Catégorie",
+                downloads: "Téléchargements",
+                description: "Description",
+                noDesc: "Aucune description fournie.",
+                buttons: "Boutons",
+                noButtons: "Aucun bouton personnalisé dans cette config.",
+                raw: "Données brutes",
+                close: "Fermer",
+                support: "Support",
+                supportTitle: "Centre d'Assistance",
+                supportDesc: "Un problème ou une suggestion ? Envoyez-nous un message.",
+                supportSuccess: "Ticket envoyé avec succès !",
+                supportError: "Échec de l'envoi du ticket.",
+                bannedTitle: "Vous êtes banni",
+                bannedDesc: "Votre accès au centre communautaire a été restreint en raison d'une violation de nos conditions.",
+                myConfigs: "Mes Configs",
+                myConfigsTitle: "Mes Configurations",
+                noMyConfigs: "Vous n'avez pas encore déployé de configurations.",
+                deleteConfirm: "Êtes-vous sûr de vouloir supprimer cette configuration ?",
+                deleteSuccess: "Configuration supprimée avec succès.",
+                deleteError: "Échec de la suppression.",
+                statusPending: "En attente",
+                statusApproved: "Approuvée",
+                adminPanel: "Panneau Admin",
+                grades: {
+                    General: "Général", Wood: "Bois", Stone: "Pierre", Coal: "Charbon", Copper: "Cuivre", Iron: "Fer", Gold: "Or", Diamond: "Diamant", Emerald: "Émeraude", Premium: "Premium"
+                },
+                categories: {
+                    All: "Tout", Adventure: "Aventure", Horror: "Horreur", Decoration: "Décoration", Economy: "Économie", Equipment: "Équipement", Food: "Nourriture", "Game Mechanics": "Mécaniques", Library: "Bibliothèque", Magic: "Magie", Management: "Gestion", Minigame: "Mini-jeu", Mobs: "Créatures", Optimization: "Optimisation", Social: "Social", Storage: "Stockage", Technology: "Technologie", Transportation: "Transport", Utility: "Utilité", "World Gen": "Gén. du Monde", General: "Général", Convenience: "Commodité"
+                }
+            },
+            de: {
+                subtitle: "Entdecke und lade geteilte Konfigurationen herunter",
+                loading: "Konfigurationen werden geladen...",
+                noConfigs: "Noch keine geteilten Konfigurationen vorhanden.",
+                noResults: "Keine Konfigurationen in dieser Kategorie gefunden.",
+                login: "Mit Google anmelden",
+                linkMod: "Minecraft verknüpfen (Im Mod anmelden)",
+                loggedInAs: "Angemeldet als:",
+                logout: "Abmelden",
+                download: "Herunterladen",
+                details: "Details anzeigen",
+                loginToDownload: "Zum Herunterladen anmelden",
+                link: "Konto verknüpfen",
+                loginAlert: "Bitte melde dich zuerst an.",
+                linkAlert: "Bitte verknüpfe zuerst dein Minecraft-Konto, indem du dich über den F34-Mod anmeldest.",
+                modalTitle: "Konfigurationsdetails",
+                info: "Information",
+                author: "Autor",
+                category: "Kategorie",
+                downloads: "Downloads",
+                description: "Beschreibung",
+                noDesc: "Keine Beschreibung angegeben.",
+                buttons: "Schaltflächen",
+                noButtons: "Keine benutzerdefinierten Schaltflächen in dieser Konfig.",
+                raw: "Rohdaten",
+                close: "Schließen",
+                support: "Support",
+                supportTitle: "Kundencenter",
+                supportDesc: "Hast du ein Problem oder einen Vorschlag? Sende uns eine Nachricht.",
+                supportSuccess: "Ticket erfolgreich gesendet!",
+                supportError: "Fehler beim Senden des Tickets.",
+                bannedTitle: "Du bist gesperrt",
+                bannedDesc: "Dein Zugriff auf das Community-Hub wurde aufgrund eines Verstoßes gegen unsere Bedingungen eingeschränkt.",
+                myConfigs: "Meine Configs",
+                myConfigsTitle: "Meine Konfigurationen",
+                noMyConfigs: "Du hast noch keine Konfigurationen bereitgestellt.",
+                deleteConfirm: "Bist du sicher, dass du diese Konfiguration löschen möchtest?",
+                deleteSuccess: "Konfiguration erfolgreich gelöscht.",
+                deleteError: "Löschen fehlgeschlagen.",
+                statusPending: "Ausstehend",
+                statusApproved: "Genehmigt",
+                adminPanel: "Admin-Panel",
+                grades: {
+                    General: "Allgemein", Wood: "Holz", Stone: "Stein", Coal: "Kohle", Copper: "Kupfer", Iron: "Eisen", Gold: "Gold", Diamond: "Diamant", Emerald: "Smaragd", Premium: "Premium"
+                },
+                categories: {
+                    All: "Alle", Adventure: "Abenteuer", Horror: "Horror", Decoration: "Dekoration", Economy: "Wirtschaft", Equipment: "Ausrüstung", Food: "Essen", "Game Mechanics": "Spielmechanik", Library: "Bibliothek", Magic: "Magie", Management: "Verwaltung", Minigame: "Minispiel", Mobs: "Kreaturen", Optimization: "Optimierung", Social: "Sozial", Storage: "Lagerung", Technology: "Technologie", Transportation: "Transport", Utility: "Dienstprogramm", "World Gen": "Weltgen.", General: "Allgemein", Convenience: "Komfort"
+                }
+            },
+            ru: {
+                subtitle: "Находите и скачивайте общие конфигурации",
+                loading: "Загрузка конфигураций...",
+                noConfigs: "Общих конфигураций пока нет.",
+                noResults: "Нет конфигураций в этой категории.",
+                login: "Войти через Google",
+                linkMod: "Привязать Minecraft (Войдите в моде)",
+                loggedInAs: "Вы вошли как:",
+                logout: "Выйти",
+                download: "Скачать",
+                details: "Подробнее",
+                loginToDownload: "Войдите, чтобы скачать",
+                link: "Привязать аккаунт",
+                loginAlert: "Пожалуйста, сначала войдите в систему.",
+                linkAlert: "Пожалуйста, сначала привяжите свой аккаунт Minecraft, войдя через мод F34.",
+                modalTitle: "Детали конфигурации",
+                info: "Информация",
+                author: "Автор",
+                category: "Категория",
+                downloads: "Загрузки",
+                description: "Описание",
+                noDesc: "Описание отсутствует.",
+                buttons: "Кнопки",
+                noButtons: "В этой конфигурации нет кастомных кнопок.",
+                raw: "Исходные данные",
+                close: "Закрыть",
+                support: "Поддержка",
+                supportTitle: "Центр поддержки",
+                supportDesc: "Есть проблема или предложение? Отправьте нам сообщение.",
+                supportSuccess: "Тикет успешно отправлен!",
+                supportError: "Ошибка при отправке тикета.",
+                bannedTitle: "Вы заблокированы",
+                bannedDesc: "Ваш доступ к сообществу ограничен из-за нарушения наших условий.",
+                myConfigs: "Мои конфиги",
+                myConfigsTitle: "Мои конфигурации",
+                noMyConfigs: "Вы еще не развернули ни одной конфигурации.",
+                deleteConfirm: "Вы уверены, что хотите удалить эту конфигурацию?",
+                deleteSuccess: "Конфигурация успешно удалена.",
+                deleteError: "Ошибка при удалении.",
+                statusPending: "Ожидание",
+                statusApproved: "Одобрено",
+                adminPanel: "Админ-панель",
+                grades: {
+                    General: "Обычный", Wood: "Дерево", Stone: "Камень", Coal: "Уголь", Copper: "Медь", Iron: "Железо", Gold: "Золото", Diamond: "Алмаз", Emerald: "Изумруд", Premium: "Премиум"
+                },
+                categories: {
+                }
+            },
+            es: {
+                subtitle: "Descubre y descarga configuraciones compartidas",
+                loading: "Cargando configuraciones...",
+                noConfigs: "Aún no hay configuraciones compartidas.",
+                noResults: "No hay configuraciones que coincidan con esta categoría.",
+                login: "Iniciar sesión con Google",
+                linkMod: "Vincular Minecraft (Iniciar sesión en el Mod)",
+                loggedInAs: "Sesión iniciada como:",
+                logout: "Cerrar sesión",
+                download: "Descargar",
+                details: "Ver detalles",
+                loginToDownload: "Inicia sesión para descargar",
+                link: "Vincular cuenta",
+                loginAlert: "Por favor, inicia sesión primero.",
+                linkAlert: "Por favor, vincula tu cuenta de Minecraft primero iniciando sesión a través del mod F34.",
+                modalTitle: "Detalles de la configuración",
+                info: "Información",
+                author: "Autor",
+                category: "Categoría",
+                downloads: "Descargas",
+                description: "Descripción",
+                noDesc: "No se proporcionó descripción.",
+                buttons: "Botones",
+                noButtons: "No hay botones personalizados en esta configuración.",
+                raw: "Datos sin procesar",
+                close: "Cerrar",
+                support: "Soporte",
+                supportTitle: "Centro de Atención",
+                supportDesc: "¿Tienes un problema o sugerencia? Envíanos un mensaje.",
+                supportSuccess: "¡Ticket enviado con éxito!",
+                supportError: "Error al enviar el ticket.",
+                bannedTitle: "Estás baneado",
+                bannedDesc: "Tu acceso al centro de la comunidad ha sido restringido debido a una violación de nuestros términos.",
+                myConfigs: "Mis Configs",
+                myConfigsTitle: "Mis Configuraciones",
+                noMyConfigs: "Aún no has desplegado ninguna configuración.",
+                deleteConfirm: "¿Estás seguro de que quieres eliminar esta configuración?",
+                deleteSuccess: "Configuración eliminada con éxito.",
+                deleteError: "Error al eliminar la configuración.",
+                statusPending: "Pendiente",
+                statusApproved: "Aprobada",
+                adminPanel: "Panel de Admin",
+                grades: {
+                    General: "General", Wood: "Madera", Stone: "Piedra", Coal: "Carbón", Copper: "Cobre", Iron: "Hierro", Gold: "Oro", Diamond: "Diamante", Emerald: "Esmeralda", Premium: "Premium"
+                },
+                categories: {
+                    All: "Todo", Adventure: "Aventura", Horror: "Terror", Decoration: "Decoración", Economy: "Economía", Equipment: "Equipamiento", Food: "Comida", "Game Mechanics": "Mecánicas", Library: "Biblioteca", Magic: "Magia", Management: "Gestión", Minijuego: "Minijuego", Mobs: "Criaturas", Optimization: "Optimización", Social: "Social", Storage: "Almacenamiento", Technology: "Tecnología", Transportation: "Transporte", Utility: "Utilidad", "World Gen": "Gen. de Mundo", General: "General", Convenience: "Conveniencia"
+                }
+            },
+            fr: {
+                subtitle: "Découvrez et téléchargez des configurations partagées",
+                loading: "Chargement des configurations...",
+                noConfigs: "Aucune configuration partagée pour le moment.",
+                noResults: "Aucune configuration ne correspond à cette catégorie.",
+                login: "Se connecter avec Google",
+                linkMod: "Lier Minecraft (Se connecter dans le Mod)",
+                loggedInAs: "Connecté en tant que :",
+                logout: "Déconnexion",
+                download: "Télécharger",
+                details: "Voir les détails",
+                loginToDownload: "Connectez-vous pour télécharger",
+                link: "Lier le compte",
+                loginAlert: "Veuillez d'abord vous connecter.",
+                linkAlert: "Veuillez d'abord lier votre compte Minecraft en vous connectant via le mod F34.",
+                modalTitle: "Détails de la configuration",
+                info: "Information",
+                author: "Auteur",
+                category: "Catégorie",
+                downloads: "Téléchargements",
+                description: "Description",
+                noDesc: "Aucune description fournie.",
+                buttons: "Boutons",
+                noButtons: "Aucun bouton personnalisé dans cette config.",
+                raw: "Données brutes",
+                close: "Fermer",
+                support: "Support",
+                supportTitle: "Centre d'Assistance",
+                supportDesc: "Un problème ou une suggestion ? Envoyez-nous un message.",
+                supportSuccess: "Ticket envoyé avec succès !",
+                supportError: "Échec de l'envoi du ticket.",
+                bannedTitle: "Vous êtes banni",
+                bannedDesc: "Votre accès au centre communautaire a été restreint en raison d'une violation de nos conditions.",
+                myConfigs: "Mes Configs",
+                myConfigsTitle: "Mes Configurations",
+                noMyConfigs: "Vous n'avez pas encore déployé de configurations.",
+                deleteConfirm: "Êtes-vous sûr de vouloir supprimer cette configuration ?",
+                deleteSuccess: "Configuration supprimée avec succès.",
+                deleteError: "Échec de la suppression.",
+                statusPending: "En attente",
+                statusApproved: "Approuvée",
+                adminPanel: "Panneau Admin",
+                grades: {
+                    General: "Général", Wood: "Bois", Stone: "Pierre", Coal: "Charbon", Copper: "Cuivre", Iron: "Fer", Gold: "Or", Diamond: "Diamant", Emerald: "Émeraude", Premium: "Premium"
+                },
+                categories: {
+                    All: "Tout", Adventure: "Aventure", Horror: "Horreur", Decoration: "Décoration", Economy: "Économie", Equipment: "Équipement", Food: "Nourriture", "Game Mechanics": "Mécaniques", Library: "Bibliothèque", Magic: "Magie", Management: "Gestion", Minigame: "Mini-jeu", Mobs: "Créatures", Optimization: "Optimisation", Social: "Social", Storage: "Stockage", Technology: "Technologie", Transportation: "Transport", Utility: "Utilité", "World Gen": "Gén. du Monde", General: "Général", Convenience: "Commodité"
+                }
+            },
+            de: {
+                subtitle: "Entdecke und lade geteilte Konfigurationen herunter",
+                loading: "Konfigurationen werden geladen...",
+                noConfigs: "Noch keine geteilten Konfigurationen vorhanden.",
+                noResults: "Keine Konfigurationen in dieser Kategorie gefunden.",
+                login: "Mit Google anmelden",
+                linkMod: "Minecraft verknüpfen (Im Mod anmelden)",
+                loggedInAs: "Angemeldet als:",
+                logout: "Abmelden",
+                download: "Herunterladen",
+                details: "Details anzeigen",
+                loginToDownload: "Zum Herunterladen anmelden",
+                link: "Konto verknüpfen",
+                loginAlert: "Bitte melde dich zuerst an.",
+                linkAlert: "Bitte verknüpfe zuerst dein Minecraft-Konto, indem du dich über den F34-Mod anmeldest.",
+                modalTitle: "Konfigurationsdetails",
+                info: "Information",
+                author: "Autor",
+                category: "Kategorie",
+                downloads: "Downloads",
+                description: "Beschreibung",
+                noDesc: "Keine Beschreibung angegeben.",
+                buttons: "Schaltflächen",
+                noButtons: "Keine benutzerdefinierten Schaltflächen in dieser Konfig.",
+                raw: "Rohdaten",
+                close: "Schließen",
+                support: "Support",
+                supportTitle: "Kundencenter",
+                supportDesc: "Hast du ein Problem oder einen Vorschlag? Sende uns eine Nachricht.",
+                supportSuccess: "Ticket erfolgreich gesendet!",
+                supportError: "Fehler beim Senden des Tickets.",
+                bannedTitle: "Du bist gesperrt",
+                bannedDesc: "Dein Zugriff auf das Community-Hub wurde aufgrund eines Verstoßes gegen unsere Bedingungen eingeschränkt.",
+                myConfigs: "Meine Configs",
+                myConfigsTitle: "Meine Konfigurationen",
+                noMyConfigs: "Du hast noch keine Konfigurationen bereitgestellt.",
+                deleteConfirm: "Bist du sicher, dass du diese Konfiguration löschen möchtest?",
+                deleteSuccess: "Konfiguration erfolgreich gelöscht.",
+                deleteError: "Löschen fehlgeschlagen.",
+                statusPending: "Ausstehend",
+                statusApproved: "Genehmigt",
+                adminPanel: "Admin-Panel",
+                grades: {
+                    General: "Allgemein", Wood: "Holz", Stone: "Stein", Coal: "Kohle", Copper: "Kupfer", Iron: "Eisen", Gold: "Gold", Diamond: "Diamant", Emerald: "Smaragd", Premium: "Premium"
+                },
+                categories: {
+                    All: "Alle", Adventure: "Abenteuer", Horror: "Horror", Decoration: "Dekoration", Economy: "Wirtschaft", Equipment: "Ausrüstung", Food: "Essen", "Game Mechanics": "Spielmechanik", Library: "Bibliothek", Magic: "Magie", Management: "Verwaltung", Minigame: "Minispiel", Mobs: "Kreaturen", Optimization: "Optimierung", Social: "Sozial", Storage: "Lagerung", Technology: "Technologie", Transportation: "Transport", Utility: "Dienstprogramm", "World Gen": "Weltgen.", General: "Allgemein", Convenience: "Komfort"
+                }
+            },
+            ru: {
+                subtitle: "Находите и скачивайте общие конфигурации",
+                loading: "Загрузка конфигураций...",
+                noConfigs: "Общих конфигураций пока нет.",
+                noResults: "Нет конфигураций в этой категории.",
+                login: "Войти через Google",
+                linkMod: "Привязать Minecraft (Войдите в моде)",
+                loggedInAs: "Вы вошли как:",
+                logout: "Выйти",
+                download: "Скачать",
+                details: "Подробнее",
+                loginToDownload: "Войдите, чтобы скачать",
+                link: "Привязать аккаунт",
+                loginAlert: "Пожалуйста, сначала войдите в систему.",
+                linkAlert: "Пожалуйста, сначала привяжите свой аккаунт Minecraft, войдя через мод F34.",
+                modalTitle: "Детали конфигурации",
+                info: "Информация",
+                author: "Автор",
+                category: "Категория",
+                downloads: "Загрузки",
+                description: "Описание",
+                noDesc: "Описание отсутствует.",
+                buttons: "Кнопки",
+                noButtons: "В этой конфигурации нет кастомных кнопок.",
+                raw: "Исходные данные",
+                close: "Закрыть",
+                support: "Поддержка",
+                supportTitle: "Центр поддержки",
+                supportDesc: "Есть проблема или предложение? Отправьте нам сообщение.",
+                supportSuccess: "Тикет успешно отправлен!",
+                supportError: "Ошибка при отправке тикета.",
+                bannedTitle: "Вы заблокированы",
+                bannedDesc: "Ваш доступ к сообществу ограничен из-за нарушения наших условий.",
+                myConfigs: "Мои конфиги",
+                myConfigsTitle: "Мои конфигурации",
+                noMyConfigs: "Вы еще не развернули ни одной конфигурации.",
+                deleteConfirm: "Вы уверены, что хотите удалить эту конфигурацию?",
+                deleteSuccess: "Конфигурация успешно удалена.",
+                deleteError: "Ошибка при удалении.",
+                statusPending: "Ожидание",
+                statusApproved: "Одобрено",
+                adminPanel: "Админ-панель",
+                grades: {
+                    General: "Обычный", Wood: "Дерево", Stone: "Камень", Coal: "Уголь", Copper: "Медь", Iron: "Железо", Gold: "Золото", Diamond: "Алмаз", Emerald: "Изумруд", Premium: "Премиум"
+                },
+                categories: {
+                    All: "Все", Adventure: "Приключения", Horror: "Хоррор", Decoration: "Декор", Economy: "Экономика", Equipment: "Снаряжение", Food: "Еда", "Game Mechanics": "Механики", Library: "Библиотека", Magic: "Магия", Management: "Управление", Minigame: "Мини-игра", Mobs: "Мобы", Optimization: "Оптимизация", Social: "Социальное", Storage: "Хранение", Technology: "Технологии", Transportation: "Транспорт", Utility: "Утилиты", "World Gen": "Ген. мира", General: "Общее", Convenience: "Удобство"
+                }
+            }
+        };
+
+        let currentLang = localStorage.getItem('f34_lang') || 'en';
+        let db, auth, provider;
+        let currentUser = null;
+        let mcAccount = null;
+        let allConfigs = [];
+        let dataLoaded = false;
+        let currentCategory = 'All';
+        let fetchTimeout = null;
+
+        const app = initializeApp(firebaseConfig);
+        db = initializeFirestore(app, { experimentalForceLongPolling: true });
+        auth = initializeAuth(app, {
+            persistence: browserLocalPersistence,
+            popupRedirectResolver: browserPopupRedirectResolver
+        });
+        provider = new GoogleAuthProvider();
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                const q = query(collection(db, "users"), where("email", "==", user.email));
+                getDocs(q).then(snap => {
+                    if (!snap.empty) {
+                        mcAccount = snap.docs[0].data();
+                    } else {
+                        mcAccount = null;
+                    }
+                    updateAuthUI(); // Call updateAuthUI here
+                    updateUI(); // Call updateUI for general elements
+                });
+            } else {
+                mcAccount = null;
+                updateAuthUI(); // Call updateAuthUI here
+                updateUI(); // Call updateUI for general elements
+            }
+        });
+
+        function log(msg) { console.log(`[F34 Hub] ${msg}`); }
+
+        window.setLang = (lang) => {
+            currentLang = lang;
+            localStorage.setItem('f34_lang', lang);
+            renderCategories();
+            renderConfigs();
+            updateAuthUI();
+            updateUI(); // Also update general UI elements
+        }
+
+        function updateAuthUI() {
+            const t = i18n[currentLang] || i18n.en;
+            const loginBtn = document.getElementById('auth-btn-login');
+            const userProfile = document.getElementById('user-profile');
+            const myConfigsBtn = document.getElementById('my-configs-btn');
+            const adminLink = document.getElementById('t-admin-panel');
+
+            if (currentUser) {
+                loginBtn.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+
+                const mcName = mcAccount?.mc_name || 'Guest';
+                document.getElementById('user-mc-name').textContent = mcName;
+                document.getElementById('user-email').textContent = currentUser.email;
+                document.getElementById('user-avatar').src = `https://mc-heads.net/avatar/${mcName}/32`;
+
+                document.getElementById('auth-btn-logout').onclick = () => signOut(auth);
+                myConfigsBtn.classList.remove('hidden');
+
+                // Only show Admin Panel for the specific admin email
+                if (currentUser.email === 'gangminseogg13@gmail.com') {
+                    adminLink.classList.remove('hidden');
+                } else {
+                    adminLink.classList.add('hidden');
+                }
+            } else {
+                loginBtn.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+                loginBtn.textContent = t.login;
+                loginBtn.onclick = () => signInWithPopup(auth, provider);
+                myConfigsBtn.classList.add('hidden');
+                adminLink.classList.add('hidden');
+            }
+        }
+
+        function updateUI() {
+            const t = i18n[currentLang] || i18n.en;
+            const subtitleEl = document.getElementById('t-subtitle');
+            const loadingEl = document.getElementById('t-loading');
+            const supportEl = document.getElementById('t-support');
+            const myConfigsBtn = document.getElementById('my-configs-btn'); // This is also in updateAuthUI, consider consolidating or clarifying
+            const adminLink = document.getElementById('t-admin-panel'); // This is also in updateAuthUI, consider consolidating or clarifying
+
+            if (subtitleEl) subtitleEl.textContent = t.subtitle;
+            if (loadingEl) loadingEl.textContent = t.loading;
+            if (supportEl) supportEl.textContent = t.support;
+            if (myConfigsBtn) myConfigsBtn.textContent = t.myConfigs;
+            if (adminLink) adminLink.textContent = t.adminPanel;
+
+            document.querySelectorAll('[id^="lang-"]').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-blue-400');
+                if (btn.id === `lang-${currentLang}`) btn.classList.add('bg-white/10', 'text-blue-400');
+            });
+        }
+
+        window.openProfileModal = () => {
+            if (!currentUser) return;
+            const t = i18n[currentLang] || i18n.en;
+            const mcName = mcAccount?.mc_name || 'Guest';
+            const grade = mcAccount?.grade || 'General';
+            document.getElementById('profile-mc-name').textContent = mcName;
+            document.getElementById('profile-email').textContent = currentUser.email;
+            document.getElementById('profile-grade').textContent = t.grades[grade] || grade;
+            document.getElementById('profile-body-skin').src = `https://mc-heads.net/body/${mcName}/right`;
+            document.getElementById('profile-logout-btn').onclick = () => {
+                signOut(auth);
+                closeProfileModal();
+            };
+
+            document.getElementById('profile-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeProfileModal = () => {
+            document.getElementById('profile-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        function renderCategories() {
+            const t = i18n[currentLang] || i18n.en;
+            const catList = document.getElementById('category-list');
+            if (!catList) return;
+            const categories = Object.keys(t.categories);
+            catList.innerHTML = categories.map(cat => `
+                <button onclick="setCategory('${cat}')" 
+                    class="category-pill px-5 py-2 rounded-xl glass text-sm font-bold hover:bg-white/5 ${currentCategory === cat ? 'active' : ''}">
+                    ${t.categories[cat]}
+                </button>
+            `).join('');
+        }
+
+        window.setCategory = (cat) => {
+            currentCategory = cat;
+            renderCategories();
+            renderConfigs();
+        };
+
+        function renderConfigs() {
+            if (!dataLoaded) return;
+            const t = i18n[currentLang] || i18n.en;
+            const configList = document.getElementById('config-list');
+            if (!configList) return;
+
+            const filtered = allConfigs.filter(c => currentCategory === 'All' || c.category === currentCategory);
+
+            if (filtered.length === 0) {
+                configList.innerHTML = `<div class="col-span-full glass p-20 text-center text-xl text-slate-400">${currentCategory === 'All' ? t.noConfigs : t.noResults}</div>`;
+                return;
+            }
+
+            configList.innerHTML = filtered.map(data => `
+                <div class="glass p-8 card-hover flex flex-col justify-between animate-fade-in">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="text-2xl font-black tracking-tighter">${data.name || 'Untitled'}</h3>
+                                <span class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">${t.categories[data.category] || data.category}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 text-slate-500 text-xs font-bold">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
+                                ${data.downloads || 0}
+                            </div>
+                        </div>
+                        <p class="text-slate-500 text-xs font-medium">by ${data.author}</p>
+                        <p class="mt-6 text-slate-400 text-sm leading-relaxed line-clamp-3">"${data.description || t.noDesc}"</p>
+                    </div>
+                    <div class="flex gap-3 mt-10">
+                        <button onclick="showDetails('${data.id}')" class="flex-1 py-4 rounded-2xl glass font-bold text-sm hover:bg-white/5 transition-all">${t.details}</button>
+                        <button onclick="downloadConfig('${data.id}')" class="btn-download flex-1 py-4 rounded-2xl font-bold text-sm text-white transition-all">${currentUser ? t.download : t.loginToDownload}</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function fetchConfigsREST() {
+            log("Attempting REST API fallback...");
+            try {
+                const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/shared_configs`;
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.documents) {
+                    allConfigs = data.documents
+                        .map(doc => {
+                            const fields = doc.fields;
+                            const id = doc.name.split('/').pop();
+                            return {
+                                id: id,
+                                name: fields.name?.stringValue,
+                                author: fields.author?.stringValue,
+                                category: fields.category?.stringValue,
+                                description: fields.description?.stringValue,
+                                downloads: parseInt(fields.downloads?.integerValue || 0),
+                                status: fields.status?.stringValue,
+                                data: fields.config_json?.stringValue || fields.data?.stringValue
+                            };
+                        })
+                        .filter(c => c.status === 'approved');
+                    dataLoaded = true;
+                    renderConfigs();
+                }
+            } catch (e) { log("REST Fallback Error: " + e.message); }
+        }
+
+        window.showDetails = (id) => {
+            const config = allConfigs.find(c => c.id === id);
+            if (!config) return;
+            const t = i18n[currentLang] || i18n.en;
+            const modal = document.getElementById('details-modal');
+            const body = document.getElementById('modal-body');
+            const title = document.getElementById('modal-title');
+            const downloadBtn = document.getElementById('modal-download-btn');
+
+            title.textContent = config.name || t.modalTitle;
+            downloadBtn.textContent = currentUser ? t.download : t.loginToDownload;
+            downloadBtn.onclick = () => downloadConfig(id);
+
+            let buttonsHtml = '';
+            try {
+                const configData = JSON.parse(config.data);
+                if (configData.buttons && configData.buttons.length > 0) {
+                    buttonsHtml = `
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            ${configData.buttons.map(btn => `
+                                <div class="glass p-4 rounded-xl border border-white/5">
+                                    <div class="text-[10px] text-slate-500 font-bold uppercase mb-1">${btn.iconItem || 'Button'}</div>
+                                    <div class="font-bold text-sm">${btn.name || 'Untitled'}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else { buttonsHtml = `<p class="text-slate-500 italic text-sm">${t.noButtons}</p>`; }
+            } catch (e) { buttonsHtml = `<p class="text-red-400/50 italic text-sm">Error parsing button data</p>`; }
+
+            body.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="space-y-8">
+                        <div>
+                            <h4 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">${t.info}</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between py-3 border-b border-white/5"><span class="text-slate-400 text-sm">${t.author}</span><span class="font-bold text-sm">${config.author}</span></div>
+                                <div class="flex justify-between py-3 border-b border-white/5"><span class="text-slate-400 text-sm">${t.category}</span><span class="font-bold text-sm text-blue-400">${t.categories[config.category] || config.category}</span></div>
+                                <div class="flex justify-between py-3 border-b border-white/5"><span class="text-slate-400 text-sm">${t.downloads}</span><span class="font-bold text-sm">${config.downloads || 0}</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">${t.description}</h4>
+                            <p class="text-slate-300 text-sm leading-relaxed bg-white/5 p-6 rounded-2xl border border-white/5 italic">"${config.description || t.noDesc}"</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">${t.buttons}</h4>
+                        ${buttonsHtml}
+                        <div class="mt-8">
+                            <h4 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">${t.raw}</h4>
+                            <pre class="bg-black/40 p-6 rounded-2xl text-[10px] font-mono text-slate-500 overflow-x-auto max-h-40 border border-white/5">${config.data}</pre>
+                        </div>
+                    </div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeModal = () => {
+            document.getElementById('details-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        window.downloadConfig = async (id) => {
+            const t = i18n[currentLang] || i18n.en;
+            if (!currentUser) { alert(t.loginAlert); return; }
+            if (!mcAccount) { alert(t.linkAlert); return; }
+
+            try {
+                const config = allConfigs.find(c => c.id === id);
+                const blob = new Blob([config.data], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${config.name || 'config'}.json`;
+                a.click();
+                await updateDoc(doc(db, "shared_configs", id), { downloads: increment(1) });
+            } catch (e) { log("Download Error: " + e.message); }
+        };
+
+        window.openSupportModal = () => {
+            const t = i18n[currentLang] || i18n.en;
+            if (!currentUser) { alert(t.loginAlert); return; }
+            document.getElementById('support-modal').classList.remove('hidden');
+        };
+
+        window.closeSupportModal = () => document.getElementById('support-modal').classList.add('hidden');
+
+        window.submitTicket = async () => {
+            const t = i18n[currentLang] || i18n.en;
+            const msg = document.getElementById('support-message').value;
+            if (!msg) return;
+            try {
+                await addDoc(collection(db, "support_tickets"), {
+                    email: currentUser.email,
+                    mc_name: mcAccount?.mc_name || 'Unknown',
+                    message: msg,
+                    timestamp: Date.now()
+                });
+                alert(t.supportSuccess);
+                document.getElementById('support-message').value = '';
+                closeSupportModal();
+            } catch (e) { alert(t.supportError); }
+        };
+
+        window.openMyConfigsModal = async () => {
+            const t = i18n[currentLang] || i18n.en;
+            if (!currentUser) return;
+            const modal = document.getElementById('my-configs-modal');
+            const list = document.getElementById('my-configs-list');
+            modal.classList.remove('hidden');
+            list.innerHTML = '<div class="animate-pulse text-slate-500">Loading...</div>';
+
+            try {
+                const q = query(collection(db, "shared_configs"), where("author", "==", currentUser.email));
+                const snap = await getDocs(q);
+                if (snap.empty) {
+                    list.innerHTML = `<div class="text-center py-8 text-slate-500 italic">${t.noMyConfigs}</div>`;
+                } else {
+                    list.innerHTML = '';
+                    snap.forEach(doc => {
+                        const data = doc.data();
+                        const statusColor = data.status === 'approved' ? 'text-green-400' : 'text-yellow-400';
+                        const statusText = data.status === 'approved' ? t.statusApproved : t.statusPending;
+                        const div = document.createElement('div');
+                        div.className = "glass p-4 flex justify-between items-center border border-white/5";
+                        div.innerHTML = `
+                            <div>
+                                <div class="font-bold">${data.name || 'Untitled'}</div>
+                                <div class="text-xs ${statusColor} font-bold uppercase tracking-widest mt-1">${statusText}</div>
+                            </div>
+                            <button onclick="deleteMyConfig('${doc.id}')" class="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        `;
+                        list.appendChild(div);
+                    });
+                }
+            } catch (e) { list.innerHTML = '<div class="text-red-400">Error loading configs.</div>'; }
+        };
+
+        window.closeMyConfigsModal = () => document.getElementById('my-configs-modal').classList.add('hidden');
+
+        window.deleteMyConfig = async (id) => {
+            const t = i18n[currentLang] || i18n.en;
+            if (!confirm(t.deleteConfirm)) return;
+            try {
+                await deleteDoc(doc(db, "shared_configs", id));
+                alert(t.deleteSuccess);
+                openMyConfigsModal();
+                setupDataFetching();
+            } catch (e) { alert(t.deleteError); }
+        };
+
+        function setupDataFetching() {
+            const q = query(collection(db, "shared_configs"), where("status", "==", "approved"));
+            onSnapshot(q, (snap) => {
+                if (fetchTimeout) clearTimeout(fetchTimeout);
+                allConfigs = [];
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    allConfigs.push({
+                        id: doc.id,
+                        ...d,
+                        data: d.config_json || d.data
+                    });
+                });
+                dataLoaded = true;
+                renderConfigs();
+            }, (err) => {
+                log("SDK Error: " + err.message);
+                if (!dataLoaded) fetchConfigsREST();
+            });
+            fetchTimeout = setTimeout(() => { if (!dataLoaded) fetchConfigsREST(); }, 5000);
+        }
+
+        try {
+            setupDataFetching();
+            updateAuthUI(); // Initial call for auth-related UI
+            updateUI(); // Initial call for general UI elements
+        } catch (e) { log("Init Error: " + e.message); }
+    </script>
+</body>
+
+</html>
