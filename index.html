@@ -1228,37 +1228,7 @@
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = `${config.name || 'config'}.json`;
-                a.click();
-                await updateDoc(doc(db, "shared_configs", id), { downloads: increment(1) });
-            } catch (e) { log("Download Error: " + e.message); }
-        };
-
-        window.openSupportModal = () => {
-            const t = i18n[currentLang] || i18n.en;
-            if (!currentUser) { alert(t.loginAlert); return; }
-            snap.forEach(doc => {
-                const d = doc.data();
-                allConfigs.push({
-                    id: doc.id,
-                    ...d,
-                    data: d.config_json || d.data
-                });
-            });
-            dataLoaded = true;
-            renderConfigs();
-        }, (err) => {
-            log("SDK Error: " + err.message);
-            if (!dataLoaded) fetchConfigsREST();
-        });
-        fetchTimeout = setTimeout(() => { if (!dataLoaded) fetchConfigsREST(); }, 5000);
-        }
-
-        try {
-            setupDataFetching();
-            renderCategories();
-            updateAuthUI(); // Initial call for auth-related UI
-            updateUI(); // Initial call for general UI elements
-        } catch (e) { log("Init Error: " + e.message); }
+            } catch (e) { log("Init Error: " + e.message); }
     </script>
 </body>
 
