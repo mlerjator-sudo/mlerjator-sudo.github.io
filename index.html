@@ -1307,6 +1307,7 @@
 
         try {
             setupDataFetching();
+            renderCategories(); // Render categories on load
             updateAuthUI(); // Initial call for auth-related UI
             updateUI(); // Initial call for general UI elements
         } catch (e) { log("Init Error: " + e.message); }
