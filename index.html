@@ -1234,41 +1234,41 @@
         };
 
         window.openMyConfigsModal = async () => {
+        };
+
+        function renderCategories() {
             const t = i18n[currentLang] || i18n.en;
-            if (!currentUser) return;
-            const modal = document.getElementById('my-configs-modal');
-            const list = document.getElementById('my-configs-list');
-            modal.classList.remove('hidden');
-            list.innerHTML = '<div class="animate-pulse text-slate-500">Loading...</div>';
+            const catList = document.getElementById('category-list');
+            if (!catList) return;
+            const categories = Object.keys(t.categories);
+            catList.innerHTML = categories.map(cat => `
+                <button onclick="setCategory('${cat}')" 
+                    class="category-pill px-5 py-2 rounded-xl glass text-sm font-bold hover:bg-white/5 ${currentCategory === cat ? 'active' : ''}">
+                    ${t.categories[cat]}
+                </button>
+            `).join('');
+        }
 
-            try {
-                const q = query(collection(db, "shared_configs"), where("author", "==", currentUser.email));
-                const snap = await getDocs(q);
-                if (snap.empty) {
-                    list.innerHTML = `<div class="text-center py-8 text-slate-500 italic">${t.noMyConfigs}</div>`;
-                } else {
-                    list.innerHTML = '';
-                    snap.forEach(doc => {
-                        window.setCategory = (cat) => {
-                            currentCategory = cat;
-                            renderCategories();
-                            renderConfigs();
-                        };
+        window.setCategory = (cat) => {
+            currentCategory = cat;
+            renderCategories();
+            renderConfigs();
+        };
 
-                        function renderConfigs() {
-                            if (!dataLoaded) return;
-                            const t = i18n[currentLang] || i18n.en;
-                            const configList = document.getElementById('config-list');
-                            if (!configList) return;
+        function renderConfigs() {
+            if (!dataLoaded) return;
+            const t = i18n[currentLang] || i18n.en;
+            const configList = document.getElementById('config-list');
+            if (!configList) return;
 
-                            const filtered = allConfigs.filter(c => currentCategory === 'All' || c.category === currentCategory);
+            const filtered = allConfigs.filter(c => currentCategory === 'All' || c.category === currentCategory);
 
-                            if (filtered.length === 0) {
-                                configList.innerHTML = `<div class="col-span-full glass p-20 text-center text-xl text-slate-400">${currentCategory === 'All' ? t.noConfigs : t.noResults}</div>`;
-                                return;
-                            }
+            if (filtered.length === 0) {
+                configList.innerHTML = `<div class="col-span-full glass p-20 text-center text-xl text-slate-400">${currentCategory === 'All' ? t.noConfigs : t.noResults}</div>`;
+                return;
+            }
 
-                            configList.innerHTML = filtered.map(data => `
+            configList.innerHTML = filtered.map(data => `
                 <div class="glass p-8 card-hover flex flex-col justify-between animate-fade-in">
                     <div>
                         <div class="flex justify-between items-start mb-6">
@@ -1290,55 +1290,55 @@
                     </div>
                 </div>
             `).join('');
-                        }
+        }
 
-                        async function fetchConfigsREST() {
-                            log("Attempting REST API fallback...");
-                            try {
-                                const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/shared_configs`;
-                                const response = await fetch(url);
-                                const data = await response.json();
-                                if (data.documents) {
-                                    allConfigs = data.documents
-                                        .map(doc => {
-                                            const fields = doc.fields;
-                                            const id = doc.name.split('/').pop();
-                                            return {
-                                                id: id,
-                                                name: fields.name?.stringValue,
-                                                author: fields.author?.stringValue,
-                                                category: fields.category?.stringValue,
-                                                description: fields.description?.stringValue,
-                                                downloads: parseInt(fields.downloads?.integerValue || 0),
-                                                status: fields.status?.stringValue,
-                                                data: fields.config_json?.stringValue || fields.data?.stringValue
-                                            };
-                                        })
-                                        .filter(c => c.status === 'approved');
-                                    dataLoaded = true;
-                                    renderConfigs();
-                                }
-                            } catch (e) { log("REST Fallback Error: " + e.message); }
-                        }
+        async function fetchConfigsREST() {
+            log("Attempting REST API fallback...");
+            try {
+                const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/shared_configs`;
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.documents) {
+                    allConfigs = data.documents
+                        .map(doc => {
+                            const fields = doc.fields;
+                            const id = doc.name.split('/').pop();
+                            return {
+                                id: id,
+                                name: fields.name?.stringValue,
+                                author: fields.author?.stringValue,
+                                category: fields.category?.stringValue,
+                                description: fields.description?.stringValue,
+                                downloads: parseInt(fields.downloads?.integerValue || 0),
+                                status: fields.status?.stringValue,
+                                data: fields.config_json?.stringValue || fields.data?.stringValue
+                            };
+                        })
+                        .filter(c => c.status === 'approved');
+                    dataLoaded = true;
+                    renderConfigs();
+                }
+            } catch (e) { log("REST Fallback Error: " + e.message); }
+        }
 
-                        window.showDetails = (id) => {
-                            const config = allConfigs.find(c => c.id === id);
-                            if (!config) return;
-                            const t = i18n[currentLang] || i18n.en;
-                            const modal = document.getElementById('details-modal');
-                            const body = document.getElementById('modal-body');
-                            const title = document.getElementById('modal-title');
-                            const downloadBtn = document.getElementById('modal-download-btn');
+        window.showDetails = (id) => {
+            const config = allConfigs.find(c => c.id === id);
+            if (!config) return;
+            const t = i18n[currentLang] || i18n.en;
+            const modal = document.getElementById('details-modal');
+            const body = document.getElementById('modal-body');
+            const title = document.getElementById('modal-title');
+            const downloadBtn = document.getElementById('modal-download-btn');
 
-                            title.textContent = config.name || t.modalTitle;
-                            downloadBtn.textContent = currentUser ? t.download : t.loginToDownload;
-                            downloadBtn.onclick = () => downloadConfig(id);
+            title.textContent = config.name || t.modalTitle;
+            downloadBtn.textContent = currentUser ? t.download : t.loginToDownload;
+            downloadBtn.onclick = () => downloadConfig(id);
 
-                            let buttonsHtml = '';
-                            try {
-                                const configData = JSON.parse(config.data);
-                                if (configData.buttons && configData.buttons.length > 0) {
-                                    buttonsHtml = `
+            let buttonsHtml = '';
+            try {
+                const configData = JSON.parse(config.data);
+                if (configData.buttons && configData.buttons.length > 0) {
+                    buttonsHtml = `
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             ${configData.buttons.map(btn => `
                                 <div class="glass p-4 rounded-xl border border-white/5">
@@ -1348,10 +1348,10 @@
                             `).join('')}
                         </div>
                     `;
-                                } else { buttonsHtml = `<p class="text-slate-500 italic text-sm">${t.noButtons}</p>`; }
-                            } catch (e) { buttonsHtml = `<p class="text-red-400/50 italic text-sm">Error parsing button data</p>`; }
+                } else { buttonsHtml = `<p class="text-slate-500 italic text-sm">${t.noButtons}</p>`; }
+            } catch (e) { buttonsHtml = `<p class="text-red-400/50 italic text-sm">Error parsing button data</p>`; }
 
-                            body.innerHTML = `
+            body.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                     <div class="space-y-8">
                         <div>
@@ -1377,79 +1377,79 @@
                     </div>
                 </div>
             `;
-                            modal.classList.remove('hidden');
-                            document.body.style.overflow = 'hidden';
-                        };
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
 
-                        window.closeModal = () => {
-                            document.getElementById('details-modal').classList.add('hidden');
-                            document.body.style.overflow = 'auto';
-                        };
+        window.closeModal = () => {
+            document.getElementById('details-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
 
-                        window.downloadConfig = async (id) => {
-                            const t = i18n[currentLang] || i18n.en;
-                            if (!currentUser) { alert(t.loginAlert); return; }
-                            if (!mcAccount) { alert(t.linkAlert); return; }
+        window.downloadConfig = async (id) => {
+            const t = i18n[currentLang] || i18n.en;
+            if (!currentUser) { alert(t.loginAlert); return; }
+            if (!mcAccount) { alert(t.linkAlert); return; }
 
-                            try {
-                                const config = allConfigs.find(c => c.id === id);
-                                const blob = new Blob([config.data], { type: 'application/json' });
-                                const url = window.URL.createObjectURL(blob);
-                                const a = document.createElement('a');
-                                a.href = url;
-                                a.download = `${config.name || 'config'}.json`;
-                                a.click();
-                                await updateDoc(doc(db, "shared_configs", id), { downloads: increment(1) });
-                            } catch (e) { log("Download Error: " + e.message); }
-                        };
+            try {
+                const config = allConfigs.find(c => c.id === id);
+                const blob = new Blob([config.data], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${config.name || 'config'}.json`;
+                a.click();
+                await updateDoc(doc(db, "shared_configs", id), { downloads: increment(1) });
+            } catch (e) { log("Download Error: " + e.message); }
+        };
 
-                        window.openSupportModal = () => {
-                            const t = i18n[currentLang] || i18n.en;
-                            if (!currentUser) { alert(t.loginAlert); return; }
-                            document.getElementById('support-modal').classList.remove('hidden');
-                        };
+        window.openSupportModal = () => {
+            const t = i18n[currentLang] || i18n.en;
+            if (!currentUser) { alert(t.loginAlert); return; }
+            document.getElementById('support-modal').classList.remove('hidden');
+        };
 
-                        window.closeSupportModal = () => document.getElementById('support-modal').classList.add('hidden');
+        window.closeSupportModal = () => document.getElementById('support-modal').classList.add('hidden');
 
-                        window.submitTicket = async () => {
-                            const t = i18n[currentLang] || i18n.en;
-                            const msg = document.getElementById('support-message').value;
-                            if (!msg) return;
-                            try {
-                                await addDoc(collection(db, "support_tickets"), {
-                                    email: currentUser.email,
-                                    mc_name: mcAccount?.mc_name || 'Unknown',
-                                    message: msg,
-                                    timestamp: Date.now()
-                                });
-                                alert(t.supportSuccess);
-                                document.getElementById('support-message').value = '';
-                                closeSupportModal();
-                            } catch (e) { alert(t.supportError); }
-                        };
+        window.submitTicket = async () => {
+            const t = i18n[currentLang] || i18n.en;
+            const msg = document.getElementById('support-message').value;
+            if (!msg) return;
+            try {
+                await addDoc(collection(db, "support_tickets"), {
+                    email: currentUser.email,
+                    mc_name: mcAccount?.mc_name || 'Unknown',
+                    message: msg,
+                    timestamp: Date.now()
+                });
+                alert(t.supportSuccess);
+                document.getElementById('support-message').value = '';
+                closeSupportModal();
+            } catch (e) { alert(t.supportError); }
+        };
 
-                        window.openMyConfigsModal = async () => {
-                            const t = i18n[currentLang] || i18n.en;
-                            if (!currentUser) return;
-                            const modal = document.getElementById('my-configs-modal');
-                            const list = document.getElementById('my-configs-list');
-                            modal.classList.remove('hidden');
-                            list.innerHTML = '<div class="animate-pulse text-slate-500">Loading...</div>';
+        window.openMyConfigsModal = async () => {
+            const t = i18n[currentLang] || i18n.en;
+            if (!currentUser) return;
+            const modal = document.getElementById('my-configs-modal');
+            const list = document.getElementById('my-configs-list');
+            modal.classList.remove('hidden');
+            list.innerHTML = '<div class="animate-pulse text-slate-500">Loading...</div>';
 
-                            try {
-                                const q = query(collection(db, "shared_configs"), where("author", "==", currentUser.email));
-                                const snap = await getDocs(q);
-                                if (snap.empty) {
-                                    list.innerHTML = `<div class="text-center py-8 text-slate-500 italic">${t.noMyConfigs}</div>`;
-                                } else {
-                                    list.innerHTML = '';
-                                    snap.forEach(doc => {
-                                        const data = doc.data();
-                                        const statusColor = data.status === 'approved' ? 'text-green-400' : 'text-yellow-400';
-                                        const statusText = data.status === 'approved' ? t.statusApproved : t.statusPending;
-                                        const div = document.createElement('div');
-                                        div.className = "glass p-4 flex justify-between items-center border border-white/5";
-                                        div.innerHTML = `
+            try {
+                const q = query(collection(db, "shared_configs"), where("author", "==", currentUser.email));
+                const snap = await getDocs(q);
+                if (snap.empty) {
+                    list.innerHTML = `<div class="text-center py-8 text-slate-500 italic">${t.noMyConfigs}</div>`;
+                } else {
+                    list.innerHTML = '';
+                    snap.forEach(doc => {
+                        const data = doc.data();
+                        const statusColor = data.status === 'approved' ? 'text-green-400' : 'text-yellow-400';
+                        const statusText = data.status === 'approved' ? t.statusApproved : t.statusPending;
+                        const div = document.createElement('div');
+                        div.className = "glass p-4 flex justify-between items-center border border-white/5";
+                        div.innerHTML = `
                             <div>
                                 <div class="font-bold">${data.name || 'Untitled'}</div>
                                 <div class="text-xs ${statusColor} font-bold uppercase tracking-widest mt-1">${statusText}</div>
@@ -1458,53 +1458,53 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
                         `;
-                                        list.appendChild(div);
-                                    });
-                                }
-                            } catch (e) { list.innerHTML = '<div class="text-red-400">Error loading configs.</div>'; }
-                        };
+                        list.appendChild(div);
+                    });
+                }
+            } catch (e) { list.innerHTML = '<div class="text-red-400">Error loading configs.</div>'; }
+        };
 
-                        window.closeMyConfigsModal = () => document.getElementById('my-configs-modal').classList.add('hidden');
+        window.closeMyConfigsModal = () => document.getElementById('my-configs-modal').classList.add('hidden');
 
-                        window.deleteMyConfig = async (id) => {
-                            const t = i18n[currentLang] || i18n.en;
-                            if (!confirm(t.deleteConfirm)) return;
-                            try {
-                                await deleteDoc(doc(db, "shared_configs", id));
-                                alert(t.deleteSuccess);
-                                openMyConfigsModal();
-                                setupDataFetching();
-                            } catch (e) { alert(t.deleteError); }
-                        };
+        window.deleteMyConfig = async (id) => {
+            const t = i18n[currentLang] || i18n.en;
+            if (!confirm(t.deleteConfirm)) return;
+            try {
+                await deleteDoc(doc(db, "shared_configs", id));
+                alert(t.deleteSuccess);
+                openMyConfigsModal();
+                setupDataFetching();
+            } catch (e) { alert(t.deleteError); }
+        };
 
-                        function setupDataFetching() {
-                            const q = query(collection(db, "shared_configs"), where("status", "==", "approved"));
-                            onSnapshot(q, (snap) => {
-                                if (fetchTimeout) clearTimeout(fetchTimeout);
-                                allConfigs = [];
-                                snap.forEach(doc => {
-                                    const d = doc.data();
-                                    allConfigs.push({
-                                        id: doc.id,
-                                        ...d,
-                                        data: d.config_json || d.data
-                                    });
-                                });
-                                dataLoaded = true;
-                                renderConfigs();
-                            }, (err) => {
-                                log("SDK Error: " + err.message);
-                                if (!dataLoaded) fetchConfigsREST();
-                            });
-                            fetchTimeout = setTimeout(() => { if (!dataLoaded) fetchConfigsREST(); }, 5000);
-                        }
+        function setupDataFetching() {
+            const q = query(collection(db, "shared_configs"), where("status", "==", "approved"));
+            onSnapshot(q, (snap) => {
+                if (fetchTimeout) clearTimeout(fetchTimeout);
+                allConfigs = [];
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    allConfigs.push({
+                        id: doc.id,
+                        ...d,
+                        data: d.config_json || d.data
+                    });
+                });
+                dataLoaded = true;
+                renderConfigs();
+            }, (err) => {
+                log("SDK Error: " + err.message);
+                if (!dataLoaded) fetchConfigsREST();
+            });
+            fetchTimeout = setTimeout(() => { if (!dataLoaded) fetchConfigsREST(); }, 5000);
+        }
 
-                        try {
-                            setupDataFetching();
-                            renderCategories();
-                            updateAuthUI(); // Initial call for auth-related UI
-                            updateUI(); // Initial call for general UI elements
-                        } catch (e) { log("Init Error: " + e.message); }
+        try {
+            setupDataFetching();
+            renderCategories();
+            updateAuthUI(); // Initial call for auth-related UI
+            updateUI(); // Initial call for general UI elements
+        } catch (e) { log("Init Error: " + e.message); }
     </script>
 </body>
 
