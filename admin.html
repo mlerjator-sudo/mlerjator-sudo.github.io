@@ -213,7 +213,9 @@
                 grades: {
                     General: "General", Wood: "Wood", Stone: "Stone", Coal: "Coal", Copper: "Copper", Iron: "Iron", Gold: "Gold", Diamond: "Diamond", Emerald: "Emerald", Premium: "Premium"
                 },
-                categories: { General: "General" }
+                categories: { General: "General" },
+                instanceName: "Instance Name",
+                functionDescription: "Function"
             },
             ko: {
                 pendingTitle: "승인 대기 중인 설정",
@@ -239,7 +241,9 @@
                 grades: {
                     General: "일반", Wood: "나무", Stone: "돌", Coal: "석탄", Copper: "구리", Iron: "철", Gold: "금", Diamond: "다이아몬드", Emerald: "에메랄드", Premium: "프리미엄"
                 },
-                categories: { General: "일반" }
+                categories: { General: "일반" },
+                instanceName: "인스턴스 명명어",
+                functionDescription: "기능 설명"
             }
         };
 
@@ -315,12 +319,16 @@
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="text-xl font-bold">${data.name || 'Untitled'}</h3>
+                                <span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold block mb-1">${t.instanceName}</span>
+                                <h3 class="text-xl font-bold mb-1">${data.name || 'Untitled'}</h3>
                                 <span class="text-[10px] text-blue-400 font-bold uppercase tracking-wider">${data.category}</span>
                             </div>
                         </div>
-                        <p class="text-slate-400 text-xs">by ${data.author}</p>
-                        <p class="mt-4 text-sm text-slate-300 line-clamp-3">"${data.description || 'No description'}"</p>
+                        <div class="mb-4">
+                            <span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold block mb-1">${t.functionDescription}</span>
+                            <p class="text-sm text-slate-300 line-clamp-3 bg-white/5 p-3 rounded-lg border border-white/5">"${data.description || 'No description'}"</p>
+                        </div>
+                        <p class="text-slate-400 text-xs text-right">by ${data.author}</p>
                     </div>
                     <div class="flex gap-3 mt-8">
                         <button onclick="updateStatus('${data.id}', 'approved')" class="flex-1 py-3 rounded-xl bg-blue-600 font-bold hover:bg-blue-500 transition-colors">${t.approve}</button>
