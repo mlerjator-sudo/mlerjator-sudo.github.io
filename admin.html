@@ -171,6 +171,14 @@
         </div>
     </div>
 
+    <!-- Data View Modal -->
+    <div id="data-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeDataModal()"></div>
+        <div class="glass max-w-2xl w-full relative z-10 p-8 animate-fade-in">
+            <div id="data-modal-content"></div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { initializeFirestore, collection, query, where, onSnapshot, doc, getDoc, getDocs, updateDoc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
