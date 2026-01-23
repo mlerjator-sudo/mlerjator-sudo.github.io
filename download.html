@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F34 Mod Download - Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #111111;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .marketplace-bg {
+            background: radial-gradient(circle at 50% 30%, #332b1a 0%, #111111 70%);
+        }
+
+        .content-box {
+            background: #1a1a1a;
+            position: relative;
+        }
+
+        .pixel-step {
+            width: 48px;
+            height: 24px;
+            background: #1a1a1a;
+            position: absolute;
+            top: -24px;
+        }
+
+        .btn-marketplace-green {
+            background: #3c8527;
+            border-bottom: 4px solid #1e4514;
+            transition: all 0.1s;
+        }
+
+        .btn-marketplace-green:hover {
+            background: #4a9e31;
+            transform: translateY(1px);
+            border-bottom-width: 3px;
+        }
+
+        .btn-marketplace-green:active {
+            transform: translateY(4px);
+            border-bottom-width: 0;
+        }
+
+        .pixel-particle {
+            width: 12px;
+            height: 12px;
+            background: #ffeb3b;
+            position: absolute;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Tooltip CSS */
+        .tooltip-container {
+            position: relative;
+            display: inline-flex;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 240px;
+            background-color: rgba(15, 23, 42, 0.9);
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            padding: 10px;
+            position: absolute;
+            z-index: 10;
+            bottom: 140%;
+            left: 50%;
+            margin-left: -120px;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 11px;
+            font-weight: 600;
+            pointer-events: none;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            transform: translateY(10px);
+            white-space: normal;
+            line-height: 1.4;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(59, 130, 246, 0.3) transparent transparent transparent;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen marketplace-bg">
+    <!-- Header/Nav -->
+    <nav class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+        <a href="index.html" class="flex items-center gap-3">
+            <img src="logo.png" alt="F34 Logo" class="h-12 w-auto">
+            <span class="font-black text-2xl tracking-tight">F34 MOD</span>
+        </a>
+
+        <div class="flex items-center gap-8">
+            <!-- Language Switcher -->
+            <div class="glass p-1.5 flex gap-1 text-[10px] font-bold uppercase tracking-widest rounded-lg">
+                <button onclick="setLang('en')" id="lang-en"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">EN</button>
+                <button onclick="setLang('ko')" id="lang-ko"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">KO</button>
+                <button onclick="setLang('jp')" id="lang-jp"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">JP</button>
+                <button onclick="setLang('cn')" id="lang-cn"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">CN</button>
+                <button onclick="setLang('es')" id="lang-es"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">ES</button>
+                <button onclick="setLang('fr')" id="lang-fr"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">FR</button>
+                <button onclick="setLang('de')" id="lang-de"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">DE</button>
+                <button onclick="setLang('ru')" id="lang-ru"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">RU</button>
+            </div>
+
+            <div class="flex gap-8 text-sm font-bold text-gray-400">
+                <a href="index.html" class="hover:text-white transition-colors" id="nav-community">Community</a>
+                <a href="download.html" class="text-white border-b-2 border-white pb-1" id="nav-download">Download</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-6 pt-12 pb-24">
+
+        <!-- Hero Section (Marketplace Style) -->
+        <div class="relative mb-12">
+            <!-- Background Image -->
+            <div class="w-full h-[450px] bg-gray-900 rounded-t-3xl overflow-hidden relative">
+                <img src="B.png" alt="Minecraft Background" class="w-full h-full object-cover opacity-80">
+            </div>
+
+            <!-- Content Box with Blocky Top -->
+            <div
+                class="content-box w-full md:w-[500px] p-10 pt-12 relative md:absolute md:bottom-[-40px] md:left-10 shadow-2xl">
+                <!-- Blocky Steps -->
+                <div class="pixel-step" style="left: 60px;"></div>
+                <div class="pixel-step" style="left: 108px;"></div>
+                <div class="pixel-step" style="left: 156px; width: 24px; height: 12px; top: -12px;"></div>
+
+                <h2 class="text-3xl font-black mb-4" id="hero-title">F34 DI Mode</h2>
+                <p class="text-gray-400 text-sm leading-relaxed mb-8" id="hero-desc">
+                    Add cool features to your Minecraft world with this DI mod!
+                    Experience custom GUIs, community config sharing, and an optimized game environment.
+                </p>
+
+                <a href="f34 3.0 1.12x .jar" download
+                    class="btn-marketplace-green inline-flex items-center gap-4 px-8 py-4 rounded-sm font-black text-lg uppercase tracking-wide tooltip-container">
+                    <span id="hero-btn-text">Download Mod</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="tooltip-text" id="t-download-tooltip">Download instantly without login or
+                        suggestions.</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Additional Info Section -->
+        <div class="mt-32 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-gray-800 pt-16">
+            <div>
+                <h3 class="text-xl font-black mb-6 flex items-center gap-3">
+                    <span class="w-2 h-6 bg-yellow-500"></span>
+                    <span id="guide-title">Installation Guide</span>
+                </h3>
+                <ul class="space-y-4 text-gray-400 text-sm">
+                    <li class="flex gap-4">
+                        <span class="font-bold text-white">01</span>
+                        <span id="guide-step-1">Install Forge 1.12.2 first.</span>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="font-bold text-white">02</span>
+                        <span id="guide-step-2">Put the downloaded .jar file in the mods folder.</span>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="font-bold text-white">03</span>
+                        <span id="guide-step-3">Launch the game and check the F34 menu!</span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-black mb-6 flex items-center gap-3">
+                    <span class="w-2 h-6 bg-blue-500"></span>
+                    <span id="sys-title">System Requirements</span>
+                </h3>
+                <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-500" id="sys-ver-label">Version</span>
+                        <span class="text-white font-bold" id="sys-ver-value">3.0 (Latest)</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-500" id="sys-compat-label">Compatibility</span>
+                        <span class="text-white font-bold" id="sys-compat-value">Minecraft 1.12.2</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500" id="sys-req-label">Required Mod</span>
+                        <span class="text-white font-bold" id="sys-req-value">Forge</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-32 border-t border-gray-800 pt-12 text-center">
+            <p class="text-gray-500 text-xs" id="footer-text">© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.
+            </p>
+        </footer>
+    </main>
+
+    <script>
+        const i18n = {
+            en: {
+                navCommunity: "Community",
+                navDownload: "Download",
+                heroTitle: "F34 DI Mode",
+                heroDesc: "Add cool features to your Minecraft world with this DI mod! Experience custom GUIs, community config sharing, and an optimized game environment.",
+                heroBtn: "Download Mod",
+                guideTitle: "Installation Guide",
+                guideStep1: "Install Forge 1.12.2 first.",
+                guideStep2: "Put the downloaded .jar file in the mods folder.",
+                guideStep3: "Launch the game and check the F34 menu!",
+                sysTitle: "System Requirements",
+                sysVerLabel: "Version",
+                sysVerValue: "3.0 (Latest)",
+                sysCompatLabel: "Compatibility",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Required Mod",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
+                downloadTooltip: "Download instantly without login or suggestions."
+            },
+            ko: {
+                navCommunity: "커뮤니티",
+                navDownload: "다운로드",
+                heroTitle: "F34 DI 모드",
+                heroDesc: "이 DI 모드로 나만의 마인크래프트 세계에 멋진 기능을 추가하세요! 커스텀 GUI, 커뮤니티 설정 공유, 그리고 최적화된 게임 환경을 경험할 수 있습니다.",
+                heroBtn: "모드 다운로드하기",
+                guideTitle: "설치 가이드",
+                guideStep1: "Forge 1.12.2 버전을 먼저 설치해 주세요.",
+                guideStep2: "다운로드한 .jar 파일을 mods 폴더에 넣어주세요.",
+                guideStep3: "게임을 실행하고 F34 메뉴를 확인하세요!",
+                sysTitle: "시스템 요구 사양",
+                sysVerLabel: "버전",
+                sysVerValue: "3.0 (최신)",
+                sysCompatLabel: "호환성",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "필수 모드",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
+                downloadTooltip: "제안없는 모드 및 로그인 없이 다운로드 하세요."
+            },
+            jp: {
+                navCommunity: "コミュニティ",
+                navDownload: "ダウンロード",
+                heroTitle: "F34 DI モード",
+                heroDesc: "このDIモードであなたのMinecraftの世界に素晴らしい機能を追加しましょう！カスタムGUI、コミュニティ設定の共有、最適化されたゲーム環境を体験できます。",
+                heroBtn: "MODをダウンロード",
+                guideTitle: "インストールガイド",
+                guideStep1: "まずForge 1.12.2をインストールしてください。",
+                guideStep2: "ダウンロードした.jarファイルをmodsフォルダに入れてください。",
+                guideStep3: "ゲームを起動してF34メニューを確認してください！",
+                sysTitle: "システム要件",
+                sysVerLabel: "バージョン",
+                sysVerValue: "3.0 (最新)",
+                sysCompatLabel: "互換性",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "必須MOD",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
+                downloadTooltip: "提案なしモード、ログインなしでダウンロードしてください。"
+            },
+            cn: {
+                navCommunity: "社区",
+                navDownload: "下载",
+                heroTitle: "F34 DI 模式",
+                heroDesc: "使用此 DI 模组为您的 Minecraft 世界添加酷炫功能！体验自定义 GUI、社区配置共享和优化的游戏环境。",
+                heroBtn: "下载模组",
+                guideTitle: "安装指南",
+                guideStep1: "首先安装 Forge 1.12.2。",
+                guideStep2: "将下载的 .jar 文件放入 mods 文件夹。",
+                guideStep3: "启动游戏并检查 F34 菜单！",
+                sysTitle: "系统要求",
+                sysVerLabel: "版本",
+                sysVerValue: "3.0 (最新)",
+                sysCompatLabel: "兼容性",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "必需模组",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
+                downloadTooltip: "下载无建议模式，无需登录。"
+            },
+            es: {
+                navCommunity: "Comunidad",
+                navDownload: "Descargar",
+                heroTitle: "Modo F34 DI",
+                heroDesc: "¡Añade funciones geniales a tu mundo de Minecraft con este mod DI! Experimenta GUIs personalizadas, intercambio de configuraciones en la comunidad y un entorno de juego optimizado.",
+                heroBtn: "Descargar Mod",
+                guideTitle: "Guía de Instalación",
+                guideStep1: "Instala Forge 1.12.2 primero.",
+                guideStep2: "Pon el archivo .jar descargado en la carpeta mods.",
+                guideStep3: "¡Inicia el juego y revisa el menú F34!",
+                sysTitle: "Requisitos del Sistema",
+                sysVerLabel: "Versión",
+                sysVerValue: "3.0 (Última)",
+                sysCompatLabel: "Compatibilidad",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Mod Requerido",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
+                downloadTooltip: "Descarga el modo sin sugerencias y sin iniciar sesión."
+            },
+            fr: {
+                navCommunity: "Communauté",
+                navDownload: "Télécharger",
+                heroTitle: "Mode F34 DI",
+                heroDesc: "Ajoutez des fonctionnalités géniales à votre monde Minecraft avec ce mod DI ! Découvrez des interfaces personnalisées, le partage de configurations communautaires et un environnement de jeu optimisé.",
+                heroBtn: "Télécharger le Mod",
+                guideTitle: "Guide d'Installation",
+                guideStep1: "Installez d'abord Forge 1.12.2.",
+                guideStep2: "Placez le fichier .jar téléchargé dans le dossier mods.",
+                guideStep3: "Lancez le jeu et vérifiez le menu F34 !",
+                sysTitle: "Configuration Requise",
+                sysVerLabel: "Version",
+                sysVerValue: "3.0 (Dernière)",
+                sysCompatLabel: "Compatibilité",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Mod Requis",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
+                downloadTooltip: "Téléchargez le mode sans suggestions et sans connexion."
+            },
+            de: {
+                navCommunity: "Community",
+                navDownload: "Herunterladen",
+                heroTitle: "F34 DI Modus",
+                heroDesc: "Füge deiner Minecraft-Welt mit diesem DI-Mod coole Funktionen hinzu! Erlebe benutzerdefinierte GUIs, das Teilen von Community-Konfigurationen und eine optimierte Spielumgebung.",
+                heroBtn: "Mod Herunterladen",
+                guideTitle: "Installationsanleitung",
+                guideStep1: "Installiere zuerst Forge 1.12.2.",
+                guideStep2: "Lege die heruntergeladene .jar-Datei in den mods-Ordner.",
+                guideStep3: "Starte das Spiel und überprüfe das F34-Menü!",
+                sysTitle: "Systemanforderungen",
+                sysVerLabel: "Version",
+                sysVerValue: "3.0 (Neueste)",
+                sysCompatLabel: "Kompatibilität",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Erforderlicher Mod",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
+                downloadTooltip: "Laden Sie den Modus ohne Vorschläge und ohne Anmeldung herunter."
+            },
+            ru: {
+                navCommunity: "Сообщество",
+                navDownload: "Скачать",
+                heroTitle: "Режим F34 DI",
+                heroDesc: "Добавьте крутые функции в свой мир Minecraft с этим модом DI! Оцените кастомные интерфейсы, обмен конфигурациями сообщества и оптимизированную игровую среду.",
+                heroBtn: "Скачать Мод",
+                guideTitle: "Инструкция по установке",
+                guideStep1: "Сначала установите Forge 1.12.2.",
+                guideStep2: "Поместите скачанный .jar файл в папку mods.",
+                guideStep3: "Запустите игру и проверьте меню F34!",
+                sysTitle: "Системные требования",
+                sysVerLabel: "Версия",
+                sysVerValue: "3.0 (Последняя)",
+                sysCompatLabel: "Совместимость",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Требуемый мод",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
+                downloadTooltip: "Скачивайте режим без предложений и без входа в систему."
+            }
+        };
+
+        let currentLang = localStorage.getItem('f34_lang') || 'en';
+
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('f34_lang', lang);
+            updateUI();
+        }
+
+        function updateUI() {
+            const t = i18n[currentLang] || i18n.en;
+
+            // Update Text Content
+            document.getElementById('nav-community').textContent = t.navCommunity;
+            document.getElementById('nav-download').textContent = t.navDownload;
+            document.getElementById('hero-title').textContent = t.heroTitle;
+            document.getElementById('hero-desc').textContent = t.heroDesc;
+            document.getElementById('hero-btn-text').textContent = t.heroBtn;
+            document.getElementById('guide-title').textContent = t.guideTitle;
+            document.getElementById('guide-step-1').textContent = t.guideStep1;
+            document.getElementById('guide-step-2').textContent = t.guideStep2;
+            document.getElementById('guide-step-3').textContent = t.guideStep3;
+            document.getElementById('sys-title').textContent = t.sysTitle;
+            document.getElementById('sys-ver-label').textContent = t.sysVerLabel;
+            document.getElementById('sys-ver-value').textContent = t.sysVerValue;
+            document.getElementById('sys-compat-label').textContent = t.sysCompatLabel;
+            document.getElementById('sys-compat-value').textContent = t.sysCompatValue;
+            document.getElementById('sys-req-label').textContent = t.sysReqLabel;
+            document.getElementById('sys-req-value').textContent = t.sysReqValue;
+            document.getElementById('footer-text').textContent = t.footer;
+            document.getElementById('t-download-tooltip').textContent = t.downloadTooltip;
+
+            // Update Active Lang Button
+            document.querySelectorAll('[id^="lang-"]').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-blue-400');
+                if (btn.id === `lang-${currentLang}`) btn.classList.add('bg-white/10', 'text-blue-400');
+            });
+        }
+
+        // Initialize
+        updateUI();
+    </script>
+</body>
+
+</html>
