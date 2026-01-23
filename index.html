@@ -70,6 +70,58 @@
         .animate-fade-in {
             animation: fadeIn 0.6s ease-out forwards;
         }
+
+        .download-tooltip-container {
+            position: relative;
+        }
+
+        .download-tooltip-container:hover::after {
+            content: "제안 없는 모드 및 로그인 없이 다운로드";
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeInTooltip 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            letter-spacing: -0.01em;
+        }
+
+        .download-tooltip-container:hover::before {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 7px;
+            border-style: solid;
+            border-color: transparent transparent rgba(0, 0, 0, 0.9) transparent;
+            opacity: 0;
+            animation: fadeInTooltip 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            z-index: 100;
+        }
+
+        @keyframes fadeInTooltip {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -159,6 +211,12 @@
                         class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all hidden text-sm">
                         My Configs
                     </button>
+
+                    <!-- Download Mod Button -->
+                    <a href="download.html" id="t-nav-download"
+                        class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all text-sm download-tooltip-container">
+                        Download Mod
+                    </a>
 
                     <button id="t-support" onclick="openSupportModal()"
                         class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all text-sm">
@@ -353,6 +411,7 @@
                 raw: "Raw Configuration Data",
                 close: "Close",
                 support: "Support",
+                navDownload: "Download Mod",
                 supportTitle: "Customer Center",
                 supportDesc: "Have a problem or suggestion? Send us a message.",
                 supportSuccess: "Ticket submitted successfully!",
@@ -402,6 +461,7 @@
                 raw: "원본 데이터",
                 close: "닫기",
                 support: "고객 센터",
+                navDownload: "모드 다운로드",
                 supportTitle: "고객 센터",
                 supportDesc: "문제나 제안 사항이 있으신가요? 메시지를 보내주세요.",
                 supportSuccess: "문의가 성공적으로 접수되었습니다!",
@@ -451,6 +511,7 @@
                 raw: "生データ",
                 close: "閉じる",
                 support: "カスタマーセンター",
+                navDownload: "MODをダウンロード",
                 supportTitle: "カスタマーセンター",
                 supportDesc: "問題や提案がありますか？メッセージを送ってください。",
                 supportSuccess: "お問い合わせが正常に受け付けられました！",
@@ -500,6 +561,7 @@
                 raw: "原始数据",
                 close: "关闭",
                 support: "客服中心",
+                navDownload: "下载模组",
                 supportTitle: "客服中心",
                 supportDesc: "有问题或建议吗？请给我们留言。",
                 supportSuccess: "工单提交成功！",
@@ -549,6 +611,7 @@
                 raw: "Datos sin procesar",
                 close: "Cerrar",
                 support: "Soporte",
+                navDownload: "Descargar Mod",
                 supportTitle: "Centro de Atención",
                 supportDesc: "¿Tienes un problema o sugerencia? Envíanos un mensaje.",
                 supportSuccess: "¡Ticket enviado con éxito!",
@@ -598,6 +661,7 @@
                 raw: "Données brutes",
                 close: "Fermer",
                 support: "Support",
+                navDownload: "Télécharger le Mod",
                 supportTitle: "Centre d'Assistance",
                 supportDesc: "Un problème ou une suggestion ? Envoyez-nous un message.",
                 supportSuccess: "Ticket envoyé avec succès !",
@@ -647,6 +711,7 @@
                 raw: "Rohdaten",
                 close: "Schließen",
                 support: "Support",
+                navDownload: "Mod Herunterladen",
                 supportTitle: "Kundencenter",
                 supportDesc: "Hast du ein Problem oder einen Vorschlag? Sende uns eine Nachricht.",
                 supportSuccess: "Ticket erfolgreich gesendet!",
@@ -696,6 +761,7 @@
                 raw: "Исходные данные",
                 close: "Закрыть",
                 support: "Поддержка",
+                navDownload: "Скачать Мод",
                 supportTitle: "Центр поддержки",
                 supportDesc: "Есть проблема или предложение? Отправьте нам сообщение.",
                 supportSuccess: "Тикет успешно отправлен!",
@@ -1010,6 +1076,8 @@
             if (subtitleEl) subtitleEl.textContent = t.subtitle;
             if (loadingEl) loadingEl.textContent = t.loading;
             if (supportEl) supportEl.textContent = t.support;
+            const navDownloadEl = document.getElementById('t-nav-download');
+            if (navDownloadEl) navDownloadEl.textContent = t.navDownload;
             if (myConfigsBtn) myConfigsBtn.textContent = t.myConfigs;
             if (adminLink) adminLink.textContent = t.adminPanel;
 
