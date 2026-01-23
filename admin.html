@@ -223,7 +223,9 @@
                 },
                 categories: { General: "General" },
                 instanceName: "Instance Name",
-                functionDescription: "Function"
+                functionDescription: "Function",
+                viewData: "View Data",
+                close: "Close"
             },
             ko: {
                 pendingTitle: "승인 대기 중인 설정",
@@ -251,7 +253,9 @@
                 },
                 categories: { General: "일반" },
                 instanceName: "인스턴스 명명어",
-                functionDescription: "기능 설명"
+                functionDescription: "기능 설명",
+                viewData: "데이터 보기",
+                close: "닫기"
             }
         };
 
@@ -338,14 +342,55 @@
                         </div>
                         <p class="text-slate-400 text-xs text-right">by ${data.author}</p>
                     </div>
-                    <div class="flex gap-3 mt-8">
-                        <button onclick="updateStatus('${data.id}', 'approved')" class="flex-1 py-3 rounded-xl bg-blue-600 font-bold hover:bg-blue-500 transition-colors">${t.approve}</button>
-                        <button onclick="updateStatus('${data.id}', 'rejected')" class="flex-1 py-3 rounded-xl glass font-bold hover:bg-red-500/20 text-red-400 transition-colors">${t.reject}</button>
+                    <div class="flex flex-col gap-3 mt-8">
+                        <button onclick="showConfigData('${data.id}')" class="w-full py-3 rounded-xl glass font-bold hover:bg-white/10 transition-colors text-sm">${t.viewData}</button>
+                        <div class="flex gap-3">
+                            <button onclick="updateStatus('${data.id}', 'approved')" class="flex-1 py-3 rounded-xl bg-blue-600 font-bold hover:bg-blue-500 transition-colors">${t.approve}</button>
+                            <button onclick="updateStatus('${data.id}', 'rejected')" class="flex-1 py-3 rounded-xl glass font-bold hover:bg-red-500/20 text-red-400 transition-colors">${t.reject}</button>
+                        </div>
                     </div>
                 `;
                 configList.appendChild(div);
             });
         }
+
+        window.showConfigData = (id) => {
+            const t = i18n[currentLang] || i18n.en;
+            const config = allConfigs.find(c => c.id === id);
+            if (!config) return;
+
+            const modal = document.getElementById('data-modal');
+            const content = document.getElementById('data-modal-content');
+            if (modal && content) {
+                let formattedData = config.data;
+                try {
+                    if (typeof config.data === 'string') {
+                        formattedData = JSON.stringify(JSON.parse(config.data), null, 2);
+                    } else {
+                        formattedData = JSON.stringify(config.data, null, 2);
+                    }
+                } catch (e) { /* keep as is if not json */ }
+
+                content.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">${t.viewData}</h3>
+                        <button onclick="closeDataModal()" class="text-slate-400 hover:text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    <pre class="bg-black/30 p-4 rounded-xl overflow-auto max-h-[60vh] text-xs font-mono text-slate-300">${formattedData}</pre>
+                    <div class="mt-6 flex justify-end">
+                        <button onclick="closeDataModal()" class="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-xl font-bold transition-colors">${t.close}</button>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            }
+        };
+
+        window.closeDataModal = () => {
+            const modal = document.getElementById('data-modal');
+            if (modal) modal.classList.add('hidden');
+        };
 
         async function fetchConfigsREST() {
             log("Attempting REST API fallback...");
