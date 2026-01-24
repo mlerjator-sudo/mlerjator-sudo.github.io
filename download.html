@@ -130,6 +130,37 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
+        .btn-modrinth {
+            background: #1bd96a;
+            border-bottom: 4px solid #14a350;
+            color: #000;
+            transition: all 0.1s;
+        }
+
+        .btn-modrinth:hover {
+            background: #22f078;
+            transform: translateY(1px);
+            border-bottom-width: 3px;
+        }
+
+        .btn-modrinth:active {
+            transform: translateY(4px);
+            border-bottom-width: 0;
+        }
+
+        .btn-curseforge {
+            background: #2d2d2d;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f16436;
+            transition: all 0.2s;
+        }
+
+        .btn-curseforge:hover {
+            background: #3d3d3d;
+            border-color: #f16436;
+            color: #ff7d52;
+        }
     </style>
 </head>
 
@@ -193,14 +224,45 @@
                     Experience custom GUIs, community config sharing, and an optimized game environment.
                 </p>
 
-                <a href="https://drive.google.com/file/d/1k-PRGWxaX0j5a1QWO9k6_ne_ZI6tyaRE/view?usp=sharing" target="_blank"
-                    class="btn-marketplace-green inline-flex items-center gap-4 px-8 py-4 rounded-sm font-black text-lg uppercase tracking-wide tooltip-container">
-                    <span id="hero-btn-text">Download Mod</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path>
+                <div class="flex flex-wrap gap-4">
+                    <a href="https://drive.google.com/file/d/1k-PRGWxaX0j5a1QWO9k6_ne_ZI6tyaRE/view?usp=sharing"
+                        target="_blank"
+                        class="btn-marketplace-green inline-flex items-center gap-4 px-8 py-4 rounded-sm font-black text-lg uppercase tracking-wide tooltip-container">
+                        <span id="hero-btn-text">Download Mod</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                        <span class="tooltip-text" id="t-download-tooltip">Download instantly without login or
+                            suggestions.</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Places Section -->
+        <div class="mt-20 mb-12">
+            <h3 class="text-xl font-black mb-8 flex items-center gap-3">
+                <span class="w-2 h-6 bg-orange-500"></span>
+                <span id="other-places-title">Download from other places</span>
+            </h3>
+            <div class="flex flex-wrap gap-6">
+                <a href="https://modrinth.com/mod/f34" target="_blank"
+                    class="btn-modrinth inline-flex items-center gap-3 px-8 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12.252.004a11.78 11.768 0 0 0-8.92 3.73 11 10.999 0 0 0-2.17 3.11 11.37 11.359 0 0 0-1.16 5.169c0 1.42.17 2.5.6 3.77.24.759.77 1.899 1.17 2.529a12.3 12.298 0 0 0 8.85 5.639c.44.05 2.54.07 2.76.02.2-.04.22.1-.26-1.7l-.36-1.37-1.01-.06a8.5 8.489 0 0 1-5.18-1.8 5.34 5.34 0 0 1-1.3-1.26c0-.05.34-.28.74-.5a37.572 37.545 0 0 1 2.88-1.629c.03 0 .5.45 1.06.98l1 .97 2.07-.43 2.06-.43 1.47-1.47c.8-.8 1.48-1.5 1.48-1.52 0-.09-.42-1.63-.46-1.7-.04-.06-.2-.03-1.02.18-.53.13-1.2.3-1.45.4l-.48.15-.53.53-.53.53-.93.1-.93.07-.52-.5a2.7 2.7 0 0 1-.96-1.7l-.13-.6.43-.57c.68-.9.68-.9 1.46-1.1.4-.1.65-.2.83-.33.13-.099.65-.579 1.14-1.069l.9-.9-.7-.7-.7-.7-1.95.54c-1.07.3-1.96.53-1.97.53-.03 0-2.23 2.48-2.63 2.97l-.29.35.28 1.03c.16.56.3 1.16.31 1.34l.03.3-.34.23c-.37.23-2.22 1.3-2.84 1.63-.36.2-.37.2-.44.1-.08-.1-.23-.6-.32-1.03-.18-.86-.17-2.75.02-3.73a8.84 8.839 0 0 1 7.9-6.93c.43-.03.77-.08.78-.1.06-.17.5-2.999.47-3.039-.01-.02-.1-.02-.2-.03Zm3.68.67c-.2 0-.3.1-.37.38-.06.23-.46 2.42-.46 2.52 0 .04.1.11.22.16a8.51 8.499 0 0 1 2.99 2 8.38 8.379 0 0 1 2.16 3.449 6.9 6.9 0 0 1 .4 2.8c0 1.07 0 1.27-.1 1.73a9.37 9.369 0 0 1-1.76 3.769c-.32.4-.98 1.06-1.37 1.38-.38.32-1.54 1.1-1.7 1.14-.1.03-.1.06-.07.26.03.18.64 2.56.7 2.78l.06.06a12.07 12.058 0 0 0 7.27-9.4c.13-.77.13-2.58 0-3.4a11.96 11.948 0 0 0-5.73-8.578c-.7-.42-2.05-1.06-2.25-1.06Z" />
                     </svg>
-                    <span class="tooltip-text" id="t-download-tooltip">Download instantly without login or
-                        suggestions.</span>
+                    <span id="btn-modrinth-text">Modrinth</span>
+                </a>
+
+                <a href="https://www.curseforge.com/minecraft/mc-mods/f34" target="_blank"
+                    class="btn-curseforge inline-flex items-center gap-3 px-8 py-4 rounded-sm font-black text-lg uppercase tracking-wide">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="m6.307 5.581.391 1.675H0s.112.502.167.558c.168.279.335.614.559.837 1.06 1.228 2.902 1.73 4.409 2.009 1.06.224 2.121.28 3.181.335l1.228 3.293h.67l.391 1.061h-.558l-.949 3.07h9.321l-.949-3.07h-.558l.39-1.061h.67s.558-3.404 2.288-4.967C21.935 7.758 24 7.535 24 7.535V5.581H6.307zm9.377 8.428c-.447.279-.949.279-1.284.503-.223.111-.335.446-.335.446-.223-.502-.502-.67-.837-.781-.335-.112-.949-.056-1.786-.782-.558-.502-.614-1.172-.558-1.507v-.167c0-.056 0-.112.056-.168.111-.334.39-.669.948-.893 0 0-.39.559 0 1.117.224.335.67.502 1.061.279.167-.112.279-.335.335-.503.111-.39.111-.781-.224-1.06-.502-.446-.613-1.06-.279-1.451 0 0 .112.502.614.446.335 0 .335-.111.224-.223-.056-.167-.782-1.228.279-2.009 0 0 .669-.447 1.451-.391-.447.056-.949.335-1.116.782v.055c-.168.447-.056.949.279 1.396.223.335.502.614.614 1.06-.168-.056-.279 0-.391.112a.533.533 0 0 0-.112.502c.056.112.168.223.279.223h.168c.167-.055.279-.279.223-.446.112.111.167.391.112.558 0 .167-.112.335-.168.446-.056.112-.167.224-.223.335-.056.112-.167.224-.223.335-.056.112-.112.224-.112.335 0 .112 0 .279.056.391.223.335.67 0 .782-.279.167-.335.111-.726-.112-1.061 0 0 .391.224.67 1.005.223.67-.168 1.451-.614 1.73z" />
+                    </svg>
+                    <span id="btn-curseforge-text">CurseForge</span>
                 </a>
             </div>
         </div>
@@ -276,7 +338,10 @@
                 sysReqLabel: "Required Mod",
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
-                downloadTooltip: "Download instantly without login or suggestions."
+                downloadTooltip: "Download instantly without login or suggestions.",
+                btnModrinth: "Modrinth Download",
+                btnCurseforge: "CurseForge (Suggested)",
+                otherPlacesTitle: "Download from other places"
             },
             ko: {
                 navCommunity: "커뮤니티",
@@ -296,7 +361,10 @@
                 sysReqLabel: "필수 모드",
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
-                downloadTooltip: "제안없는 모드 및 로그인 없이 다운로드 하세요."
+                downloadTooltip: "제안없는 모드 및 로그인 없이 다운로드 하세요.",
+                btnModrinth: "Modrinth에서 다운로드",
+                btnCurseforge: "CurseForge (제안된 모드)",
+                otherPlacesTitle: "다른 곳에서 다운로드 받기"
             },
             jp: {
                 navCommunity: "コミュニティ",
@@ -316,7 +384,10 @@
                 sysReqLabel: "必須MOD",
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
-                downloadTooltip: "提案なしモード、ログインなしでダウンロードしてください。"
+                downloadTooltip: "提案なしモード、ログインなしでダウンロードしてください。",
+                btnModrinth: "Modrinth",
+                btnCurseforge: "CurseForge",
+                otherPlacesTitle: "다른 곳에서 다운로드 받기"
             },
             cn: {
                 navCommunity: "社区",
@@ -336,7 +407,10 @@
                 sysReqLabel: "必需模组",
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
-                downloadTooltip: "下载无建议模式，无需登录。"
+                downloadTooltip: "下载无建议模式，无需登录。",
+                btnModrinth: "Modrinth",
+                btnCurseforge: "CurseForge",
+                otherPlacesTitle: "다른 곳에서 다운로드 받기"
             },
             es: {
                 navCommunity: "Comunidad",
@@ -347,7 +421,7 @@
                 guideTitle: "Guía de Instalación",
                 guideStep1: "Instala Forge 1.12.2 primero.",
                 guideStep2: "Pon el archivo .jar descargado en la carpeta mods.",
-                guideStep3: "¡Inicia el juego y revisa el menú F34!",
+                guideStep3: "¡Inicia el gioco y revisa el menú F34!",
                 sysTitle: "Requisitos del Sistema",
                 sysVerLabel: "Versión",
                 sysVerValue: "3.0 (Última)",
@@ -356,7 +430,10 @@
                 sysReqLabel: "Mod Requerido",
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
-                downloadTooltip: "Descarga el modo sin sugerencias y sin iniciar sesión."
+                downloadTooltip: "Descarga el modo sin sugerencias y sin iniciar sesión.",
+                btnModrinth: "Modrinth",
+                btnCurseforge: "CurseForge",
+                otherPlacesTitle: "다른 곳에서 다운로드 받기"
             },
             fr: {
                 navCommunity: "Communauté",
@@ -376,7 +453,10 @@
                 sysReqLabel: "Mod Requis",
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
-                downloadTooltip: "Téléchargez le mode sans suggestions et sans connexion."
+                downloadTooltip: "Téléchargez le mode sans suggestions et sans connexion.",
+                btnModrinth: "Modrinth",
+                btnCurseforge: "CurseForge",
+                otherPlacesTitle: "다른 곳에서 다운로드 받기"
             },
             de: {
                 navCommunity: "Community",
@@ -396,7 +476,10 @@
                 sysReqLabel: "Erforderlicher Mod",
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
-                downloadTooltip: "Laden Sie den Modus ohne Vorschläge und ohne Anmeldung herunter."
+                downloadTooltip: "Laden Sie den Modus ohne Vorschläge und ohne Anmeldung herunter.",
+                btnModrinth: "Modrinth",
+                btnCurseforge: "CurseForge",
+                otherPlacesTitle: "다른 곳에서 다운로드 받기"
             },
             ru: {
                 navCommunity: "Сообщество",
@@ -416,7 +499,10 @@
                 sysReqLabel: "Требуемый мод",
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
-                downloadTooltip: "Скачивайте режим без предложений и без входа в систему."
+                downloadTooltip: "Скачивайте режим без предложений и без входа в систему.",
+                btnModrinth: "Modrinth",
+                btnCurseforge: "CurseForge",
+                otherPlacesTitle: "다른 곳에서 다운로드 받기"
             }
         };
 
@@ -450,6 +536,9 @@
             document.getElementById('sys-req-value').textContent = t.sysReqValue;
             document.getElementById('footer-text').textContent = t.footer;
             document.getElementById('t-download-tooltip').textContent = t.downloadTooltip;
+            document.getElementById('btn-modrinth-text').textContent = t.btnModrinth || "Modrinth";
+            document.getElementById('btn-curseforge-text').textContent = t.btnCurseforge || "CurseForge";
+            document.getElementById('other-places-title').textContent = t.otherPlacesTitle || "Download from other places";
 
             // Update Active Lang Button
             document.querySelectorAll('[id^="lang-"]').forEach(btn => {
