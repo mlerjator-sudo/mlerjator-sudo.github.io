@@ -174,7 +174,7 @@
 
         <div class="flex items-center gap-8">
             <!-- Language Switcher -->
-            <div class="glass p-1.5 flex gap-1 text-[10px] font-bold uppercase tracking-widest rounded-lg">
+            <div class="glass p-1.5 flex flex-wrap gap-1 text-[10px] font-bold uppercase tracking-widest rounded-lg">
                 <button onclick="setLang('en')" id="lang-en"
                     class="px-2 py-1 rounded-md transition-all hover:bg-white/5">EN</button>
                 <button onclick="setLang('ko')" id="lang-ko"
@@ -191,6 +191,16 @@
                     class="px-2 py-1 rounded-md transition-all hover:bg-white/5">DE</button>
                 <button onclick="setLang('ru')" id="lang-ru"
                     class="px-2 py-1 rounded-md transition-all hover:bg-white/5">RU</button>
+                <button onclick="setLang('pt')" id="lang-pt"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">PT</button>
+                <button onclick="setLang('it')" id="lang-it"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">IT</button>
+                <button onclick="setLang('vi')" id="lang-vi"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">VI</button>
+                <button onclick="setLang('th')" id="lang-th"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">TH</button>
+                <button onclick="setLang('id')" id="lang-id"
+                    class="px-2 py-1 rounded-md transition-all hover:bg-white/5">ID</button>
             </div>
 
             <div class="flex gap-8 text-sm font-bold text-gray-400">
@@ -385,9 +395,9 @@
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
                 downloadTooltip: "提案なしモード、ログインなしでダウンロードしてください。",
-                btnModrinth: "Modrinth",
-                btnCurseforge: "CurseForge",
-                otherPlacesTitle: "다른 곳에서 다운로드 받기"
+                btnModrinth: "Modrinthでダウンロード",
+                btnCurseforge: "CurseForge (提案されたモード)",
+                otherPlacesTitle: "他の場所からダウンロード"
             },
             cn: {
                 navCommunity: "社区",
@@ -408,9 +418,9 @@
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
                 downloadTooltip: "下载无建议模式，无需登录。",
-                btnModrinth: "Modrinth",
-                btnCurseforge: "CurseForge",
-                otherPlacesTitle: "다른 곳에서 다운로드 받기"
+                btnModrinth: "在 Modrinth 下载",
+                btnCurseforge: "CurseForge (建议模式)",
+                otherPlacesTitle: "从其他地方下载"
             },
             es: {
                 navCommunity: "Comunidad",
@@ -431,15 +441,15 @@
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
                 downloadTooltip: "Descarga el modo sin sugerencias y sin iniciar sesión.",
-                btnModrinth: "Modrinth",
-                btnCurseforge: "CurseForge",
-                otherPlacesTitle: "다른 곳에서 다운로드 받기"
+                btnModrinth: "Descargar en Modrinth",
+                btnCurseforge: "CurseForge (Sugerido)",
+                otherPlacesTitle: "Descargar desde otros lugares"
             },
             fr: {
                 navCommunity: "Communauté",
                 navDownload: "Télécharger",
                 heroTitle: "Mode F34 DI",
-                heroDesc: "Ajoutez des fonctionnalités géniales à votre monde Minecraft avec ce mod DI ! Découvrez des interfaces personnalisées, le partage de configurations communautaires et un environnement de jeu optimisé.",
+                heroDesc: "Ajoutez des fonctionnalités géniales à votre monde Minecraft avec ce mod DI ! Découvrez des interfaces personnalisées, le partage de configurations communautaires et un environnement de juego optimisé.",
                 heroBtn: "Télécharger le Mod",
                 guideTitle: "Guide d'Installation",
                 guideStep1: "Installez d'abord Forge 1.12.2.",
@@ -454,9 +464,9 @@
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
                 downloadTooltip: "Téléchargez le mode sans suggestions et sans connexion.",
-                btnModrinth: "Modrinth",
-                btnCurseforge: "CurseForge",
-                otherPlacesTitle: "다른 곳에서 다운로드 받기"
+                btnModrinth: "Télécharger sur Modrinth",
+                btnCurseforge: "CurseForge (Suggéré)",
+                otherPlacesTitle: "Télécharger ailleurs"
             },
             de: {
                 navCommunity: "Community",
@@ -477,9 +487,9 @@
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
                 downloadTooltip: "Laden Sie den Modus ohne Vorschläge und ohne Anmeldung herunter.",
-                btnModrinth: "Modrinth",
-                btnCurseforge: "CurseForge",
-                otherPlacesTitle: "다른 곳에서 다운로드 받기"
+                btnModrinth: "Auf Modrinth herunterladen",
+                btnCurseforge: "CurseForge (Vorgeschlagen)",
+                otherPlacesTitle: "An anderen Orten herunterladen"
             },
             ru: {
                 navCommunity: "Сообщество",
@@ -500,9 +510,124 @@
                 sysReqValue: "Forge",
                 footer: "© 2026 F34 MOD TEAM. NOT AN OFFICIAL MINECRAFT PRODUCT.",
                 downloadTooltip: "Скачивайте режим без предложений и без входа в систему.",
-                btnModrinth: "Modrinth",
-                btnCurseforge: "CurseForge",
-                otherPlacesTitle: "다른 곳에서 다운로드 받기"
+                btnModrinth: "Скачать на Modrinth",
+                btnCurseforge: "CurseForge (Предложенный)",
+                otherPlacesTitle: "Скачать в других местах"
+            },
+            pt: {
+                navCommunity: "Comunidade",
+                navDownload: "Download",
+                heroTitle: "Modo F34 DI",
+                heroDesc: "Adicione recursos incríveis ao seu mundo Minecraft com este mod DI! Experimente GUIs personalizadas, compartilhamento de configurações da comunidade e um ambiente de jogo otimizado.",
+                heroBtn: "Baixar Mod",
+                guideTitle: "Guia de Instalação",
+                guideStep1: "Instale o Forge 1.12.2 primeiro.",
+                guideStep2: "Coloque o arquivo .jar baixado na pasta mods.",
+                guideStep3: "Inicie o jogo e verifique o menu F34!",
+                sysTitle: "Requisitos do Sistema",
+                sysVerLabel: "Versão",
+                sysVerValue: "3.0 (Mais recente)",
+                sysCompatLabel: "Compatibilidade",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Mod Necessário",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NÃO É UM PRODUTO OFICIAL DE MINECRAFT.",
+                downloadTooltip: "Baixe instantaneamente sem login ou sugestões.",
+                btnModrinth: "Download no Modrinth",
+                btnCurseforge: "CurseForge (Sugerido)",
+                otherPlacesTitle: "Baixar de outros lugares"
+            },
+            it: {
+                navCommunity: "Comunità",
+                navDownload: "Scarica",
+                heroTitle: "Modalità F34 DI",
+                heroDesc: "Aggiungi fantastiche funzionalità al tuo mondo Minecraft con questa mod DI! Prova GUI personalizzate, condivisione di configurazioni della comunità e un ambiente di gioco ottimizzato.",
+                heroBtn: "Scarica Mod",
+                guideTitle: "Guia all'installazione",
+                guideStep1: "Installa prima Forge 1.12.2.",
+                guideStep2: "Inserisci il file .jar scaricato nella cartella mods.",
+                guideStep3: "Avvia il gioco e controlla il menu F34!",
+                sysTitle: "Requisiti di sistema",
+                sysVerLabel: "Versione",
+                sysVerValue: "3.0 (Ultima)",
+                sysCompatLabel: "Compatibilità",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Mod richiesta",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. NON È UN PRODOTTO UFFICIALE MINECRAFT.",
+                downloadTooltip: "Scarica istantaneamente senza login o suggerimenti.",
+                btnModrinth: "Scarica su Modrinth",
+                btnCurseforge: "CurseForge (Suggerito)",
+                otherPlacesTitle: "Scarica da altri posti"
+            },
+            vi: {
+                navCommunity: "Cộng đồng",
+                navDownload: "Tải xuống",
+                heroTitle: "Chế độ F34 DI",
+                heroDesc: "Thêm các tính năng thú vị vào thế giới Minecraft của bạn với bản mod DI này! Trải nghiệm GUI tùy chỉnh, chia sẻ cấu hình cộng đồng và môi trường trò chơi được tối ưu hóa.",
+                heroBtn: "Tải xuống Mod",
+                guideTitle: "Hướng dẫn cài đặt",
+                guideStep1: "Cài đặt Forge 1.12.2 trước.",
+                guideStep2: "Đặt tệp .jar đã tải xuống vào thư mục mods.",
+                guideStep3: "Khởi chạy trò chơi và kiểm tra menu F34!",
+                sysTitle: "Yêu cầu hệ thống",
+                sysVerLabel: "Phiên bản",
+                sysVerValue: "3.0 (Mới nhất)",
+                sysCompatLabel: "Khả năng tương thích",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Mod yêu cầu",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. KHÔNG PHẢI LÀ SẢN PHẨM MINECRAFT CHÍNH THỨC.",
+                downloadTooltip: "Tải xuống ngay lập tức mà không cần đăng nhập hoặc đề xuất.",
+                btnModrinth: "Tải xuống Modrinth",
+                btnCurseforge: "CurseForge (Được đề xuất)",
+                otherPlacesTitle: "Tải xuống từ những nơi khác"
+            },
+            th: {
+                navCommunity: "ชุมชน",
+                navDownload: "ดาวน์โหลด",
+                heroTitle: "โหมด F34 DI",
+                heroDesc: "เพิ่มฟีเจอร์เจ๋งๆ ให้กับโลก Minecraft ของคุณด้วยมอด DI นี้! สัมผัสประสบการณ์ GUI แบบกำหนดเอง การแชร์การตั้งค่าจากชุมชน และสภาพแวดล้อมเกมที่ได้รับการปรับแต่ง",
+                heroBtn: "ดาวน์โหลดมอด",
+                guideTitle: "คู่มือการติดตั้ง",
+                guideStep1: "ติดตั้ง Forge 1.12.2 ก่อน",
+                guideStep2: "ใส่ไฟล์ .jar ที่ดาวน์โหลดมาในโฟลเดอร์ mods",
+                guideStep3: "เริ่มเกมและตรวจสอบเมนู F34!",
+                sysTitle: "ความต้องการของระบบ",
+                sysVerLabel: "เวอร์ชัน",
+                sysVerValue: "3.0 (ล่าสุด)",
+                sysCompatLabel: "ความเข้ากันได้",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "มอดที่ต้องการ",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. ไม่ใช่ผลิตภัณฑ์อย่างเป็นทางการของ MINECRAFT",
+                downloadTooltip: "ดาวน์โหลดทันทีโดยไม่ต้องเข้าสู่ระบบหรือข้อเสนอแนะ",
+                btnModrinth: "ดาวน์โหลดจาก Modrinth",
+                btnCurseforge: "CurseForge (แนะนำ)",
+                otherPlacesTitle: "ดาวน์โหลดจากที่อื่น"
+            },
+            id: {
+                navCommunity: "Komunitas",
+                navDownload: "Unduh",
+                heroTitle: "Mode F34 DI",
+                heroDesc: "Tambahkan fitur keren ke dunia Minecraft Anda dengan mod DI ini! Rasakan GUI khusus, berbagi konfigurasi komunitas, dan lingkungan game yang dioptimalkan.",
+                heroBtn: "Unduh Mod",
+                guideTitle: "Panduan Instalasi",
+                guideStep1: "Instal Forge 1.12.2 terlebih dahulu.",
+                guideStep2: "Masukkan file .jar yang diunduh ke dalam folder mods.",
+                guideStep3: "Jalankan game và periksa menu F34!",
+                sysTitle: "Persyaratan Sistem",
+                sysVerLabel: "Versi",
+                sysVerValue: "3.0 (Terbaru)",
+                sysCompatLabel: "Kompatibilitas",
+                sysCompatValue: "Minecraft 1.12.2",
+                sysReqLabel: "Mod yang Dibutuhkan",
+                sysReqValue: "Forge",
+                footer: "© 2026 F34 MOD TEAM. BUKAN PRODUK RESMI MINECRAFT.",
+                downloadTooltip: "Unduh secara instan tanpa login atau saran.",
+                btnModrinth: "Unduh di Modrinth",
+                btnCurseforge: "CurseForge (Disarankan)",
+                otherPlacesTitle: "Unduh dari tempat lain"
             }
         };
 
