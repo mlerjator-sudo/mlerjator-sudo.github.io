@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,382 @@
             background: #0f172a;
             color: #f8fafc;
             overflow-x: hidden;
+        }
+
+        #config-list {
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        :root[data-theme="light"] {
+            --bg-general: url('Category%20Theme/General/white.png');
+            --bg-convenience: url('Category%20Theme/Convenience/white.png');
+            --bg-food: url('Category%20Theme/Food/white.png');
+            --bg-worldgen: url('Category%20Theme/Worldgen/white.png');
+            --bg-adventure: url('Category%20Theme/Adventure/white.png');
+            --bg-transportation: url('Category%20Theme/Transportation/white.png');
+            --bg-horror: url('Category%20Theme/Horror/white.png');
+            --bg-decoration: url('Category%20Theme/Decoration/white.png');
+            --bg-economy: url('Category%20Theme/Economy/white.png');
+            --bg-gamemechanics: url('Category%20Theme/Game%20Mechanics/white.png');
+            --bg-library: url('Category%20Theme/Library/white.png');
+            --bg-magic: url('Category%20Theme/Magic/white.png');
+            --bg-management: url('Category%20Theme/Management/white.png');
+            --bg-minigame: url('Category%20Theme/Minigame/white.png');
+            --bg-equipment: url('Category%20Theme/Equipment/white.png');
+            --bg-mobs: url('Category%20Theme/Mobs/white.png');
+            --bg-optimization: url('Category%20Theme/Optimization/white.png');
+            --bg-social: url('Category%20Theme/Social/white.png');
+            --bg-storage: url('Category%20Theme/Storage/white.png');
+            --bg-technology: url('Category%20Theme/Technology/white.png');
+        }
+
+        :root[data-theme="dark"] {
+            --bg-general: url('Category%20Theme/General/Dark.png');
+            --bg-convenience: url('Category%20Theme/Convenience/Dark.png');
+            --bg-food: url('Category%20Theme/Food/Dark.png');
+            --bg-worldgen: url('Category%20Theme/Worldgen/Dark.png');
+            --bg-adventure: url('Category%20Theme/Adventure/Dark.png');
+            --bg-transportation: url('Category%20Theme/Transportation/Dark.png');
+            --bg-horror: url('Category%20Theme/Horror/Dark.png');
+            --bg-decoration: url('Category%20Theme/Decoration/Dark.png');
+            --bg-economy: url('Category%20Theme/Economy/Dark.png');
+            --bg-gamemechanics: url('Category%20Theme/Game%20Mechanics/Dark.png');
+            --bg-library: url('Category%20Theme/Library/Dark.png');
+            --bg-magic: url('Category%20Theme/Magic/Dark.png');
+            --bg-management: url('Category%20Theme/Management/Dark.png');
+            --bg-minigame: url('Category%20Theme/Minigame/Dark.png');
+            --bg-equipment: url('Category%20Theme/Equipment/Dark.png');
+            --bg-mobs: url('Category%20Theme/Mobs/Dark.png');
+            --bg-optimization: url('Category%20Theme/Optimization/Dark.png');
+            --bg-social: url('Category%20Theme/Social/Dark.png');
+            --bg-storage: url('Category%20Theme/Storage/Dark.png');
+            --bg-technology: url('Category%20Theme/Technology/Dark.png');
+        }
+
+        .card-with-bg,
+        .card-with-bg-convenience,
+        .card-with-bg-food,
+        .card-with-bg-worldgen,
+        .card-with-bg-adventure,
+        .card-with-bg-transportation,
+        .card-with-bg-horror,
+        .card-with-bg-decoration,
+        .card-with-bg-economy,
+        .card-with-bg-gamemechanics,
+        .card-with-bg-library,
+        .card-with-bg-magic,
+        .card-with-bg-management,
+        .card-with-bg-minigame,
+        .card-with-bg-equipment,
+        .card-with-bg-mobs,
+        .card-with-bg-optimization,
+        .card-with-bg-social,
+        .card-with-bg-storage,
+        .card-with-bg-technology {
+            position: relative;
+        }
+
+        .card-with-bg::before,
+        .card-with-bg-convenience::before,
+        .card-with-bg-food::before,
+        .card-with-bg-worldgen::before,
+        .card-with-bg-adventure::before,
+        .card-with-bg-transportation::before,
+        .card-with-bg-horror::before,
+        .card-with-bg-decoration::before,
+        .card-with-bg-economy::before,
+        .card-with-bg-gamemechanics::before,
+        .card-with-bg-library::before,
+        .card-with-bg-magic::before,
+        .card-with-bg-management::before,
+        .card-with-bg-minigame::before,
+        .card-with-bg-equipment::before,
+        .card-with-bg-mobs::before,
+        .card-with-bg-optimization::before,
+        .card-with-bg-social::before,
+        .card-with-bg-storage::before,
+        .card-with-bg-technology::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            border-radius: 24px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-with-bg::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-general);
+        }
+        
+        .card-with-bg-convenience::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-convenience);
+        }
+        
+        .card-with-bg-food::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-food);
+        }
+        
+        .card-with-bg-worldgen::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-worldgen);
+        }
+        
+        .card-with-bg-adventure::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-adventure);
+        }
+
+        .card-with-bg-transportation::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-transportation);
+        }
+
+        .card-with-bg-horror::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-horror);
+        }
+
+        .card-with-bg-decoration::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-decoration);
+        }
+
+        .card-with-bg-economy::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-economy);
+        }
+
+        .card-with-bg-gamemechanics::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-gamemechanics);
+        }
+
+        .card-with-bg-library::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-library);
+        }
+
+        .card-with-bg-magic::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-magic);
+        }
+
+        .card-with-bg-management::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-management);
+        }
+
+        .card-with-bg-minigame::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-minigame);
+        }
+
+        .card-with-bg-equipment::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-equipment);
+        }
+
+        .card-with-bg-mobs::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-mobs);
+        }
+
+        .card-with-bg-optimization::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-optimization);
+        }
+
+        .card-with-bg-social::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-social);
+        }
+
+        .card-with-bg-storage::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-storage);
+        }
+
+        .card-with-bg-technology::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-technology);
+        }
+
+        .card-with-bg > *,
+        .card-with-bg-minigame > *,
+        .card-with-bg-convenience > *,
+        .card-with-bg-food > *,
+        .card-with-bg-worldgen > *,
+        .card-with-bg-adventure > *,
+        .card-with-bg-transportation > *,
+        .card-with-bg-horror > *,
+        .card-with-bg-decoration > *,
+        .card-with-bg-economy > *,
+        .card-with-bg-gamemechanics > *,
+        .card-with-bg-library > *,
+        .card-with-bg-magic > *,
+        .card-with-bg-management > *,
+        .card-with-bg-equipment > *,
+        .card-with-bg-mobs > *,
+        .card-with-bg-optimization > *,
+        .card-with-bg-social > *,
+        .card-with-bg-storage > *,
+        .card-with-bg-technology > * {
+            position: relative;
+            z-index: 1;
         }
 
         .glass {
@@ -122,6 +498,104 @@
                 transform: translateX(-50%) translateY(0);
             }
         }
+
+        /* Theme switch styles (Minecraft switch by csozi, adapted) */
+        .theme-switch {
+            font-size: 17px;
+            position: relative;
+            display: inline-block;
+            width: 4em;
+            height: 2em;
+        }
+
+        .theme-switch input {
+            opacity: 1;
+            width: 0;
+            height: 0;
+        }
+
+        .theme-switch .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 4px;
+        }
+
+        .theme-switch .off,
+        .theme-switch .on {
+            position: absolute;
+            height: 2em;
+            width: 2em;
+            background-color: white;
+            transition: .4s;
+            image-rendering: pixelated;
+            top: 0;
+            left: 0;
+        }
+
+        .theme-switch .off { opacity: 1; }
+        .theme-switch .on { opacity: 0; }
+
+        .theme-switch input:checked + .slider { background-color: #ccc; }
+        .theme-switch input:focus + .slider { box-shadow: 0 0 1px #ccc; }
+        .theme-switch input:checked ~ .off { transform: translateX(2em); }
+        .theme-switch input:checked ~ .on { transform: translateX(2em); opacity: 1; }
+
+        /* Settings switch styles */
+        .settings-switch {
+            font-size: 17px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            width: 60px;
+            height: 26px;
+        }
+
+        .settings-switch .toggle {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .settings-switch .slider {
+            image-rendering: pixelated;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAAEECAYAAAD0wkrNAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAGHaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49J++7vycgaWQ9J1c1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCc/Pg0KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyI+PHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj48cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0idXVpZDpmYWY1YmRkNS1iYTNkLTExZGEtYWQzMS1kMzNkNzUxODJmMWIiIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIj48dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPjwvcmRmOkRlc2NyaXB0aW9uPjwvcmRmOlJERj48L3g6eG1wbWV0YT4NCjw/eHBhY2tldCBlbmQ9J3cnPz4slJgLAAAFd0lEQVR4Xu3YMWpbQRhG0ZGdwqAVJqQzRsYIL8aoSUgppKUJvIaYl346+91Csc+Bab52msu/GWMsAwCAzM08AACwjsACAIgJLACAmMACAIgJLACAmMACAIgJLACAmMACAIgJLACAmMACAIgJLACAmMACAIgJLACAmMACAIgJLACAmMACAIgJLACAmMACAIgJLACA2GaMsczjGsfTeZ4AAK7azx/f52kVFywAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgJjAAgCICSwAgNhmjLHM4xrH03mersrl8jpPAHzA4fAyT7zDfv88T5/adns3T1fl6XE3T6u4YAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxDZjjGUe1ziezvN0VS6X13kC+BIOh5d5WmW/f54n3uGr/cd2ezdPq9zefpunVXYP9/O0igsWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEAxAQWAEBMYAEA/523t7/pqwksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAICYwAIAiAksAIDYZoyxzOMax9N5nq7K5fI6TwB8wOHwMk+8w37/PE+f2nZ7N09X5elxN0+ruGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQ2Y4xlHtf4/evPPAEApJabzTytsnu4n6dVXLAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGICCwAgJrAAAGKbMcYyjwAAfJwLFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBATGABAMQEFgBA7B+FCmkzoT9HAAAAAABJRU5ErkJggg==);
+            background-size: 100% 100%;
+        }
+
+        .settings-switch .slider:before {
+            box-sizing: border-box;
+            position: absolute;
+            content: "";
+            height: 32px;
+            width: 28px;
+            bottom: 0px;
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAFACAYAAABnU2MWAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAGHaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49J++7vycgaWQ9J1c1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCc/Pg0KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyI+PHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj48cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0idXVpZDpmYWY1YmRkNS1iYTNkLTExZGEtYWQzMS1kMzNkNzUxODJmMWIiIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIj48dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPjwvcmRmOkRlc2NyaXB0aW9uPjwvcmRmOlJERj48L3g6eG1wbWV0YT4NCjw/eHBhY2tldCBlbmQ9J3cnPz4slJgLAAAEZElEQVR4Xu3cMWojURBF0WpHQpYXOxivYjBerGWhrCf/aesOFpwTvgVcKqptZvYBCLysA8CjCAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCCzPfon7/V2XyfgSVzOp3U6xAUDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwACZbWb2dTzieruv06/y/f2zTvDfvL29rtOvcjmf1ukQFwyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2S2mdnX8Yjr7b5OwJO4nE/rdIgLBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMtvM7Ot4xN/Pr3UCnsTH+591OsQFA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQEZggIzAABmBATICA2QEBsgIDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAmW1m9nUEeAQXDJARGCAjMEBGYICMwAAZgQEyAgNkBAbICAyQERggIzBARmCAjMAAGYEBMgIDZAQGyAgMkBEYICMwQOYfxHAXdb5V9+0AAAAASUVORK5CYII=);
+            background-size: 28px 32px;
+        }
+
+        .settings-switch .toggle:checked + .slider {
+            background: url(data:image/png;base64,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);
+            background-size: 100% 100%;
+        }
+
+        .settings-switch .toggle:checked + .slider:before {
+            transform: translateX(32px);
+        }
     </style>
 </head>
 
@@ -177,6 +651,15 @@
                         class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">DE</button>
                     <button onclick="setLang('ru')" id="lang-ru"
                         class="px-3 py-2 rounded-lg transition-all hover:bg-white/5">RU</button>
+                </div>
+
+                <div class="glass px-3 py-2 rounded-lg">
+                    <label class="theme-switch">
+                        <input id="theme-toggle-checkbox" type="checkbox" aria-label="Toggle theme" onchange="toggleThemeMode()" />
+                        <span class="slider"></span>
+                        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAIG/8QAIxAAAgIABQQDAAAAAAAAAAAAAQMCBAAREiExBUFRcROBsf/EABQBAQAAAAAAAAAAAAAAAAAAAAX/xAAWEQADAAAAAAAAAAAAAAAAAAAAEiL/2gAMAwEAAhEDEQA/AMBTp03dNglMVuttjqnKQ2UPOfntkOThbqVVUJ12BKnogZQZpy+Ucc8knwePWJrWqyqEHVmrTahEBqpbBoAH1n635wt3a9mjN1p8X2pw0qVEbKB/CO/c4OphSVP/2Q==" class="off" />
+                        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIEBf/EACMQAAEDAwQDAQEAAAAAAAAAAAQBAgUDESEAEjFBBlFhMkL/xAAUAQEAAAAAAAAAAAAAAAAAAAAF/8QAGBEAAwEBAAAAAAAAAAAAAAAAABIiMUH/2gAMAwEAAhEDEQA/AM+Bg4mS8coRccMOdNG01qVyH/kRvHPKKmMdr8uujPwUTG+NkRpw1AKWCbvHKa2zTGphc9u9p0q+rLqeMl4kSCGkYgtoE0HTahIz3bWGNanPrdyqWzn7p5ibh5CArnyZNMyVLpK0QSkt2BNXtVX+7ol1wuLJiyaHt+6Kyp//2Q==" class="on" />
+                    </label>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -297,6 +780,30 @@
             </div>
             <div id="my-configs-list" class="space-y-4">
                 <!-- User configs will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeSettingsModal()"></div>
+        <div class="glass max-w-md w-full relative z-10 p-8 animate-fade-in">
+            <div class="flex justify-between items-start mb-8">
+                <h2 class="text-3xl font-black tracking-tighter">Settings</h2>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-lg font-semibold">Category Backgrounds</span>
+                    <label class="settings-switch">
+                        <input id="bg-toggle-checkbox" class="toggle" type="checkbox" checked onchange="toggleBackgrounds()" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
@@ -989,6 +1496,53 @@
         let allConfigs = [];
         let dataLoaded = false;
         let currentCategory = 'All';
+        let currentThemeMode = localStorage.getItem('f34_theme') || 'dark';
+
+        // Normalize category strings for consistent matching
+        const normalizeCategory = (cat) => (cat || '').toString().toLowerCase().replace(/\s+/g, '');
+        const normalizeCategoryAlias = (cat) => {
+            const base = normalizeCategory(cat);
+            if (base === 'mechanics') return 'gamemechanics';
+            return base;
+        };
+
+        function applyThemeMode() {
+            document.documentElement.dataset.theme = currentThemeMode;
+            localStorage.setItem('f34_theme', currentThemeMode);
+            const cb = document.getElementById('theme-toggle-checkbox');
+            if (cb) cb.checked = currentThemeMode === 'light';
+        }
+
+        window.toggleThemeMode = () => {
+            currentThemeMode = currentThemeMode === 'dark' ? 'light' : 'dark';
+            applyThemeMode();
+            renderConfigs();
+        };
+        
+        // Category theme mapping - associates categories with their theme images
+        const categoryThemeMap = {
+            'General': 'Category%20Theme/General/white.png',
+            'Convenience': 'Category%20Theme/Convenience/white.png',
+            'Food': 'Category%20Theme/Food/white.png',
+            'World Gen': 'Category%20Theme/Worldgen/white.png',
+            'Adventure': 'Category%20Theme/Adventure/white.png',
+            'Transportation': 'Category%20Theme/Transportation/white.png',
+            'Horror': 'Category%20Theme/Horror/white.png',
+            'Decoration': 'Category%20Theme/Decoration/white.png',
+            'Economy': 'Category%20Theme/Economy/white.png',
+            'Game Mechanics': 'Category%20Theme/Game%20Mechanics/white.png',
+            'Library': 'Category%20Theme/Library/white.png',
+            'Management': 'Category%20Theme/Management/white.png',
+            'Minigame': 'Category%20Theme/Minigame/white.png',
+            'Magic': 'Category%20Theme/Magic/white.png',
+            'Equipment': 'Category%20Theme/Equipment/white.png',
+            'Mobs': 'Category%20Theme/Mobs/white.png',
+            'Optimization': 'Category%20Theme/Optimization/white.png',
+            'Social': 'Category%20Theme/Social/white.png',
+            'Storage': 'Category%20Theme/Storage/white.png',
+            'Technology': 'Category%20Theme/Technology/white.png',
+            'All': 'Category%20Theme/General/white.png'
+        };
         let fetchTimeout = null;
 
         const app = initializeApp(firebaseConfig);
@@ -1134,16 +1688,68 @@
             const t = i18n[currentLang] || i18n.en;
             const configList = document.getElementById('config-list');
             if (!configList) return;
+            
+            // Clear background from config-list
+            configList.style.backgroundImage = '';
 
-            const filtered = allConfigs.filter(c => currentCategory === 'All' || c.category === currentCategory);
+            const filtered = allConfigs.filter(c => {
+                if (currentCategory === 'All') return true;
+                return normalizeCategoryAlias(c.category) === normalizeCategoryAlias(currentCategory);
+            });
 
             if (filtered.length === 0) {
                 configList.innerHTML = `<div class="col-span-full glass p-20 text-center text-xl text-slate-400">${currentCategory === 'All' ? t.noConfigs : t.noResults}</div>`;
                 return;
             }
 
-            configList.innerHTML = filtered.map(data => `
-                <div class="glass p-8 card-hover flex flex-col justify-between animate-fade-in">
+            configList.innerHTML = filtered.map(data => {
+                // Add class for cards with category-based backgrounds (normalized compare)
+                let cardClass = '';
+                const catNorm = normalizeCategoryAlias(data.category);
+                if (catNorm === normalizeCategoryAlias('General')) {
+                    cardClass = 'card-with-bg';
+                } else if (catNorm === normalizeCategoryAlias('Convenience')) {
+                    cardClass = 'card-with-bg-convenience';
+                } else if (catNorm === normalizeCategoryAlias('Food')) {
+                    cardClass = 'card-with-bg-food';
+                } else if (catNorm === normalizeCategoryAlias('World Gen')) {
+                    cardClass = 'card-with-bg-worldgen';
+                } else if (catNorm === normalizeCategoryAlias('Adventure')) {
+                    cardClass = 'card-with-bg-adventure';
+                } else if (catNorm === normalizeCategoryAlias('Transportation')) {
+                    cardClass = 'card-with-bg-transportation';
+                } else if (catNorm === normalizeCategoryAlias('Horror')) {
+                    cardClass = 'card-with-bg-horror';
+                } else if (catNorm === normalizeCategoryAlias('Decoration')) {
+                    cardClass = 'card-with-bg-decoration';
+                } else if (catNorm === normalizeCategoryAlias('Economy')) {
+                    cardClass = 'card-with-bg-economy';
+                } else if (catNorm === normalizeCategoryAlias('Game Mechanics')) {
+                    cardClass = 'card-with-bg-gamemechanics';
+                } else if (catNorm === normalizeCategoryAlias('Magic')) {
+                    cardClass = 'card-with-bg-magic';
+                } else if (catNorm === normalizeCategoryAlias('Management')) {
+                    cardClass = 'card-with-bg-management';
+                } else if (catNorm === normalizeCategoryAlias('Minigame')) {
+                    cardClass = 'card-with-bg-minigame';
+                } else if (catNorm === normalizeCategoryAlias('Library')) {
+                    cardClass = 'card-with-bg-library';
+                } else if (catNorm === normalizeCategoryAlias('Equipment')) {
+                    cardClass = 'card-with-bg-equipment';
+                } else if (catNorm === normalizeCategoryAlias('Mobs')) {
+                    cardClass = 'card-with-bg-mobs';
+                } else if (catNorm === normalizeCategoryAlias('Optimization')) {
+                    cardClass = 'card-with-bg-optimization';
+                } else if (catNorm === normalizeCategoryAlias('Social')) {
+                    cardClass = 'card-with-bg-social';
+                } else if (catNorm === normalizeCategoryAlias('Storage')) {
+                    cardClass = 'card-with-bg-storage';
+                } else if (catNorm === normalizeCategoryAlias('Technology')) {
+                    cardClass = 'card-with-bg-technology';
+                }
+                
+                return `
+                <div class="glass p-8 card-hover flex flex-col justify-between animate-fade-in ${cardClass}">
                     <div>
                         <div class="flex justify-between items-start mb-6">
                             <div>
@@ -1163,7 +1769,7 @@
                         <button onclick="downloadConfig('${data.id}')" class="btn-download flex-1 py-4 rounded-2xl font-bold text-sm text-white transition-all">${currentUser ? t.download : t.loginToDownload}</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         async function fetchConfigsREST() {
@@ -1283,7 +1889,10 @@
             document.getElementById('support-modal').classList.remove('hidden');
         };
 
-        window.closeSupportModal = () => document.getElementById('support-modal').classList.add('hidden');
+        window.closeSupportModal = () => {
+            document.getElementById('support-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
 
         window.submitTicket = async () => {
             const t = i18n[currentLang] || i18n.en;
@@ -1375,6 +1984,7 @@
 
         try {
             setupDataFetching();
+            applyThemeMode();
             renderCategories(); // Render categories on load
             updateAuthUI(); // Initial call for auth-related UI
             updateUI(); // Initial call for general UI elements
