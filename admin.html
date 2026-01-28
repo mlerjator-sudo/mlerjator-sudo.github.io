@@ -57,6 +57,188 @@
         .animate-fade-in {
             animation: fadeIn 0.4s ease-out forwards;
         }
+
+        /* Minecraft Inventory Style */
+        .minecraft-inventory {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 3px solid #8b7355;
+            box-shadow: inset 0 0 0 1px #000, 0 0 20px rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .minecraft-slot {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #8b8b8b 0%, #555555 50%, #3a3a3a 100%);
+            border: 2px solid #1a1a1a;
+            box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 0 rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .minecraft-slot:hover {
+            box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 0 rgba(0, 0, 0, 0.9), 0 0 15px rgba(100, 200, 255, 0.6);
+            transform: scale(0.95);
+        }
+
+        .minecraft-slot.selected {
+            box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 0 rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 200, 0, 0.8);
+        }
+
+        .minecraft-item-icon {
+            font-size: 48px;
+            filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.8));
+        }
+
+        .minecraft-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.95);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 1000;
+            border: 1px solid #666;
+            display: none;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+        }
+
+        .minecraft-slot:hover .minecraft-tooltip {
+            display: block;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+
+        .minecraft-info-panel {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #666;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .minecraft-info-panel .info-label {
+            color: #ffeb3b;
+            font-weight: bold;
+        }
+
+        /* Category theme backgrounds */
+        .card-with-bg,
+        .card-with-bg-convenience,
+        .card-with-bg-food,
+        .card-with-bg-worldgen,
+        .card-with-bg-adventure,
+        .card-with-bg-transportation,
+        .card-with-bg-horror,
+        .card-with-bg-decoration,
+        .card-with-bg-economy,
+        .card-with-bg-gamemechanics,
+        .card-with-bg-library,
+        .card-with-bg-magic,
+        .card-with-bg-management,
+        .card-with-bg-minigame,
+        .card-with-bg-equipment,
+        .card-with-bg-mobs,
+        .card-with-bg-optimization,
+        .card-with-bg-social,
+        .card-with-bg-storage,
+        .card-with-bg-technology {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-with-bg::before,
+        .card-with-bg-convenience::before,
+        .card-with-bg-food::before,
+        .card-with-bg-worldgen::before,
+        .card-with-bg-adventure::before,
+        .card-with-bg-transportation::before,
+        .card-with-bg-horror::before,
+        .card-with-bg-decoration::before,
+        .card-with-bg-economy::before,
+        .card-with-bg-gamemechanics::before,
+        .card-with-bg-library::before,
+        .card-with-bg-magic::before,
+        .card-with-bg-management::before,
+        .card-with-bg-minigame::before,
+        .card-with-bg-equipment::before,
+        .card-with-bg-mobs::before,
+        .card-with-bg-optimization::before,
+        .card-with-bg-social::before,
+        .card-with-bg-storage::before,
+        .card-with-bg-technology::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .card-with-bg::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/UVF1O71.png'); }
+        .card-with-bg-convenience::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/egPJEIy.png'); }
+        .card-with-bg-food::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/bshbJZN.png'); }
+        .card-with-bg-worldgen::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/FKnjOph.png'); }
+        .card-with-bg-adventure::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('Category Theme/Adventure/white.png'); }
+        .card-with-bg-transportation::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/MwC3J8v.png'); }
+        .card-with-bg-horror::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/1p6lwci.png'); }
+        .card-with-bg-decoration::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/VsOr7yM.png'); }
+        .card-with-bg-economy::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/aXJFQOK.png'); }
+        .card-with-bg-gamemechanics::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/9qlwxkW.png'); }
+        .card-with-bg-library::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/9axqQU9.png'); }
+        .card-with-bg-magic::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/LlIwrdE.png'); }
+        .card-with-bg-management::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/aFQkvpT.png'); }
+        .card-with-bg-minigame::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/46rmCIx.png'); }
+        .card-with-bg-equipment::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/m5J4zkN.png'); }
+        .card-with-bg-mobs::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/CXN3MnX.png'); }
+        .card-with-bg-optimization::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/gryd6LR.png'); }
+        .card-with-bg-social::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/d8CggAE.png'); }
+        .card-with-bg-storage::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/GoJD0yA.png'); }
+        .card-with-bg-technology::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/VGYKLCU.png'); }
+
+        .card-with-bg > *,
+        .card-with-bg-convenience > *,
+        .card-with-bg-food > *,
+        .card-with-bg-worldgen > *,
+        .card-with-bg-adventure > *,
+        .card-with-bg-transportation > *,
+        .card-with-bg-horror > *,
+        .card-with-bg-decoration > *,
+        .card-with-bg-economy > *,
+        .card-with-bg-gamemechanics > *,
+        .card-with-bg-library > *,
+        .card-with-bg-magic > *,
+        .card-with-bg-management > *,
+        .card-with-bg-minigame > *,
+        .card-with-bg-equipment > *,
+        .card-with-bg-mobs > *,
+        .card-with-bg-optimization > *,
+        .card-with-bg-social > *,
+        .card-with-bg-storage > *,
+        .card-with-bg-technology > * {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 
@@ -131,8 +313,14 @@
                 <div class="flex justify-between items-end mb-8">
                     <h2 class="text-2xl font-bold" id="t-pending-title">Pending Approvals</h2>
                 </div>
-                <div id="config-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Configs will be injected here -->
+                <div class="minecraft-inventory">
+                    <div class="inventory-grid" id="config-list">
+                        <!-- Minecraft-style config slots will be injected here -->
+                    </div>
+                </div>
+                <div class="minecraft-info-panel" id="info-panel">
+                    <div><span class="info-label">No Config Selected</span></div>
+                    <div>Hover over items to see details • Click to view data • Right-click to approve/reject</div>
                 </div>
             </div>
 
@@ -611,6 +799,13 @@
         let currentTab = 'configs';
         let fetchTimeout = null;
 
+        const normalizeCategory = (cat) => (cat || '').toString().toLowerCase().replace(/\s+/g, '');
+        const normalizeCategoryAlias = (cat) => {
+            const base = normalizeCategory(cat);
+            if (base === 'mechanics') return 'gamemechanics';
+            return base;
+        };
+
         function log(msg) { console.log(`[F34 Admin] ${msg}`); }
 
         window.setLang = (lang) => {
@@ -659,41 +854,65 @@
             if (!dataLoaded) return;
             const t = i18n[currentLang] || i18n.en;
             const configList = document.getElementById('config-list');
+            const infoPanel = document.getElementById('info-panel');
             if (!configList) return;
             if (allConfigs.length === 0) {
                 configList.innerHTML = `<div class="col-span-full glass p-12 text-center text-xl">${t.noConfigs}</div>`;
                 return;
             }
             configList.innerHTML = '';
-            allConfigs.forEach(data => {
-                const div = document.createElement('div');
-                div.className = "glass p-6 card-hover flex flex-col justify-between";
-                div.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold block mb-1">${t.instanceName}</span>
-                                <h3 class="text-xl font-bold mb-1">${data.name || 'Untitled'}</h3>
-                                <span class="text-[10px] text-blue-400 font-bold uppercase tracking-wider">${data.category}</span>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold block mb-1">${t.functionDescription}</span>
-                            <p class="text-sm text-slate-300 line-clamp-3 bg-white/5 p-3 rounded-lg border border-white/5">"${data.description || 'No description'}"</p>
-                        </div>
-                        <p class="text-slate-400 text-xs text-right">by ${data.author}</p>
-                    </div>
-                    <div class="flex flex-col gap-3 mt-8">
-                        <button onclick="showConfigData('${data.id}')" class="w-full py-3 rounded-xl glass font-bold hover:bg-white/10 transition-colors text-sm">${t.viewData}</button>
-                        <div class="flex gap-3">
-                            <button onclick="updateStatus('${data.id}', 'approved')" class="flex-1 py-3 rounded-xl bg-blue-600 font-bold hover:bg-blue-500 transition-colors">${t.approve}</button>
-                            <button onclick="updateStatus('${data.id}', 'rejected')" class="flex-1 py-3 rounded-xl glass font-bold hover:bg-red-500/20 text-red-400 transition-colors">${t.reject}</button>
-                        </div>
-                    </div>
+            
+            const itemIcons = ['⚙️', '🔧', '⚡', '🛠️', '📦', '💎', '🔱', '⛏️', '🎯', '🏰', '🌳', '🧪', '📜', '🎨', '🔬', '🗝️', '🎁', '💡', '🌟', '✨'];
+            
+            allConfigs.forEach((data, index) => {
+                const slot = document.createElement('div');
+                slot.className = 'minecraft-slot';
+                const icon = itemIcons[index % itemIcons.length];
+                
+                const tooltip = document.createElement('div');
+                tooltip.className = 'minecraft-tooltip';
+                tooltip.innerHTML = `${data.name}<br><span style="color: #999;">${data.category}</span>`;
+                
+                slot.innerHTML = `
+                    <span class="minecraft-item-icon">${icon}</span>
+                    ${tooltip.outerHTML}
                 `;
-                configList.appendChild(div);
+                
+                slot.onclick = (e) => {
+                    e.stopPropagation();
+                    showConfigData(data.id);
+                    updateInfoPanel(data);
+                };
+                
+                slot.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    showConfigMenu(data.id, slot);
+                };
+                
+                configList.appendChild(slot);
             });
         }
+        
+        function updateInfoPanel(data) {
+            const infoPanel = document.getElementById('info-panel');
+            const t = i18n[currentLang] || i18n.en;
+            infoPanel.innerHTML = `
+                <div><span class="info-label">Name:</span> ${data.name || 'Untitled'}</div>
+                <div><span class="info-label">Category:</span> ${data.category}</div>
+                <div><span class="info-label">Author:</span> ${data.author}</div>
+                <div><span class="info-label">Description:</span> ${data.description || 'No description'}</div>
+                <div style="margin-top: 10px;">
+                    <button onclick="updateStatus('${data.id}', 'approved')" style="background: #4CAF50; color: white; padding: 6px 12px; border: none; border-radius: 3px; cursor: pointer; margin-right: 8px;">${t.approve}</button>
+                    <button onclick="updateStatus('${data.id}', 'rejected')" style="background: #f44336; color: white; padding: 6px 12px; border: none; border-radius: 3px; cursor: pointer;">${t.reject}</button>
+                </div>
+            `;
+        }
+        
+        window.showConfigMenu = (id, element) => {
+            const config = allConfigs.find(c => c.id === id);
+            if (!config) return;
+            updateInfoPanel(config);
+        };
 
         window.showConfigData = (id) => {
             const t = i18n[currentLang] || i18n.en;
