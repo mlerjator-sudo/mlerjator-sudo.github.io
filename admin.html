@@ -60,58 +60,85 @@
 
         /* Minecraft Inventory Style */
         .minecraft-inventory {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border: 3px solid #8b7355;
-            box-shadow: inset 0 0 0 1px #000, 0 0 20px rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 8px;
+            background: url('https://i.imgur.com/hbnv4bY.png') center/contain no-repeat, 
+                        linear-gradient(to bottom, #373737 0%, #8b8b8b 50%, #373737 100%);
+            border: 4px solid #000;
+            box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.15), 
+                        inset -2px -2px 0 rgba(0, 0, 0, 0.5),
+                        0 0 30px rgba(0, 0, 0, 0.9);
+            padding: 30px 40px;
+            border-radius: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .mc-search-field {
+            background: #000;
+            border: 2px solid #373737;
+            box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-family: 'Minecraft', 'Courier New', monospace;
+            width: 100%;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .mc-search-field::placeholder {
+            color: #888;
         }
 
         .minecraft-slot {
             position: relative;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #8b8b8b 0%, #555555 50%, #3a3a3a 100%);
-            border: 2px solid #1a1a1a;
-            box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 0 rgba(0, 0, 0, 0.8);
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #8b8b8b 0%, #545454 100%);
+            border: 3px solid;
+            border-color: #373737 #fff #fff #373737;
+            box-shadow: inset 0 0 0 1px #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
-            overflow: hidden;
+            transition: all 0.1s ease;
+            image-rendering: pixelated;
         }
 
         .minecraft-slot:hover {
-            box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 0 rgba(0, 0, 0, 0.9), 0 0 15px rgba(100, 200, 255, 0.6);
-            transform: scale(0.95);
+            background: linear-gradient(135deg, #fff 0%, #c6c6c6 100%);
+            border-color: #fff #373737 #373737 #fff;
         }
 
         .minecraft-slot.selected {
-            box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 0 rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 200, 0, 0.8);
+            background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 100%);
+            box-shadow: 0 0 20px rgba(255, 235, 59, 0.8);
         }
 
         .minecraft-item-icon {
-            font-size: 48px;
-            filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.8));
+            width: 64px;
+            height: 64px;
+            image-rendering: pixelated;
+            filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.5));
         }
 
         .minecraft-tooltip {
             position: absolute;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(16, 0, 16, 0.94);
+            border: 2px solid;
+            border-color: #2d0a63 #100036 #100036 #2d0a63;
             color: #fff;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-family: 'Minecraft', 'Courier New', monospace;
             white-space: nowrap;
             pointer-events: none;
             z-index: 1000;
-            border: 1px solid #666;
             display: none;
-            bottom: 100%;
+            top: -60px;
             left: 50%;
             transform: translateX(-50%);
-            margin-bottom: 8px;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
         }
 
         .minecraft-slot:hover .minecraft-tooltip {
@@ -119,26 +146,28 @@
         }
 
         .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 12px;
-            width: 100%;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
-        .minecraft-info-panel {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #666;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 4px;
-            color: #aaa;
-            font-size: 13px;
-            line-height: 1.6;
+        .mc-pagination {
+            text-align: center;
+            color: #00ffff;
+            font-family: 'Minecraft', 'Courier New', monospace;
+            font-size: 14px;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+            margin-top: 15px;
         }
 
-        .minecraft-info-panel .info-label {
-            color: #ffeb3b;
-            font-weight: bold;
+        .mc-pagination kbd {
+            background: #373737;
+            border: 2px solid #000;
+            padding: 4px 8px;
+            border-radius: 3px;
+            color: #fff;
         }
 
         /* Category theme backgrounds */
@@ -314,13 +343,13 @@
                     <h2 class="text-2xl font-bold" id="t-pending-title">Pending Approvals</h2>
                 </div>
                 <div class="minecraft-inventory">
+                    <input type="text" id="mc-search" class="mc-search-field" placeholder="Search...">
                     <div class="inventory-grid" id="config-list">
                         <!-- Minecraft-style config slots will be injected here -->
                     </div>
-                </div>
-                <div class="minecraft-info-panel" id="info-panel">
-                    <div><span class="info-label">No Config Selected</span></div>
-                    <div>Hover over items to see details • Click to view data • Right-click to approve/reject</div>
+                    <div class="mc-pagination">
+                        <kbd>F4</kbd> 다음 (<span id="current-page">1</span>/<span id="total-pages">1</span>)
+                    </div>
                 </div>
             </div>
 
@@ -799,14 +828,129 @@
         let currentTab = 'configs';
         let fetchTimeout = null;
 
-        const normalizeCategory = (cat) => (cat || '').toString().toLowerCase().replace(/\s+/g, '');
-        const normalizeCategoryAlias = (cat) => {
+        let currentPage = 1;
+        const itemsPerPage = 4;
+        let filteredConfigs = [];
+
+        const categoryIcons = {
+            'General': '🧱',
+            'Equipment': '🛡️',
+            'Food': '🍖',
+            'Magic': '🔮',
+            'Management': '⚙️',
+            'Technology': '🔧',
+            'Transportation': '🚂',
+            'Adventure': '🗺️',
+            'Horror': '👻',
+            'Social': '💬',
+            'Storage': '📦',
+            'Mobs': '🧟',
+            'Optimization': '⚡',
+            'Minigame': '🎮',
+            'Library': '📚',
+            'Decoration': '🎨',
+            'Economy': '💰',
+            'Convenience': '🔑',
+            'World Gen': '🌍'
+        };
+
+        function normalizeCategory(cat) {
+            return (cat || '').toString().toLowerCase().replace(/\s+/g, '');
+        }
+        
+        function normalizeCategoryAlias(cat) {
             const base = normalizeCategory(cat);
             if (base === 'mechanics') return 'gamemechanics';
             return base;
-        };
+        }
 
         function log(msg) { console.log(`[F34 Admin] ${msg}`); }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredConfigs.length / itemsPerPage);
+            document.getElementById('current-page').textContent = currentPage;
+            document.getElementById('total-pages').textContent = totalPages || 1;
+        }
+
+        function renderConfigs() {
+            if (!dataLoaded) return;
+            const t = i18n[currentLang] || i18n.en;
+            const configList = document.getElementById('config-list');
+            const searchInput = document.getElementById('mc-search');
+            
+            if (!configList) return;
+            
+            if (allConfigs.length === 0) {
+                configList.innerHTML = `<div class="col-span-full text-center text-xl" style="color: #888;">대기 중인 설정이 없습니다.</div>`;
+                return;
+            }
+            
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            filteredConfigs = allConfigs.filter(config => 
+                !searchTerm || 
+                (config.name && config.name.toLowerCase().includes(searchTerm)) ||
+                (config.category && config.category.toLowerCase().includes(searchTerm)) ||
+                (config.author && config.author.toLowerCase().includes(searchTerm))
+            );
+            
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageConfigs = filteredConfigs.slice(start, end);
+            
+            configList.innerHTML = '';
+            
+            pageConfigs.forEach((data) => {
+                const slot = document.createElement('div');
+                slot.className = 'minecraft-slot';
+                const icon = categoryIcons[data.category] || '📋';
+                
+                const tooltip = document.createElement('div');
+                tooltip.className = 'minecraft-tooltip';
+                tooltip.innerHTML = `<div style="color: #fff;">${data.name || 'Untitled'}</div><div style="color: #aaa; font-size: 11px;">${data.category}</div>`;
+                
+                slot.innerHTML = `
+                    <span class="minecraft-item-icon">${icon}</span>
+                `;
+                slot.appendChild(tooltip);
+                
+                slot.onclick = (e) => {
+                    e.stopPropagation();
+                    document.querySelectorAll('.minecraft-slot').forEach(s => s.classList.remove('selected'));
+                    slot.classList.add('selected');
+                    showConfigData(data.id);
+                };
+                
+                slot.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    if (confirm(`"${data.name}" 설정을 승인하시겠습니까?`)) {
+                        updateStatus(data.id, 'approved');
+                    }
+                };
+                
+                configList.appendChild(slot);
+            });
+            
+            updatePagination();
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F4') {
+                e.preventDefault();
+                const totalPages = Math.ceil(filteredConfigs.length / itemsPerPage);
+                currentPage = currentPage >= totalPages ? 1 : currentPage + 1;
+                renderConfigs();
+            }
+        });
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('mc-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    currentPage = 1;
+                    renderConfigs();
+                });
+            }
+        });
 
         window.setLang = (lang) => {
             currentLang = lang;
