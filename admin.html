@@ -104,9 +104,20 @@
                 </nav>
             </div>
             <div class="flex items-center gap-4">
-                <div class="glass p-1 flex gap-1 text-[10px] font-bold uppercase">
+                <div class="glass p-1 flex flex-wrap gap-1 text-[10px] font-bold uppercase">
                     <button onclick="setLang('en')" id="lang-en" class="px-3 py-1.5 rounded-lg">EN</button>
                     <button onclick="setLang('ko')" id="lang-ko" class="px-3 py-1.5 rounded-lg">KO</button>
+                    <button onclick="setLang('jp')" id="lang-jp" class="px-3 py-1.5 rounded-lg">JP</button>
+                    <button onclick="setLang('cn')" id="lang-cn" class="px-3 py-1.5 rounded-lg">CN</button>
+                    <button onclick="setLang('es')" id="lang-es" class="px-3 py-1.5 rounded-lg">ES</button>
+                    <button onclick="setLang('fr')" id="lang-fr" class="px-3 py-1.5 rounded-lg">FR</button>
+                    <button onclick="setLang('de')" id="lang-de" class="px-3 py-1.5 rounded-lg">DE</button>
+                    <button onclick="setLang('ru')" id="lang-ru" class="px-3 py-1.5 rounded-lg">RU</button>
+                    <button onclick="setLang('pt')" id="lang-pt" class="px-3 py-1.5 rounded-lg">PT</button>
+                    <button onclick="setLang('it')" id="lang-it" class="px-3 py-1.5 rounded-lg">IT</button>
+                    <button onclick="setLang('vi')" id="lang-vi" class="px-3 py-1.5 rounded-lg">VI</button>
+                    <button onclick="setLang('th')" id="lang-th" class="px-3 py-1.5 rounded-lg">TH</button>
+                    <button onclick="setLang('id')" id="lang-id" class="px-3 py-1.5 rounded-lg">ID</button>
                 </div>
                 <button id="auth-btn" class="glass px-6 py-2 font-bold text-xs hover:bg-white/10 transition-all">
                     Logout
@@ -256,6 +267,336 @@
                 functionDescription: "기능 설명",
                 viewData: "데이터 보기",
                 close: "닫기"
+            },
+            jp: {
+                pendingTitle: "承認待ちの設定",
+                noConfigs: "保留中の設定はありません。",
+                approve: "承認",
+                reject: "拒否",
+                playersTitle: "プレイヤー管理",
+                supportTitle: "サポートチケット",
+                noTickets: "サポートチケットはありません。",
+                ticketTitle: "サポートリクエスト",
+                ticketUser: "ユーザー",
+                ticketDate: "日付",
+                ticketDelete: "チケットを削除",
+                playerBan: "プレイヤーを禁止",
+                playerUnban: "禁止解除",
+                playerWarn: "警告",
+                playerDelete: "アカウントを削除",
+                playerConfigs: "デプロイされた設定",
+                banHours: "時間",
+                banStatus: "禁止期限:",
+                activeStatus: "アクティブ",
+                playerGrade: "プレイヤーランク",
+                grades: {
+                    General: "一般", Wood: "木", Stone: "石", Coal: "石炭", Copper: "銅", Iron: "鉄", Gold: "金", Diamond: "ダイヤモンド", Emerald: "エメラルド", Premium: "プレミアム"
+                },
+                categories: { General: "一般" },
+                instanceName: "インスタンス名",
+                functionDescription: "機能",
+                viewData: "データ表示",
+                close: "閉じる"
+            },
+            cn: {
+                pendingTitle: "待审批配置",
+                noConfigs: "没有待处理的配置。",
+                approve: "批准",
+                reject: "拒绝",
+                playersTitle: "玩家管理",
+                supportTitle: "支持工单",
+                noTickets: "没有支持工单。",
+                ticketTitle: "支持请求",
+                ticketUser: "用户",
+                ticketDate: "日期",
+                ticketDelete: "删除工单",
+                playerBan: "禁止玩家",
+                playerUnban: "解禁",
+                playerWarn: "警告",
+                playerDelete: "删除账户",
+                playerConfigs: "已部署配置",
+                banHours: "小时",
+                banStatus: "禁止直到:",
+                activeStatus: "活跃",
+                playerGrade: "玩家等级",
+                grades: {
+                    General: "普通", Wood: "木", Stone: "石", Coal: "煤", Copper: "铜", Iron: "铁", Gold: "金", Diamond: "钻石", Emerald: "绿宝石", Premium: "高级"
+                },
+                categories: { General: "普通" },
+                instanceName: "实例名称",
+                functionDescription: "功能",
+                viewData: "查看数据",
+                close: "关闭"
+            },
+            es: {
+                pendingTitle: "Aprobaciones Pendientes",
+                noConfigs: "No hay configuraciones pendientes.",
+                approve: "Aprobar",
+                reject: "Rechazar",
+                playersTitle: "Gestión de Jugadores",
+                supportTitle: "Tickets de Soporte",
+                noTickets: "No hay tickets de soporte.",
+                ticketTitle: "Solicitud de Soporte",
+                ticketUser: "Usuario",
+                ticketDate: "Fecha",
+                ticketDelete: "Eliminar Ticket",
+                playerBan: "Banear Jugador",
+                playerUnban: "Desbanear",
+                playerWarn: "Advertir",
+                playerDelete: "Eliminar Cuenta",
+                playerConfigs: "Configuraciones Desplegadas",
+                banHours: "Horas",
+                banStatus: "Baneado hasta:",
+                activeStatus: "Activo",
+                playerGrade: "Grado del Jugador",
+                grades: {
+                    General: "General", Wood: "Madera", Stone: "Piedra", Coal: "Carbón", Copper: "Cobre", Iron: "Hierro", Gold: "Oro", Diamond: "Diamante", Emerald: "Esmeralda", Premium: "Premium"
+                },
+                categories: { General: "General" },
+                instanceName: "Nombre de la Instancia",
+                functionDescription: "Función",
+                viewData: "Ver Datos",
+                close: "Cerrar"
+            },
+            fr: {
+                pendingTitle: "Approbations en Attente",
+                noConfigs: "Aucune configuration en attente.",
+                approve: "Approuver",
+                reject: "Rejeter",
+                playersTitle: "Gestion des Joueurs",
+                supportTitle: "Tickets de Support",
+                noTickets: "Aucun ticket de support.",
+                ticketTitle: "Demande de Support",
+                ticketUser: "Utilisateur",
+                ticketDate: "Date",
+                ticketDelete: "Supprimer le Ticket",
+                playerBan: "Bannir le Joueur",
+                playerUnban: "Débannir",
+                playerWarn: "Avertir",
+                playerDelete: "Supprimer le Compte",
+                playerConfigs: "Configs Déployées",
+                banHours: "Heures",
+                banStatus: "Banni jusqu'au :",
+                activeStatus: "Actif",
+                playerGrade: "Grade du Joueur",
+                grades: {
+                    General: "Général", Wood: "Bois", Stone: "Pierre", Coal: "Charbon", Copper: "Cuivre", Iron: "Fer", Gold: "Or", Diamond: "Diamant", Emerald: "Émeraude", Premium: "Premium"
+                },
+                categories: { General: "Général" },
+                instanceName: "Nom de l'Instance",
+                functionDescription: "Fonction",
+                viewData: "Voir les Données",
+                close: "Fermer"
+            },
+            de: {
+                pendingTitle: "Ausstehende Genehmigungen",
+                noConfigs: "Keine ausstehenden Konfigurationen.",
+                approve: "Genehmigen",
+                reject: "Ablehnen",
+                playersTitle: "Spielerverwaltung",
+                supportTitle: "Support-Tickets",
+                noTickets: "Keine Support-Tickets.",
+                ticketTitle: "Support-Anfrage",
+                ticketUser: "Benutzer",
+                ticketDate: "Datum",
+                ticketDelete: "Ticket löschen",
+                playerBan: "Spieler sperren",
+                playerUnban: "Entsperren",
+                playerWarn: "Warnen",
+                playerDelete: "Konto löschen",
+                playerConfigs: "Bereitgestellte Konfigs",
+                banHours: "Stunden",
+                banStatus: "Gesperrt bis:",
+                activeStatus: "Aktiv",
+                playerGrade: "Spieler-Rang",
+                grades: {
+                    General: "Allgemein", Wood: "Holz", Stone: "Stein", Coal: "Kohle", Copper: "Kupfer", Iron: "Eisen", Gold: "Gold", Diamond: "Diamant", Emerald: "Smaragd", Premium: "Premium"
+                },
+                categories: { General: "Allgemein" },
+                instanceName: "Instanzname",
+                functionDescription: "Funktion",
+                viewData: "Daten anzeigen",
+                close: "Schließen"
+            },
+            ru: {
+                pendingTitle: "Ожидающие одобрения",
+                noConfigs: "Нет ожидающих конфигураций.",
+                approve: "Одобрить",
+                reject: "Отклонить",
+                playersTitle: "Управление игроками",
+                supportTitle: "Тикеты поддержки",
+                noTickets: "Нет тикетов поддержки.",
+                ticketTitle: "Запрос поддержки",
+                ticketUser: "Пользователь",
+                ticketDate: "Дата",
+                ticketDelete: "Удалить тикет",
+                playerBan: "Забанить игрока",
+                playerUnban: "Разбанить",
+                playerWarn: "Предупредить",
+                playerDelete: "Удалить аккаунт",
+                playerConfigs: "Развернутые конфиги",
+                banHours: "Часов",
+                banStatus: "Забанен до:",
+                activeStatus: "Активен",
+                playerGrade: "Ранг игрока",
+                grades: {
+                    General: "Общий", Wood: "Дерево", Stone: "Камень", Coal: "Уголь", Copper: "Медь", Iron: "Железо", Gold: "Золото", Diamond: "Алмаз", Emerald: "Изумруд", Premium: "Премиум"
+                },
+                categories: { General: "Общий" },
+                instanceName: "Имя инстанса",
+                functionDescription: "Функция",
+                viewData: "Просмотр данных",
+                close: "Закрыть"
+            },
+            pt: {
+                pendingTitle: "Aprovações Pendentes",
+                noConfigs: "Nenhuma configuração pendente.",
+                approve: "Aprovar",
+                reject: "Rejeitar",
+                playersTitle: "Gerenciamento de Jogadores",
+                supportTitle: "Tickets de Suporte",
+                noTickets: "Nenhum ticket de suporte.",
+                ticketTitle: "Solicitação de Suporte",
+                ticketUser: "Usuário",
+                ticketDate: "Data",
+                ticketDelete: "Excluir Ticket",
+                playerBan: "Banir Jogador",
+                playerUnban: "Desbanear",
+                playerWarn: "Avisar",
+                playerDelete: "Excluir Conta",
+                playerConfigs: "Configs Implantadas",
+                banHours: "Horas",
+                banStatus: "Banido até:",
+                activeStatus: "Ativo",
+                playerGrade: "Grau do Jogador",
+                grades: {
+                    General: "Geral", Wood: "Madeira", Stone: "Pedra", Coal: "Carvão", Copper: "Cobre", Iron: "Ferro", Gold: "Ouro", Diamond: "Diamante", Emerald: "Esmeralda", Premium: "Premium"
+                },
+                categories: { General: "Geral" },
+                instanceName: "Nome da Instância",
+                functionDescription: "Função",
+                viewData: "Ver Dados",
+                close: "Fechar"
+            },
+            it: {
+                pendingTitle: "Approvazioni in sospeso",
+                noConfigs: "Nessuna configurazione in sospeso.",
+                approve: "Approva",
+                reject: "Rifiuta",
+                playersTitle: "Gestione giocatori",
+                supportTitle: "Ticket di supporto",
+                noTickets: "Nessun ticket di supporto.",
+                ticketTitle: "Richiesta di supporto",
+                ticketUser: "Utente",
+                ticketDate: "Data",
+                ticketDelete: "Elimina ticket",
+                playerBan: "Banna giocatore",
+                playerUnban: "Sblocca",
+                playerWarn: "Avverti",
+                playerDelete: "Elimina account",
+                playerConfigs: "Configurazioni distribuite",
+                banHours: "Ore",
+                banStatus: "Bannato fino a:",
+                activeStatus: "Attivo",
+                playerGrade: "Grado giocatore",
+                grades: {
+                    General: "Generale", Wood: "Legno", Stone: "Pietra", Coal: "Carbone", Copper: "Rame", Iron: "Ferro", Gold: "Oro", Diamond: "Diamante", Emerald: "Smeraldo", Premium: "Premium"
+                },
+                categories: { General: "Generale" },
+                instanceName: "Nome istanza",
+                functionDescription: "Funzione",
+                viewData: "Visualizza dati",
+                close: "Chiudi"
+            },
+            vi: {
+                pendingTitle: "Phê duyệt đang chờ xử lý",
+                noConfigs: "Không có cấu hình nào đang chờ xử lý.",
+                approve: "Phê duyệt",
+                reject: "Từ chối",
+                playersTitle: "Quản lý người chơi",
+                supportTitle: "Yêu cầu hỗ trợ",
+                noTickets: "Không có yêu cầu hỗ trợ nào.",
+                ticketTitle: "Yêu cầu hỗ trợ",
+                ticketUser: "Người dùng",
+                ticketDate: "Ngày",
+                ticketDelete: "Xóa yêu cầu",
+                playerBan: "Cấm người chơi",
+                playerUnban: "Bỏ cấm",
+                playerWarn: "Cảnh báo",
+                playerDelete: "Xóa tài khoản",
+                playerConfigs: "Cấu hình đã triển khai",
+                banHours: "Giờ",
+                banStatus: "Bị cấm cho đến:",
+                activeStatus: "Đang hoạt động",
+                playerGrade: "Cấp độ người chơi",
+                grades: {
+                    General: "Chung", Wood: "Gỗ", Stone: "Đá", Coal: "Than", Copper: "Đồng", Iron: "Sắt", Gold: "Vàng", Diamond: "Kim cương", Emerald: "Lục bảo", Premium: "Cao cấp"
+                },
+                categories: { General: "Chung" },
+                instanceName: "Tên phiên bản",
+                functionDescription: "Chức năng",
+                viewData: "Xem dữ liệu",
+                close: "Đóng"
+            },
+            th: {
+                pendingTitle: "การอนุมัติที่ค้างอยู่",
+                noConfigs: "ไม่มีการตั้งค่าที่ค้างอยู่",
+                approve: "อนุมัติ",
+                reject: "ปฏิเสธ",
+                playersTitle: "การจัดการผู้เล่น",
+                supportTitle: "ตั๋วสนับสนุน",
+                noTickets: "ไม่มีตั๋วสนับสนุน",
+                ticketTitle: "คำขอสนับสนุน",
+                ticketUser: "ผู้ใช้",
+                ticketDate: "วันที่",
+                ticketDelete: "ลบตั๋ว",
+                playerBan: "แบนผู้เล่น",
+                playerUnban: "ปลดแบน",
+                playerWarn: "เตือน",
+                playerDelete: "ลบบัญชี",
+                playerConfigs: "การตั้งค่าที่ปรับใช้",
+                banHours: "ชั่วโมง",
+                banStatus: "แบนจนถึง:",
+                activeStatus: "ใช้งานอยู่",
+                playerGrade: "ระดับผู้เล่น",
+                grades: {
+                    General: "ทั่วไป", Wood: "ไม้", Stone: "หิน", Coal: "ถ่าน", Copper: "ทองแดง", Iron: "เหล็ก", Gold: "ทอง", Diamond: "เพชร", Emerald: "มรกต", Premium: "พรีเมียม"
+                },
+                categories: { General: "ทั่วไป" },
+                instanceName: "ชื่ออินสแตนซ์",
+                functionDescription: "ฟังก์ชัน",
+                viewData: "ดูข้อมูล",
+                close: "ปิด"
+            },
+            id: {
+                pendingTitle: "Persetujuan Tertunda",
+                noConfigs: "Tidak ada konfigurasi tertunda.",
+                approve: "Setujui",
+                reject: "Tolak",
+                playersTitle: "Manajemen Pemain",
+                supportTitle: "Tiket Dukungan",
+                noTickets: "Tidak ada tiket dukungan.",
+                ticketTitle: "Permintaan Dukungan",
+                ticketUser: "Pengguna",
+                ticketDate: "Tanggal",
+                ticketDelete: "Hapus Tiket",
+                playerBan: "Blokir Pemain",
+                playerUnban: "Buka Blokir",
+                playerWarn: "Peringatkan",
+                playerDelete: "Hapus Akun",
+                playerConfigs: "Konfigurasi Terpasang",
+                banHours: "Jam",
+                banStatus: "Diblokir hingga:",
+                activeStatus: "Aktif",
+                playerGrade: "Tingkat Pemain",
+                grades: {
+                    General: "Umum", Wood: "Kayu", Stone: "Batu", Coal: "Batu Bara", Copper: "Tembaga", Iron: "Besi", Gold: "Emas", Diamond: "Berlian", Emerald: "Zamrud", Premium: "Premium"
+                },
+                categories: { General: "Umum" },
+                instanceName: "Nama Instansi",
+                functionDescription: "Fungsi",
+                viewData: "Lihat Data",
+                close: "Tutup"
             }
         };
 
