@@ -994,49 +994,6 @@
             renderTickets();
         }
 
-        function renderConfigs() {
-            if (!dataLoaded) return;
-            const t = i18n[currentLang] || i18n.en;
-            const configList = document.getElementById('config-list');
-            const infoPanel = document.getElementById('info-panel');
-            if (!configList) return;
-            if (allConfigs.length === 0) {
-                configList.innerHTML = `<div class="col-span-full glass p-12 text-center text-xl">${t.noConfigs}</div>`;
-                return;
-            }
-            configList.innerHTML = '';
-            
-            const itemIcons = ['⚙️', '🔧', '⚡', '🛠️', '📦', '💎', '🔱', '⛏️', '🎯', '🏰', '🌳', '🧪', '📜', '🎨', '🔬', '🗝️', '🎁', '💡', '🌟', '✨'];
-            
-            allConfigs.forEach((data, index) => {
-                const slot = document.createElement('div');
-                slot.className = 'minecraft-slot';
-                const icon = itemIcons[index % itemIcons.length];
-                
-                const tooltip = document.createElement('div');
-                tooltip.className = 'minecraft-tooltip';
-                tooltip.innerHTML = `${data.name}<br><span style="color: #999;">${data.category}</span>`;
-                
-                slot.innerHTML = `
-                    <span class="minecraft-item-icon">${icon}</span>
-                    ${tooltip.outerHTML}
-                `;
-                
-                slot.onclick = (e) => {
-                    e.stopPropagation();
-                    showConfigData(data.id);
-                    updateInfoPanel(data);
-                };
-                
-                slot.oncontextmenu = (e) => {
-                    e.preventDefault();
-                    showConfigMenu(data.id, slot);
-                };
-                
-                configList.appendChild(slot);
-            });
-        }
-        
         function updateInfoPanel(data) {
             const infoPanel = document.getElementById('info-panel');
             const t = i18n[currentLang] || i18n.en;
