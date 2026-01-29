@@ -1623,11 +1623,66 @@
         });
         provider = new GoogleAuthProvider();
 
-        onAuthStateChanged(auth, (user) => {
+        // Sync friend requests automatically
+        async function syncFriendRequests() {
+            if (!currentUser) return;
+            
+            try {
+                const myRef = doc(db, 'users', currentUser.email);
+                const myData = await getDoc(myRef);
+                
+                if (!myData.exists()) return;
+                
+                const sentRequests = myData.data()?.friend_requests_sent || [];
+                const myFriends = myData.data()?.friends || [];
+                const friendEmails = myFriends.map(f => f.email);
+                
+                let needsUpdate = false;
+                const updatedSentRequests = [];
+                const newFriends = [...myFriends];
+                
+                // Check each sent request
+                for (const request of sentRequests) {
+                    const theirDoc = await getDoc(doc(db, 'users', request.to));
+                    if (theirDoc.exists()) {
+                        const theirFriends = theirDoc.data()?.friends || [];
+                        const acceptedByThem = theirFriends.find(f => f.email === currentUser.email);
+                        
+                        if (acceptedByThem) {
+                            // They accepted! Add to my friends if not already there
+                            if (!friendEmails.includes(request.to)) {
+                                newFriends.push({
+                                    email: request.to,
+                                    showMyEmail: request.showMyEmail,
+                                    showTheirEmail: acceptedByThem.showMyEmail,
+                                    timestamp: Date.now()
+                                });
+                                needsUpdate = true;
+                            }
+                        } else {
+                            // Still pending
+                            updatedSentRequests.push(request);
+                        }
+                    }
+                }
+                
+                if (needsUpdate) {
+                    await updateDoc(myRef, {
+                        friend_requests_sent: updatedSentRequests,
+                        friends: newFriends
+                    });
+                    console.log('Friend requests synced');
+                }
+            } catch (error) {
+                console.error('Error syncing friend requests:', error);
+            }
+        }
+
+        onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             if (user) {
                 const q = query(collection(db, "users"), where("email", "==", user.email));
-                getDocs(q).then(snap => {
+                getDocs(q).then(async snap => {
                     if (!snap.empty) {
                         mcAccount = snap.docs[0].data();
                     } else {
@@ -1635,6 +1690,9 @@
                     }
                     updateAuthUI(); // Call updateAuthUI here
                     updateUI(); // Call updateUI for general elements
+                    
+                    // Sync friend requests
+                    await syncFriendRequests();
                 });
             } else {
                 mcAccount = null;
@@ -1766,11 +1824,16 @@
             else if (tab === 'find') loadAllUsers();
         };
 
-        window.sendFriendRequest = async (toEmail) => {
+        let usersCache = {}; // Store users with temporary IDs
+
+        window.sendFriendRequest = async (userId) => {
             if (!currentUser) return;
             
+            const toEmail = usersCache[userId];
+            if (!toEmail) return;
+            
             // Show email visibility dialog
-            const showEmail = confirm('Do you want to show your email to this user?\\n\\nYes = Show email\\nNo = Hide email');
+            const showEmail = confirm('Do you want to show your email to this user?\n\nYes = Show email\nNo = Hide email');
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
@@ -1808,22 +1871,21 @@
             }
         };
 
-        window.acceptFriendRequest = async (fromEmail, showMyEmailToThem) => {
+        window.acceptFriendRequest = async (userId, showMyEmailToThem) => {
             if (!currentUser) return;
             
+            const fromEmail = usersCache[userId];
+            if (!fromEmail) return;
+            
             // Ask if they want to show their email
-            const showEmail = confirm('Do you want to show your email to this user?\\n\\nYes = Show email\\nNo = Hide email');
+            const showEmail = confirm('Do you want to show your email to this user?\n\nYes = Show email\nNo = Hide email');
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
-                const theirRef = doc(db, 'users', fromEmail);
-                
                 const myData = await getDoc(myRef);
-                const theirData = await getDoc(theirRef);
                 
-                // Add to friends lists
+                // Add to my friends list only
                 const myFriends = myData.data()?.friends || [];
-                const theirFriends = theirData.data()?.friends || [];
                 
                 await updateDoc(myRef, {
                     friends: [...myFriends, {
@@ -1835,41 +1897,29 @@
                     friend_requests_received: (myData.data()?.friend_requests_received || []).filter(r => r.from !== fromEmail)
                 });
                 
-                await updateDoc(theirRef, {
-                    friends: [...theirFriends, {
-                        email: currentUser.email,
-                        showMyEmail: showMyEmailToThem,
-                        showTheirEmail: showEmail,
-                        timestamp: Date.now()
-                    }],
-                    friend_requests_sent: (theirData.data()?.friend_requests_sent || []).filter(r => r.to !== currentUser.email)
-                });
-                
                 alert('Friend request accepted!');
                 loadRequests();
+                loadFriends();
             } catch (error) {
                 console.error('Error accepting request:', error);
                 alert('Failed to accept friend request');
             }
         };
 
-        window.declineFriendRequest = async (fromEmail) => {
+        window.declineFriendRequest = async (userId) => {
             if (!currentUser) return;
+            
+            const fromEmail = usersCache[userId];
+            if (!fromEmail) return;
+            
             if (!confirm('Decline this friend request?')) return;
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
-                const theirRef = doc(db, 'users', fromEmail);
-                
                 const myData = await getDoc(myRef);
-                const theirData = await getDoc(theirRef);
                 
                 await updateDoc(myRef, {
                     friend_requests_received: (myData.data()?.friend_requests_received || []).filter(r => r.from !== fromEmail)
-                });
-                
-                await updateDoc(theirRef, {
-                    friend_requests_sent: (theirData.data()?.friend_requests_sent || []).filter(r => r.to !== currentUser.email)
                 });
                 
                 alert('Friend request declined');
@@ -1880,23 +1930,20 @@
             }
         };
 
-        window.removeFriend = async (friendEmail) => {
+        window.removeFriend = async (userId) => {
             if (!currentUser) return;
-            if (!confirm(`Remove ${friendEmail} from friends?`)) return;
+            
+            const friendEmail = usersCache[userId];
+            if (!friendEmail) return;
+            
+            if (!confirm('Remove this friend?')) return;
 
             try {
                 const myRef = doc(db, 'users', currentUser.email);
-                const theirRef = doc(db, 'users', friendEmail);
-                
                 const myData = await getDoc(myRef);
-                const theirData = await getDoc(theirRef);
                 
                 await updateDoc(myRef, {
                     friends: (myData.data()?.friends || []).filter(f => f.email !== friendEmail)
-                });
-                
-                await updateDoc(theirRef, {
-                    friends: (theirData.data()?.friends || []).filter(f => f.email !== currentUser.email)
                 });
 
                 alert('Friend removed');
@@ -1923,8 +1970,12 @@
                 }
 
                 container.innerHTML = '';
+                let index = 0;
                 for (const friend of friends) {
                     try {
+                        const userId = 'friend_' + index++;
+                        usersCache[userId] = friend.email;
+                        
                         const friendDoc = await getDoc(doc(db, 'users', friend.email));
                         if (friendDoc.exists()) {
                             const friendData = friendDoc.data();
@@ -1941,7 +1992,7 @@
                                         <div class="text-xs text-slate-500">${showEmail ? friend.email : 'Email hidden'}</div>
                                     </div>
                                 </div>
-                                <button onclick="removeFriend('${friend.email}')" 
+                                <button onclick="removeFriend('${userId}')" 
                                     class="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -1951,7 +2002,7 @@
                             container.appendChild(friendCard);
                         }
                     } catch (err) {
-                        console.error('Error loading friend:', friend.email, err);
+                        console.error('Error loading friend:', err);
                     }
                 }
             } catch (error) {
@@ -1994,8 +2045,12 @@
                     container.appendChild(receivedTitle);
                 }
                 
+                let index = 0;
                 for (const request of received) {
                     try {
+                        const userId = 'req_recv_' + index++;
+                        usersCache[userId] = request.from;
+                        
                         const userDoc = await getDoc(doc(db, 'users', request.from));
                         if (userDoc.exists()) {
                             const userData = userDoc.data();
@@ -2013,11 +2068,11 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button onclick="acceptFriendRequest('${request.from}', ${request.showTheirEmail})" 
+                                    <button onclick="acceptFriendRequest('${userId}', ${request.showTheirEmail})" 
                                         class="px-4 py-2 bg-green-600 rounded-lg font-bold hover:bg-green-500 transition-colors text-sm">
                                         Accept
                                     </button>
-                                    <button onclick="declineFriendRequest('${request.from}')" 
+                                    <button onclick="declineFriendRequest('${userId}')" 
                                         class="px-4 py-2 bg-red-600 rounded-lg font-bold hover:bg-red-500 transition-colors text-sm">
                                         Decline
                                     </button>
@@ -2100,13 +2155,17 @@
                     });
 
                     container.innerHTML = '';
+                    usersCache = {}; // Clear cache
                     
                     if (filtered.length === 0) {
                         container.innerHTML = '<div class="text-slate-500 text-center py-8">No users found</div>';
                         return;
                     }
 
-                    filtered.forEach(user => {
+                    filtered.forEach((user, index) => {
+                        const userId = 'user_' + index;
+                        usersCache[userId] = user.email;
+                        
                         const mcName = user.mc_name || 'Unknown';
                         const isFriend = myFriends.includes(user.email);
                         const requestSent = sentRequests.includes(user.email);
@@ -2120,7 +2179,7 @@
                         } else if (requestReceived) {
                             statusHtml = '<div class="text-blue-400 text-sm font-bold">Request Received</div>';
                         } else {
-                            statusHtml = `<button onclick="sendFriendRequest('${user.email}')" 
+                            statusHtml = `<button onclick="sendFriendRequest('${userId}')" 
                                 class="px-4 py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-500 transition-colors text-sm">
                                 Add Friend
                             </button>`;
