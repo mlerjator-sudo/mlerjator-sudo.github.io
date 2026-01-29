@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,13 @@
             font-family: 'Outfit', 'Noto Sans KR', sans-serif;
             background: #0f172a;
             color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-equipment: url('https://i.imgur.com/8xMC7DI.png');
+            --bg-time: url('https://i.imgur.com/bV0zPVK.png');
+            --bg-difficulty: url('https://i.imgur.com/2dE1gIf.png');
         }
 
         .glass {
@@ -24,12 +31,98 @@
         }
 
         .card-hover {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .card-hover:hover {
-            transform: translateY(-4px);
+            transform: translateY(-8px);
             background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-with-bg,
+        .card-with-bg-equipment,
+        .card-with-bg-time,
+        .card-with-bg-difficulty {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-with-bg::before,
+        .card-with-bg-equipment::before,
+        .card-with-bg-time::before,
+        .card-with-bg-difficulty::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        .card-with-bg-equipment::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-equipment);
+        }
+
+        .card-with-bg-time::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-time);
+        }
+
+        .card-with-bg-difficulty::before {
+            background-image: 
+                linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0) 0%, 
+                    rgba(15, 23, 42, 0.3) 25%,
+                    rgba(15, 23, 42, 0.8) 50%,
+                    rgba(15, 23, 42, 0.98) 70%,
+                    rgba(15, 23, 42, 1) 100%
+                ),
+                var(--bg-difficulty);
+        }
+
+        .card-with-bg > *,
+        .card-with-bg-equipment > *,
+        .card-with-bg-time > *,
+        .card-with-bg-difficulty > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-download:hover {
+            box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.5);
+            transform: scale(1.02);
+        }
+
+        .btn-detail {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-detail:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .tab-btn {
@@ -45,7 +138,7 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(20px);
             }
 
             to {
@@ -55,222 +148,7 @@
         }
 
         .animate-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-
-        /* Minecraft Inventory Style */
-        .minecraft-inventory {
-            background: url('https://i.imgur.com/hbnv4bY.png') center/contain no-repeat, 
-                        linear-gradient(to bottom, #373737 0%, #8b8b8b 50%, #373737 100%);
-            border: 4px solid #000;
-            box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.15), 
-                        inset -2px -2px 0 rgba(0, 0, 0, 0.5),
-                        0 0 30px rgba(0, 0, 0, 0.9);
-            padding: 30px 40px;
-            border-radius: 0;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .mc-search-field {
-            background: #000;
-            border: 2px solid #373737;
-            box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 12px 16px;
-            font-size: 16px;
-            font-family: 'Minecraft', 'Courier New', monospace;
-            width: 100%;
-            margin-bottom: 20px;
-            outline: none;
-        }
-
-        .mc-search-field::placeholder {
-            color: #888;
-        }
-
-        .minecraft-slot {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #8b8b8b 0%, #545454 100%);
-            border: 3px solid;
-            border-color: #373737 #fff #fff #373737;
-            box-shadow: inset 0 0 0 1px #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.1s ease;
-            image-rendering: pixelated;
-        }
-
-        .minecraft-slot:hover {
-            background: linear-gradient(135deg, #fff 0%, #c6c6c6 100%);
-            border-color: #fff #373737 #373737 #fff;
-        }
-
-        .minecraft-slot.selected {
-            background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 100%);
-            box-shadow: 0 0 20px rgba(255, 235, 59, 0.8);
-        }
-
-        .minecraft-item-icon {
-            width: 64px;
-            height: 64px;
-            font-size: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            image-rendering: pixelated;
-            filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.5));
-        }
-
-        .minecraft-tooltip {
-            position: absolute;
-            background: rgba(16, 0, 16, 0.94);
-            border: 2px solid;
-            border-color: #2d0a63 #100036 #100036 #2d0a63;
-            color: #fff;
-            padding: 8px 10px;
-            font-size: 13px;
-            font-family: 'Minecraft', 'Courier New', monospace;
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 1000;
-            display: none;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
-        }
-
-        .minecraft-slot:hover .minecraft-tooltip {
-            display: block;
-        }
-
-        .inventory-grid {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .mc-pagination {
-            text-align: center;
-            color: #00ffff;
-            font-family: 'Minecraft', 'Courier New', monospace;
-            font-size: 14px;
-            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
-            margin-top: 15px;
-        }
-
-        .mc-pagination kbd {
-            background: #373737;
-            border: 2px solid #000;
-            padding: 4px 8px;
-            border-radius: 3px;
-            color: #fff;
-        }
-
-        /* Category theme backgrounds */
-        .card-with-bg,
-        .card-with-bg-convenience,
-        .card-with-bg-food,
-        .card-with-bg-worldgen,
-        .card-with-bg-adventure,
-        .card-with-bg-transportation,
-        .card-with-bg-horror,
-        .card-with-bg-decoration,
-        .card-with-bg-economy,
-        .card-with-bg-gamemechanics,
-        .card-with-bg-library,
-        .card-with-bg-magic,
-        .card-with-bg-management,
-        .card-with-bg-minigame,
-        .card-with-bg-equipment,
-        .card-with-bg-mobs,
-        .card-with-bg-optimization,
-        .card-with-bg-social,
-        .card-with-bg-storage,
-        .card-with-bg-technology {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-with-bg::before,
-        .card-with-bg-convenience::before,
-        .card-with-bg-food::before,
-        .card-with-bg-worldgen::before,
-        .card-with-bg-adventure::before,
-        .card-with-bg-transportation::before,
-        .card-with-bg-horror::before,
-        .card-with-bg-decoration::before,
-        .card-with-bg-economy::before,
-        .card-with-bg-gamemechanics::before,
-        .card-with-bg-library::before,
-        .card-with-bg-magic::before,
-        .card-with-bg-management::before,
-        .card-with-bg-minigame::before,
-        .card-with-bg-equipment::before,
-        .card-with-bg-mobs::before,
-        .card-with-bg-optimization::before,
-        .card-with-bg-social::before,
-        .card-with-bg-storage::before,
-        .card-with-bg-technology::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.5;
-            z-index: 0;
-        }
-
-        .card-with-bg::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/UVF1O71.png'); }
-        .card-with-bg-convenience::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/egPJEIy.png'); }
-        .card-with-bg-food::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/bshbJZN.png'); }
-        .card-with-bg-worldgen::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/FKnjOph.png'); }
-        .card-with-bg-adventure::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('Category Theme/Adventure/white.png'); }
-        .card-with-bg-transportation::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/MwC3J8v.png'); }
-        .card-with-bg-horror::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/1p6lwci.png'); }
-        .card-with-bg-decoration::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/VsOr7yM.png'); }
-        .card-with-bg-economy::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/aXJFQOK.png'); }
-        .card-with-bg-gamemechanics::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/9qlwxkW.png'); }
-        .card-with-bg-library::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/9axqQU9.png'); }
-        .card-with-bg-magic::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/LlIwrdE.png'); }
-        .card-with-bg-management::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/aFQkvpT.png'); }
-        .card-with-bg-minigame::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/46rmCIx.png'); }
-        .card-with-bg-equipment::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/m5J4zkN.png'); }
-        .card-with-bg-mobs::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/CXN3MnX.png'); }
-        .card-with-bg-optimization::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/gryd6LR.png'); }
-        .card-with-bg-social::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/d8CggAE.png'); }
-        .card-with-bg-storage::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/GoJD0yA.png'); }
-        .card-with-bg-technology::before { background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('https://i.imgur.com/VGYKLCU.png'); }
-
-        .card-with-bg > *,
-        .card-with-bg-convenience > *,
-        .card-with-bg-food > *,
-        .card-with-bg-worldgen > *,
-        .card-with-bg-adventure > *,
-        .card-with-bg-transportation > *,
-        .card-with-bg-horror > *,
-        .card-with-bg-decoration > *,
-        .card-with-bg-economy > *,
-        .card-with-bg-gamemechanics > *,
-        .card-with-bg-library > *,
-        .card-with-bg-magic > *,
-        .card-with-bg-management > *,
-        .card-with-bg-minigame > *,
-        .card-with-bg-equipment > *,
-        .card-with-bg-mobs > *,
-        .card-with-bg-optimization > *,
-        .card-with-bg-social > *,
-        .card-with-bg-storage > *,
-        .card-with-bg-technology > * {
-            position: relative;
-            z-index: 1;
+            animation: fadeIn 0.6s ease-out forwards;
         }
     </style>
 </head>
@@ -302,7 +180,7 @@
 
     <!-- Main Admin Panel -->
     <div id="admin-panel" class="hidden">
-        <!-- Sidebar/Header -->
+        <!-- Header -->
         <header class="glass sticky top-0 z-40 mx-6 mt-6 p-4 flex justify-between items-center border-white/10">
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-3">
@@ -340,20 +218,17 @@
             </div>
         </header>
 
-        <main class="max-w-7xl mx-auto p-6">
-            <!-- Section: Config Approvals -->
+        <main class="max-w-7xl mx-auto px-6 py-12">
+            <!-- Section: Config Approvals (Card Layout) -->
             <div id="section-configs" class="space-y-6">
-                <div class="flex justify-between items-end mb-8">
-                    <h2 class="text-2xl font-bold" id="t-pending-title">Pending Approvals</h2>
+                <div class="flex justify-between items-end mb-12">
+                    <div>
+                        <h2 class="text-4xl font-black tracking-tighter" id="t-pending-title">Pending Approvals</h2>
+                        <p class="text-slate-500 text-sm mt-2 font-medium">승인 대기 중인 설정을 관리합니다</p>
+                    </div>
                 </div>
-                <div class="minecraft-inventory">
-                    <input type="text" id="mc-search" class="mc-search-field" placeholder="Search...">
-                    <div class="inventory-grid" id="config-list">
-                        <!-- Minecraft-style config slots will be injected here -->
-                    </div>
-                    <div class="mc-pagination">
-                        <kbd>F4</kbd> 다음 (<span id="current-page">1</span>/<span id="total-pages">1</span>)
-                    </div>
+                <div id="config-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards will be injected here -->
                 </div>
             </div>
 
@@ -460,94 +335,94 @@
                 close: "Close"
             },
             ko: {
-                pendingTitle: "승인 대기 중인 설정",
-                noConfigs: "대기 중인 설정이 없습니다.",
-                approve: "승인",
+                pendingTitle: "?�인 ?��?중인 ?�정",
+                noConfigs: "?��?중인 ?�정???�습?�다.",
+                approve: "?�인",
                 reject: "거절",
-                playersTitle: "플레이어 관리",
-                supportTitle: "고객 센터 문의",
-                noTickets: "접수된 문의가 없습니다.",
+                playersTitle: "?�레?�어 관�?,
+                supportTitle: "고객 ?�터 문의",
+                noTickets: "?�수??문의가 ?�습?�다.",
                 ticketTitle: "고객 문의",
-                ticketUser: "작성자",
-                ticketDate: "날짜",
-                ticketDelete: "문의 삭제",
-                playerBan: "플레이어 차단",
-                playerUnban: "차단 해제",
+                ticketUser: "?�성??,
+                ticketDate: "?�짜",
+                ticketDelete: "문의 ??��",
+                playerBan: "?�레?�어 차단",
+                playerUnban: "차단 ?�제",
                 playerWarn: "경고",
-                playerDelete: "계정 삭제",
-                playerConfigs: "배포한 설정 목록",
-                banHours: "시간",
+                playerDelete: "계정 ??��",
+                playerConfigs: "배포???�정 목록",
+                banHours: "?�간",
                 banStatus: "차단 만료:",
-                activeStatus: "정상",
-                playerGrade: "플레이어 등급",
+                activeStatus: "?�상",
+                playerGrade: "?�레?�어 ?�급",
                 grades: {
-                    General: "일반", Wood: "나무", Stone: "돌", Coal: "석탄", Copper: "구리", Iron: "철", Gold: "금", Diamond: "다이아몬드", Emerald: "에메랄드", Premium: "프리미엄"
+                    General: "?�반", Wood: "?�무", Stone: "??, Coal: "?�탄", Copper: "구리", Iron: "�?, Gold: "�?, Diamond: "?�이?�몬??, Emerald: "?�메?�드", Premium: "?�리미엄"
                 },
-                categories: { General: "일반" },
-                instanceName: "인스턴스 명명어",
-                functionDescription: "기능 설명",
-                viewData: "데이터 보기",
-                close: "닫기"
+                categories: { General: "?�반" },
+                instanceName: "?�스?�스 명명??,
+                functionDescription: "기능 ?�명",
+                viewData: "?�이??보기",
+                close: "?�기"
             },
             jp: {
-                pendingTitle: "承認待ちの設定",
-                noConfigs: "保留中の設定はありません。",
-                approve: "承認",
-                reject: "拒否",
-                playersTitle: "プレイヤー管理",
-                supportTitle: "サポートチケット",
-                noTickets: "サポートチケットはありません。",
-                ticketTitle: "サポートリクエスト",
-                ticketUser: "ユーザー",
-                ticketDate: "日付",
-                ticketDelete: "チケットを削除",
-                playerBan: "プレイヤーを禁止",
-                playerUnban: "禁止解除",
-                playerWarn: "警告",
-                playerDelete: "アカウントを削除",
-                playerConfigs: "デプロイされた設定",
-                banHours: "時間",
-                banStatus: "禁止期限:",
-                activeStatus: "アクティブ",
-                playerGrade: "プレイヤーランク",
+                pendingTitle: "?�認待ち??���?,
+                noConfigs: "保留�?���?��??��?�ま?�ん??,
+                approve: "?�認",
+                reject: "?�否",
+                playersTitle: "?�レ?�ヤ?��???,
+                supportTitle: "?�ポ?�ト?�ケ?�ト",
+                noTickets: "?�ポ?�ト?�ケ?�ト??��?�ま?�ん??,
+                ticketTitle: "?�ポ?�ト?�ク?�ス??,
+                ticketUser: "?�ー?�ー",
+                ticketDate: "?�付",
+                ticketDelete: "?�ケ?�ト?�削??,
+                playerBan: "?�レ?�ヤ?�を禁�?",
+                playerUnban: "禁�?解除",
+                playerWarn: "�?��",
+                playerDelete: "?�カ?�ン?�を?�除",
+                playerConfigs: "?�プ??��?�れ?�設�?,
+                banHours: "?�間",
+                banStatus: "禁�??�限:",
+                activeStatus: "?�ク?�ィ??,
+                playerGrade: "?�レ?�ヤ?�ラ?�ク",
                 grades: {
-                    General: "一般", Wood: "木", Stone: "石", Coal: "石炭", Copper: "銅", Iron: "鉄", Gold: "金", Diamond: "ダイヤモンド", Emerald: "エメラルド", Premium: "プレミアム"
+                    General: "一??, Wood: "??, Stone: "??, Coal: "?�炭", Copper: "??, Iron: "??, Gold: "??, Diamond: "?�?�ヤ?�ン??, Emerald: "?�メ?�ル??, Premium: "?�レ?�ア??
                 },
-                categories: { General: "一般" },
-                instanceName: "インスタンス名",
+                categories: { General: "一?? },
+                instanceName: "?�ン?�タ?�ス??,
                 functionDescription: "機能",
-                viewData: "データ表示",
-                close: "閉じる"
+                viewData: "?�ー?�表�?,
+                close: "?�じ??
             },
             cn: {
-                pendingTitle: "待审批配置",
-                noConfigs: "没有待处理的配置。",
-                approve: "批准",
-                reject: "拒绝",
-                playersTitle: "玩家管理",
-                supportTitle: "支持工单",
-                noTickets: "没有支持工单。",
-                ticketTitle: "支持请求",
-                ticketUser: "用户",
-                ticketDate: "日期",
-                ticketDelete: "删除工单",
-                playerBan: "禁止玩家",
+                pendingTitle: "待�??�配�?,
+                noConfigs: "没有待处?�的?�置??,
+                approve: "?�准",
+                reject: "?�绝",
+                playersTitle: "?��?管理",
+                supportTitle: "??��工单",
+                noTickets: "没有??��工单??,
+                ticketTitle: "??��请求",
+                ticketUser: "?�户",
+                ticketDate: "?�期",
+                ticketDelete: "?�除工单",
+                playerBan: "禁�??��?",
                 playerUnban: "解禁",
-                playerWarn: "警告",
-                playerDelete: "删除账户",
-                playerConfigs: "已部署配置",
+                playerWarn: "�?��",
+                playerDelete: "?�除�?��",
+                playerConfigs: "已部署配�?,
                 banHours: "小时",
-                banStatus: "禁止直到:",
+                banStatus: "禁�??�到:",
                 activeStatus: "活跃",
-                playerGrade: "玩家等级",
+                playerGrade: "?��?等级",
                 grades: {
-                    General: "普通", Wood: "木", Stone: "石", Coal: "煤", Copper: "铜", Iron: "铁", Gold: "金", Diamond: "钻石", Emerald: "绿宝石", Premium: "高级"
+                    General: "??�?, Wood: "??, Stone: "??, Coal: "??, Copper: "??, Iron: "??, Gold: "??, Diamond: "?�石", Emerald: "绿宝??, Premium: "高级"
                 },
-                categories: { General: "普通" },
-                instanceName: "实例名称",
-                functionDescription: "功能",
-                viewData: "查看数据",
-                close: "关闭"
+                categories: { General: "??�? },
+                instanceName: "实例?�称",
+                functionDescription: "?�能",
+                viewData: "?�看?�据",
+                close: "?�闭"
             },
             es: {
                 pendingTitle: "Aprobaciones Pendientes",
@@ -640,34 +515,34 @@
                 close: "Schließen"
             },
             ru: {
-                pendingTitle: "Ожидающие одобрения",
-                noConfigs: "Нет ожидающих конфигураций.",
-                approve: "Одобрить",
-                reject: "Отклонить",
-                playersTitle: "Управление игроками",
-                supportTitle: "Тикеты поддержки",
-                noTickets: "Нет тикетов поддержки.",
-                ticketTitle: "Запрос поддержки",
-                ticketUser: "Пользователь",
-                ticketDate: "Дата",
-                ticketDelete: "Удалить тикет",
-                playerBan: "Забанить игрока",
-                playerUnban: "Разбанить",
-                playerWarn: "Предупредить",
-                playerDelete: "Удалить аккаунт",
-                playerConfigs: "Развернутые конфиги",
-                banHours: "Часов",
-                banStatus: "Забанен до:",
-                activeStatus: "Активен",
-                playerGrade: "Ранг игрока",
+                pendingTitle: "?жида??ие одоб?ени?",
+                noConfigs: "?е? ожида??и? кон?иг??а?ий.",
+                approve: "?доб?и??",
+                reject: "??клони??",
+                playersTitle: "Уп?авление иг?оками",
+                supportTitle: "Тике?? подде?жки",
+                noTickets: "?е? ?ике?ов подде?жки.",
+                ticketTitle: "?ап?о? подде?жки",
+                ticketUser: "?ол?зова?ел?",
+                ticketDate: "?а?а",
+                ticketDelete: "Удали?? ?ике?",
+                playerBan: "?абани?? иг?ока",
+                playerUnban: "?азбани??",
+                playerWarn: "??ед?п?еди??",
+                playerDelete: "Удали?? акка?н?",
+                playerConfigs: "?азве?н???е кон?иги",
+                banHours: "Ча?ов",
+                banStatus: "?абанен до:",
+                activeStatus: "?к?ивен",
+                playerGrade: "?анг иг?ока",
                 grades: {
-                    General: "Общий", Wood: "Дерево", Stone: "Камень", Coal: "Уголь", Copper: "Медь", Iron: "Железо", Gold: "Золото", Diamond: "Алмаз", Emerald: "Изумруд", Premium: "Премиум"
+                    General: "?б?ий", Wood: "?е?ево", Stone: "?амен?", Coal: "Угол?", Copper: "?ед?", Iron: "?елезо", Gold: "?оло?о", Diamond: "?лмаз", Emerald: "?з?м??д", Premium: "??еми?м"
                 },
-                categories: { General: "Общий" },
-                instanceName: "Имя инстанса",
-                functionDescription: "Функция",
-                viewData: "Просмотр данных",
-                close: "Закрыть"
+                categories: { General: "?б?ий" },
+                instanceName: "?м? ин??ан?а",
+                functionDescription: "Ф?нк?и?",
+                viewData: "??о?мо?? данн??",
+                close: "?ак????"
             },
             pt: {
                 pendingTitle: "Aprovações Pendentes",
@@ -730,64 +605,64 @@
                 close: "Chiudi"
             },
             vi: {
-                pendingTitle: "Phê duyệt đang chờ xử lý",
-                noConfigs: "Không có cấu hình nào đang chờ xử lý.",
+                pendingTitle: "Phê duyệt đang ch�?x�?lý",
+                noConfigs: "Không có cấu hình nào đang ch�?x�?lý.",
                 approve: "Phê duyệt",
-                reject: "Từ chối",
+                reject: "T�?chối",
                 playersTitle: "Quản lý người chơi",
-                supportTitle: "Yêu cầu hỗ trợ",
-                noTickets: "Không có yêu cầu hỗ trợ nào.",
-                ticketTitle: "Yêu cầu hỗ trợ",
+                supportTitle: "Yêu cầu h�?tr�?,
+                noTickets: "Không có yêu cầu h�?tr�?nào.",
+                ticketTitle: "Yêu cầu h�?tr�?,
                 ticketUser: "Người dùng",
                 ticketDate: "Ngày",
                 ticketDelete: "Xóa yêu cầu",
                 playerBan: "Cấm người chơi",
-                playerUnban: "Bỏ cấm",
+                playerUnban: "B�?cấm",
                 playerWarn: "Cảnh báo",
                 playerDelete: "Xóa tài khoản",
                 playerConfigs: "Cấu hình đã triển khai",
-                banHours: "Giờ",
-                banStatus: "Bị cấm cho đến:",
+                banHours: "Gi�?,
+                banStatus: "B�?cấm cho đến:",
                 activeStatus: "Đang hoạt động",
-                playerGrade: "Cấp độ người chơi",
+                playerGrade: "Cấp đ�?người chơi",
                 grades: {
-                    General: "Chung", Wood: "Gỗ", Stone: "Đá", Coal: "Than", Copper: "Đồng", Iron: "Sắt", Gold: "Vàng", Diamond: "Kim cương", Emerald: "Lục bảo", Premium: "Cao cấp"
+                    General: "Chung", Wood: "G�?, Stone: "Đá", Coal: "Than", Copper: "Đồng", Iron: "Sắt", Gold: "Vàng", Diamond: "Kim cương", Emerald: "Lục bảo", Premium: "Cao cấp"
                 },
                 categories: { General: "Chung" },
                 instanceName: "Tên phiên bản",
                 functionDescription: "Chức năng",
-                viewData: "Xem dữ liệu",
+                viewData: "Xem d�?liệu",
                 close: "Đóng"
             },
             th: {
-                pendingTitle: "การอนุมัติที่ค้างอยู่",
-                noConfigs: "ไม่มีการตั้งค่าที่ค้างอยู่",
-                approve: "อนุมัติ",
-                reject: "ปฏิเสธ",
-                playersTitle: "การจัดการผู้เล่น",
+                pendingTitle: "การอนุมัติที่ค้างอยู�?,
+                noConfigs: "ไม่มีการตั้งค่าที่ค้าง�?��ู่",
+                approve: "�?��ุมัต�?,
+                reject: "ปฏิ�?สธ",
+                playersTitle: "การจัดการผู้เ�?���?,
                 supportTitle: "ตั๋วสนับสนุน",
-                noTickets: "ไม่มีตั๋วสนับสนุน",
+                noTickets: "ไม่มีตั๋วสนับสนุ�?,
                 ticketTitle: "คำขอสนับสนุน",
                 ticketUser: "ผู้ใช้",
                 ticketDate: "วันที่",
-                ticketDelete: "ลบตั๋ว",
-                playerBan: "แบนผู้เล่น",
+                ticketDelete: "�?��ตั๋ว",
+                playerBan: "แบนผู้เ�?���?,
                 playerUnban: "ปลดแบน",
-                playerWarn: "เตือน",
-                playerDelete: "ลบบัญชี",
+                playerWarn: "เตื�?��",
+                playerDelete: "�?��บัญช�?,
                 playerConfigs: "การตั้งค่าที่ปรับใช้",
-                banHours: "ชั่วโมง",
+                banHours: "ชั่วโม�?,
                 banStatus: "แบนจนถึง:",
-                activeStatus: "ใช้งานอยู่",
-                playerGrade: "ระดับผู้เล่น",
+                activeStatus: "ใช้งาน�?��ู่",
+                playerGrade: "ระดับผู้เ�?���?,
                 grades: {
-                    General: "ทั่วไป", Wood: "ไม้", Stone: "หิน", Coal: "ถ่าน", Copper: "ทองแดง", Iron: "เหล็ก", Gold: "ทอง", Diamond: "เพชร", Emerald: "มรกต", Premium: "พรีเมียม"
+                    General: "ทั่วไป", Wood: "ไม�?, Stone: "หิ�?, Coal: "ถ่าน", Copper: "ทองแดง", Iron: "เหล็ก", Gold: "ทอ�?, Diamond: "เพช�?, Emerald: "มรกต", Premium: "พรี�?มียม"
                 },
                 categories: { General: "ทั่วไป" },
-                instanceName: "ชื่ออินสแตนซ์",
+                instanceName: "ชื่อ�?��นสแตนซ�?,
                 functionDescription: "ฟังก์ชัน",
-                viewData: "ดูข้อมูล",
-                close: "ปิด"
+                viewData: "ดูข้�?��ูล",
+                close: "ปิ�?
             },
             id: {
                 pendingTitle: "Persetujuan Tertunda",
@@ -833,35 +708,35 @@
         let fetchTimeout = null;
 
         let currentPage = 1;
-        const itemsPerPage = 4;
+        const itemsPerPage = 6;
         let filteredConfigs = [];
 
         const categoryIcons = {
-            'General': '🧱',
-            'Equipment': '🛡️',
-            'Food': '🍖',
-            'Magic': '🔮',
-            'Management': '⚙️',
-            'Technology': '🔧',
-            'Transportation': '🚂',
-            'Adventure': '🗺️',
-            'Horror': '👻',
-            'Social': '💬',
-            'Storage': '📦',
-            'Mobs': '🧟',
-            'Optimization': '⚡',
-            'Minigame': '🎮',
-            'Library': '📚',
-            'Decoration': '🎨',
-            'Economy': '💰',
-            'Convenience': '🔑',
-            'World Gen': '🌍'
+            'General': '?��',
+            'Equipment': '?���?,
+            'Food': '?��',
+            'Magic': '?��',
+            'Management': '?�️',
+            'Technology': '?��',
+            'Transportation': '?��',
+            'Adventure': '?���?,
+            'Horror': '?��',
+            'Social': '?��',
+            'Storage': '?��',
+            'Mobs': '?��',
+            'Optimization': '??,
+            'Minigame': '?��',
+            'Library': '?��',
+            'Decoration': '?��',
+            'Economy': '?��',
+            'Convenience': '?��',
+            'World Gen': '?��'
         };
 
         function normalizeCategory(cat) {
             return (cat || '').toString().toLowerCase().replace(/\s+/g, '');
         }
-        
+
         function normalizeCategoryAlias(cat) {
             const base = normalizeCategory(cat);
             if (base === 'mechanics') return 'gamemechanics';
@@ -880,86 +755,102 @@
             if (!dataLoaded) return;
             const t = i18n[currentLang] || i18n.en;
             const configList = document.getElementById('config-list');
-            const searchInput = document.getElementById('mc-search');
-            
+
             if (!configList) return;
-            
+
             if (allConfigs.length === 0) {
-                configList.innerHTML = `<div class="col-span-full text-center text-xl" style="color: #888;">대기 중인 설정이 없습니다.</div>`;
+                configList.innerHTML = `<div class="col-span-full text-center py-12"><p class="text-slate-500 text-lg">${t.noConfigs}</p></div>`;
                 return;
             }
-            
-            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-            filteredConfigs = allConfigs.filter(config => 
-                !searchTerm || 
-                (config.name && config.name.toLowerCase().includes(searchTerm)) ||
-                (config.category && config.category.toLowerCase().includes(searchTerm)) ||
-                (config.author && config.author.toLowerCase().includes(searchTerm))
-            );
-            
-            const start = (currentPage - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const pageConfigs = filteredConfigs.slice(start, end);
-            
+
             configList.innerHTML = '';
-            
-            pageConfigs.forEach((data) => {
-                const slot = document.createElement('div');
-                slot.className = 'minecraft-slot';
-                const icon = categoryIcons[data.category] || '📋';
+
+            allConfigs.forEach((config) => {
+                const categoryClass = `card-with-bg-${normalizeCategory(config.category)}`;
+                const card = document.createElement('div');
+                card.className = `${categoryClass} glass card-hover p-0 overflow-hidden h-80 rounded-3xl border border-white/10 cursor-pointer flex flex-col`;
                 
-                const tooltip = document.createElement('div');
-                tooltip.className = 'minecraft-tooltip';
-                tooltip.innerHTML = `<div style="color: #fff;">${data.name || 'Untitled'}</div><div style="color: #aaa; font-size: 11px;">${data.category}</div>`;
-                
-                slot.innerHTML = `
-                    <span class="minecraft-item-icon">${icon}</span>
+                const categoryNorm = normalizeCategory(config.category);
+                const icon = categoryIcons[config.category] || '📦';
+
+                card.innerHTML = `
+                    <div class="flex-1 flex flex-col justify-between p-6">
+                        <div>
+                            <div class="text-4xl mb-3">${icon}</div>
+                            <h3 class="text-xl font-bold mb-2">${config.name || 'Untitled'}</h3>
+                            <p class="text-[11px] uppercase tracking-widest text-slate-400 font-bold">${config.category || 'General'}</p>
+                        </div>
+                        <p class="text-sm text-slate-300 line-clamp-2">${config.author || 'Unknown'}</p>
+                    </div>
+                    <div class="px-6 pb-6 flex gap-3 mt-auto">
+                        <button onclick="viewConfigData('${config.id}')" class="flex-1 py-3 btn-detail rounded-xl font-bold text-sm transition-all hover:bg-white/20">
+                            상세 보기
+                        </button>
+                        <button onclick="approveConfig('${config.id}')" class="flex-1 py-3 btn-download rounded-xl font-bold text-sm text-white transition-all">
+                            다운로드
+                        </button>
+                    </div>
                 `;
-                slot.appendChild(tooltip);
-                
-                slot.onclick = (e) => {
-                    e.stopPropagation();
-                    document.querySelectorAll('.minecraft-slot').forEach(s => s.classList.remove('selected'));
-                    slot.classList.add('selected');
-                    showConfigData(data.id);
-                };
-                
-                slot.oncontextmenu = (e) => {
-                    e.preventDefault();
-                    if (confirm(`"${data.name}" 설정을 승인하시겠습니까?`)) {
-                        updateStatus(data.id, 'approved');
-                    }
-                };
-                
-                configList.appendChild(slot);
+
+                configList.appendChild(card);
             });
-            
-            updatePagination();
         }
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'F4') {
-                e.preventDefault();
-                const totalPages = Math.ceil(filteredConfigs.length / itemsPerPage);
-                currentPage = currentPage >= totalPages ? 1 : currentPage + 1;
-                renderConfigs();
-            }
-        });
-        
-        window.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('mc-search');
-            if (searchInput) {
-                searchInput.addEventListener('input', () => {
-                    currentPage = 1;
-                    renderConfigs();
-                });
-            }
-        });
 
         window.setLang = (lang) => {
             currentLang = lang;
             localStorage.setItem('f34_lang', lang);
             updateUI();
+        };
+
+        window.viewConfigData = (id) => {
+            const t = i18n[currentLang] || i18n.en;
+            const config = allConfigs.find(c => c.id === id);
+            if (!config) return;
+
+            const modal = document.getElementById('data-modal');
+            const content = document.getElementById('data-modal-content');
+            if (modal && content) {
+                let formattedData = config.data;
+                try {
+                    if (typeof config.data === 'string') {
+                        formattedData = JSON.stringify(JSON.parse(config.data), null, 2);
+                    } else {
+                        formattedData = JSON.stringify(config.data, null, 2);
+                    }
+                } catch (e) { /* keep as is if not json */ }
+
+                content.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">${t.viewData}</h3>
+                        <button onclick="closeDataModal()" class="text-slate-400 hover:text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    <pre class="bg-black/30 p-4 rounded-xl overflow-auto max-h-[60vh] text-xs font-mono text-slate-300">${formattedData}</pre>
+                    <div class="mt-6 flex justify-end gap-3">
+                        <button onclick="closeDataModal()" class="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-xl font-bold transition-colors">${t.close}</button>
+                        <button onclick="approveConfig('${config.id}')" class="px-6 py-2 btn-download rounded-xl font-bold text-white transition-colors">승인</button>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            }
+        };
+
+        window.approveConfig = async (id) => {
+            if (!confirm("이 설정을 승인하시겠습니까?")) return;
+            try {
+                const docRef = doc(db, "shared_configs", id);
+                await updateDoc(docRef, { status: 'approved' });
+                closeDataModal();
+                setupDataFetching();
+            } catch (e) {
+                alert("오류: " + e.message);
+            }
+        };
+
+        window.closeDataModal = () => {
+            const modal = document.getElementById('data-modal');
+            if (modal) modal.classList.add('hidden');
         };
 
         window.switchTab = (tab) => {
@@ -997,67 +888,6 @@
             renderPlayers();
             renderTickets();
         }
-
-        function updateInfoPanel(data) {
-            const infoPanel = document.getElementById('info-panel');
-            const t = i18n[currentLang] || i18n.en;
-            infoPanel.innerHTML = `
-                <div><span class="info-label">Name:</span> ${data.name || 'Untitled'}</div>
-                <div><span class="info-label">Category:</span> ${data.category}</div>
-                <div><span class="info-label">Author:</span> ${data.author}</div>
-                <div><span class="info-label">Description:</span> ${data.description || 'No description'}</div>
-                <div style="margin-top: 10px;">
-                    <button onclick="updateStatus('${data.id}', 'approved')" style="background: #4CAF50; color: white; padding: 6px 12px; border: none; border-radius: 3px; cursor: pointer; margin-right: 8px;">${t.approve}</button>
-                    <button onclick="updateStatus('${data.id}', 'rejected')" style="background: #f44336; color: white; padding: 6px 12px; border: none; border-radius: 3px; cursor: pointer;">${t.reject}</button>
-                </div>
-            `;
-        }
-        
-        window.showConfigMenu = (id, element) => {
-            const config = allConfigs.find(c => c.id === id);
-            if (!config) return;
-            updateInfoPanel(config);
-        };
-
-        window.showConfigData = (id) => {
-            const t = i18n[currentLang] || i18n.en;
-            const config = allConfigs.find(c => c.id === id);
-            if (!config) return;
-
-            const modal = document.getElementById('data-modal');
-            const content = document.getElementById('data-modal-content');
-            if (modal && content) {
-                let formattedData = config.data;
-                try {
-                    if (typeof config.data === 'string') {
-                        formattedData = JSON.stringify(JSON.parse(config.data), null, 2);
-                    } else {
-                        formattedData = JSON.stringify(config.data, null, 2);
-                    }
-                } catch (e) { /* keep as is if not json */ }
-
-                content.innerHTML = `
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-bold">${t.viewData}</h3>
-                        <button onclick="closeDataModal()" class="text-slate-400 hover:text-white">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                    <pre class="bg-black/30 p-4 rounded-xl overflow-auto max-h-[60vh] text-xs font-mono text-slate-300">${formattedData}</pre>
-                    <div class="mt-6 flex justify-end">
-                        <button onclick="closeDataModal()" class="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-xl font-bold transition-colors">${t.close}</button>
-                    </div>
-                `;
-                modal.classList.remove('hidden');
-            }
-        };
-
-        window.closeDataModal = () => {
-            const modal = document.getElementById('data-modal');
-            if (modal) modal.classList.add('hidden');
-        };
-
-        async function fetchConfigsREST() {
             log("Attempting REST API fallback...");
             try {
                 const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/shared_configs`;
