@@ -260,6 +260,65 @@
             z-index: 1;
         }
 
+        /* Minecraft switch */
+        .minecraft-switch {
+            font-size: 17px;
+            position: relative;
+            display: inline-block;
+            width: 4em;
+            height: 2em;
+        }
+
+        .minecraft-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .minecraft-switch .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 4px;
+        }
+
+        .minecraft-switch .off,
+        .minecraft-switch .on {
+            position: absolute;
+            height: 2em;
+            width: 2em;
+            background-color: white;
+            transition: .4s;
+            image-rendering: pixelated;
+            top: 0;
+            left: 0;
+        }
+
+        .minecraft-switch .off { opacity: 1; }
+        .minecraft-switch .on { opacity: 0; }
+
+        .minecraft-switch input:checked + .slider {
+            background-color: #ccc;
+        }
+
+        .minecraft-switch input:focus + .slider {
+            box-shadow: 0 0 1px #ccc;
+        }
+
+        .minecraft-switch input:checked ~ .off {
+            transform: translateX(2em);
+        }
+
+        .minecraft-switch input:checked ~ .on {
+            transform: translateX(2em);
+            opacity: 1;
+        }
+
         .btn-download {
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
@@ -352,10 +411,12 @@
                 </nav>
             </div>
             <div class="flex items-center gap-4">
-                <button id="theme-toggle" onclick="toggleTheme()" class="glass px-4 py-2 rounded-xl font-bold text-sm hover:bg-white/10 transition-all flex items-center gap-2">
-                    <svg id="sun-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM12 19.5a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V20.25a.75.75 0 01.75-.75zM6.97 6.97a.75.75 0 010 1.06L5.53 9.41a.75.75 0 01-1.06-1.06l1.44-1.44a.75.75 0 011.06 0zM16.59 15.53a.75.75 0 010 1.06l-1.44 1.44a.75.75 0 01-1.06-1.06l1.44-1.44a.75.75 0 011.06 0zM2.25 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3a.75.75 0 01-.75-.75zM19.5 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H20.25a.75.75 0 01-.75-.75zM6.97 17.03a.75.75 0 01-1.06 0l-1.44-1.44a.75.75 0 011.06-1.06l1.44 1.44a.75.75 0 010 1.06zM16.59 8.47a.75.75 0 01-1.06 0l-1.44-1.44a.75.75 0 011.06-1.06l1.44 1.44a.75.75 0 010 1.06zM12 5.5a6.5 6.5 0 110 13 6.5 6.5 0 010-13z"/></svg>
-                    <svg id="moon-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M21.64 15.95c-.18-.8-.46-1.58-.84-2.3a11.043 11.043 0 00-1.31-1.98c-.4-.57-.8-1.1-1.2-1.62.04-.33.06-.66.06-1 0-4.42-3.58-8-8-8-1.52 0-2.93.41-4.15 1.12-.55.37-1.05.82-1.48 1.34-.44.53-.82 1.11-1.13 1.72-.3.61-.56 1.25-.77 1.9-.21.65-.38 1.33-.5 2.02-.23 1.4-.23 2.8 0 4.2.12.69.29 1.37.5 2.02.21.65.47 1.29.77 1.9.31.61.69 1.19 1.13 1.72.43.52.93.97 1.48 1.34 1.22.71 2.63 1.12 4.15 1.12 4.42 0 8-3.58 8-8 0-.34-.02-.67-.06-1 .4-.52.8-1.05 1.2-1.62.51-.74.95-1.52 1.31-1.98.38-.72.66-1.5.84-2.3.07-.36.1-.72.1-1.08 0-.36-.03-.72-.1-1.08z"/></svg>
-                </button>
+                <label class="minecraft-switch">
+                    <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
+                    <span class="slider"></span>
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAIG/8QAIxAAAgIABQQDAAAAAAAAAAAAAQMCBAAREiExBUFRcROBsf/EABQBAQAAAAAAAAAAAAAAAAAAAAX/xAAWEQADAAAAAAAAAAAAAAAAAAAAEiL/2gAMAwEAAhEDEQA/AMBTp03dNglMVuttjqnKQ2UPOfntkOThbqVVUJ12BKnogZQZpy+Ucc8knwePWJrWqyqEHVmrTahEBqpbBoAH1n635wt3a9mjN1p8X2pw0qVEbKB/CO/c4OphSVP/2Q==" class="off" />
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIEBf/EACMQAAEDAwQDAQEAAAAAAAAAAAQBAgUDESEAEjFBBlFhMkL/xAAUAQEAAAAAAAAAAAAAAAAAAAAF/8QAGBEAAwEBAAAAAAAAAAAAAAAAABIiMUH/2gAMAwEAAhEDEQA/AM+Bg4mS8coRccMOdNG01qVyH/kRvHPKKmMdr8uujPwUTG+NkRpw1AKWCbvHKa2zTGphc9u9p0q+rLqeMl4kSCGkYgtoE0HTahIz3bWGNanPrdyqWzn7p5ibh5CArnyZNMyVLpK0QSkt2BNXtVX+7ol1wuLJiyaHt+6Kyp//2Q==" class="on" />
+                </label>
                 <div class="glass p-1 flex flex-wrap gap-1 text-[10px] font-bold uppercase">
                     <button onclick="setLang('en')" id="lang-en" class="px-3 py-1.5 rounded-lg">EN</button>
                     <button onclick="setLang('ko')" id="lang-ko" class="px-3 py-1.5 rounded-lg">KO</button>
@@ -906,11 +967,10 @@
 
         function toggleTheme() {
             const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const checkbox = document.getElementById('theme-toggle');
+            const newTheme = checkbox.checked ? 'light' : 'dark';
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('f34_admin_theme', newTheme);
-            updateThemeIcon(newTheme);
         }
 
         // 전역 스코프에 노출
@@ -931,7 +991,10 @@
         function initTheme() {
             const savedTheme = localStorage.getItem('f34_admin_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
+            const checkbox = document.getElementById('theme-toggle');
+            if (checkbox) {
+                checkbox.checked = savedTheme === 'light';
+            }
         }
 
         function updatePagination() {
