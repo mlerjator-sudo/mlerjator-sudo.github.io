@@ -855,24 +855,44 @@
                 </button>
             </div>
 
-            <!-- Add Friend Section -->
-            <div class="glass p-6 mb-6 border border-white/5">
-                <h3 class="text-lg font-bold mb-4" id="t-add-friend">Add Friend</h3>
-                <div class="flex gap-3">
-                    <input type="email" id="friend-email-input" placeholder="Enter friend's email"
-                        class="flex-1 bg-black/20 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500 transition-colors">
-                    <button onclick="addFriend()"
-                        class="px-6 py-2 bg-blue-600 rounded-xl font-bold hover:bg-blue-500 transition-colors whitespace-nowrap">
-                        <span id="t-add-friend-btn">Add</span>
-                    </button>
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-6 border-b border-white/10">
+                <button onclick="switchFriendsTab('friends')" id="friends-tab-friends"
+                    class="px-6 py-3 font-bold border-b-2 border-blue-500 text-blue-400">
+                    Friends
+                </button>
+                <button onclick="switchFriendsTab('requests')" id="friends-tab-requests"
+                    class="px-6 py-3 font-bold border-b-2 border-transparent text-slate-500 hover:text-white">
+                    Requests <span id="requests-count" class="ml-2 px-2 py-0.5 bg-red-500 rounded-full text-xs hidden">0</span>
+                </button>
+                <button onclick="switchFriendsTab('find')" id="friends-tab-find"
+                    class="px-6 py-3 font-bold border-b-2 border-transparent text-slate-500 hover:text-white">
+                    Find Users
+                </button>
+            </div>
+
+            <!-- Friends Tab -->
+            <div id="friends-content-friends">
+                <div id="friends-list-container" class="space-y-3">
+                    <!-- Friends will be loaded here -->
                 </div>
             </div>
 
-            <!-- Friends List -->
-            <div>
-                <h3 class="text-lg font-bold mb-4" id="t-friends-list">Friends List</h3>
-                <div id="friends-list-container" class="space-y-3">
-                    <!-- Friends will be loaded here -->
+            <!-- Requests Tab -->
+            <div id="friends-content-requests" class="hidden">
+                <div id="requests-list-container" class="space-y-3">
+                    <!-- Requests will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Find Users Tab -->
+            <div id="friends-content-find" class="hidden">
+                <div class="mb-4">
+                    <input type="text" id="user-search-input" placeholder="Search by email or Minecraft name..."
+                        class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500 transition-colors">
+                </div>
+                <div id="users-list-container" class="space-y-3 max-h-96 overflow-y-auto">
+                    <!-- Users will be loaded here -->
                 </div>
             </div>
         </div>
@@ -1716,7 +1736,7 @@
             if (!currentUser) return;
             document.getElementById('friends-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            loadFriends();
+            switchFriendsTab('friends');
         };
 
         window.closeFriendsModal = () => {
@@ -1724,46 +1744,139 @@
             document.body.style.overflow = 'auto';
         };
 
-        window.addFriend = async () => {
+        window.switchFriendsTab = (tab) => {
+            // Update tabs
+            ['friends', 'requests', 'find'].forEach(t => {
+                const tabBtn = document.getElementById(`friends-tab-${t}`);
+                const content = document.getElementById(`friends-content-${t}`);
+                if (t === tab) {
+                    tabBtn.classList.add('border-blue-500', 'text-blue-400');
+                    tabBtn.classList.remove('border-transparent', 'text-slate-500');
+                    content.classList.remove('hidden');
+                } else {
+                    tabBtn.classList.remove('border-blue-500', 'text-blue-400');
+                    tabBtn.classList.add('border-transparent', 'text-slate-500');
+                    content.classList.add('hidden');
+                }
+            });
+
+            // Load content
+            if (tab === 'friends') loadFriends();
+            else if (tab === 'requests') loadRequests();
+            else if (tab === 'find') loadAllUsers();
+        };
+
+        window.sendFriendRequest = async (toEmail) => {
             if (!currentUser) return;
-            const friendEmail = document.getElementById('friend-email-input').value.trim();
-            if (!friendEmail) {
-                alert('Please enter an email address');
-                return;
-            }
-            if (friendEmail === currentUser.email) {
-                alert('You cannot add yourself as a friend');
-                return;
-            }
-
+            
+            // Show email visibility dialog
+            const showEmail = confirm('Do you want to show your email to this user?\\n\\nYes = Show email\\nNo = Hide email');
+            
             try {
-                // Check if user exists
-                const userDoc = await getDoc(doc(db, 'users', friendEmail));
-                if (!userDoc.exists()) {
-                    alert('User not found');
-                    return;
-                }
-
-                // Add to friends list
-                const myFriendsRef = doc(db, 'users', currentUser.email);
-                const myData = await getDoc(myFriendsRef);
-                const currentFriends = myData.data()?.friends || [];
+                const myRef = doc(db, 'users', currentUser.email);
+                const theirRef = doc(db, 'users', toEmail);
                 
-                if (currentFriends.includes(friendEmail)) {
-                    alert('Already in your friends list');
-                    return;
-                }
-
-                await updateDoc(myFriendsRef, {
-                    friends: [...currentFriends, friendEmail]
+                const myData = await getDoc(myRef);
+                const theirData = await getDoc(theirRef);
+                
+                const mySentRequests = myData.data()?.friend_requests_sent || [];
+                const theirReceivedRequests = theirData.data()?.friend_requests_received || [];
+                
+                // Add to my sent requests
+                await updateDoc(myRef, {
+                    friend_requests_sent: [...mySentRequests, {
+                        to: toEmail,
+                        showMyEmail: showEmail,
+                        timestamp: Date.now()
+                    }]
                 });
-
-                document.getElementById('friend-email-input').value = '';
-                alert('Friend added successfully!');
-                loadFriends();
+                
+                // Add to their received requests
+                await updateDoc(theirRef, {
+                    friend_requests_received: [...theirReceivedRequests, {
+                        from: currentUser.email,
+                        showTheirEmail: showEmail,
+                        timestamp: Date.now()
+                    }]
+                });
+                
+                alert('Friend request sent!');
+                loadAllUsers();
             } catch (error) {
-                console.error('Error adding friend:', error);
-                alert('Failed to add friend');
+                console.error('Error sending request:', error);
+                alert('Failed to send friend request');
+            }
+        };
+
+        window.acceptFriendRequest = async (fromEmail, showMyEmailToThem) => {
+            if (!currentUser) return;
+            
+            // Ask if they want to show their email
+            const showEmail = confirm('Do you want to show your email to this user?\\n\\nYes = Show email\\nNo = Hide email');
+            
+            try {
+                const myRef = doc(db, 'users', currentUser.email);
+                const theirRef = doc(db, 'users', fromEmail);
+                
+                const myData = await getDoc(myRef);
+                const theirData = await getDoc(theirRef);
+                
+                // Add to friends lists
+                const myFriends = myData.data()?.friends || [];
+                const theirFriends = theirData.data()?.friends || [];
+                
+                await updateDoc(myRef, {
+                    friends: [...myFriends, {
+                        email: fromEmail,
+                        showMyEmail: showEmail,
+                        showTheirEmail: showMyEmailToThem,
+                        timestamp: Date.now()
+                    }],
+                    friend_requests_received: (myData.data()?.friend_requests_received || []).filter(r => r.from !== fromEmail)
+                });
+                
+                await updateDoc(theirRef, {
+                    friends: [...theirFriends, {
+                        email: currentUser.email,
+                        showMyEmail: showMyEmailToThem,
+                        showTheirEmail: showEmail,
+                        timestamp: Date.now()
+                    }],
+                    friend_requests_sent: (theirData.data()?.friend_requests_sent || []).filter(r => r.to !== currentUser.email)
+                });
+                
+                alert('Friend request accepted!');
+                loadRequests();
+            } catch (error) {
+                console.error('Error accepting request:', error);
+                alert('Failed to accept friend request');
+            }
+        };
+
+        window.declineFriendRequest = async (fromEmail) => {
+            if (!currentUser) return;
+            if (!confirm('Decline this friend request?')) return;
+            
+            try {
+                const myRef = doc(db, 'users', currentUser.email);
+                const theirRef = doc(db, 'users', fromEmail);
+                
+                const myData = await getDoc(myRef);
+                const theirData = await getDoc(theirRef);
+                
+                await updateDoc(myRef, {
+                    friend_requests_received: (myData.data()?.friend_requests_received || []).filter(r => r.from !== fromEmail)
+                });
+                
+                await updateDoc(theirRef, {
+                    friend_requests_sent: (theirData.data()?.friend_requests_sent || []).filter(r => r.to !== currentUser.email)
+                });
+                
+                alert('Friend request declined');
+                loadRequests();
+            } catch (error) {
+                console.error('Error declining request:', error);
+                alert('Failed to decline friend request');
             }
         };
 
@@ -1772,12 +1885,18 @@
             if (!confirm(`Remove ${friendEmail} from friends?`)) return;
 
             try {
-                const myFriendsRef = doc(db, 'users', currentUser.email);
-                const myData = await getDoc(myFriendsRef);
-                const currentFriends = myData.data()?.friends || [];
+                const myRef = doc(db, 'users', currentUser.email);
+                const theirRef = doc(db, 'users', friendEmail);
                 
-                await updateDoc(myFriendsRef, {
-                    friends: currentFriends.filter(email => email !== friendEmail)
+                const myData = await getDoc(myRef);
+                const theirData = await getDoc(theirRef);
+                
+                await updateDoc(myRef, {
+                    friends: (myData.data()?.friends || []).filter(f => f.email !== friendEmail)
+                });
+                
+                await updateDoc(theirRef, {
+                    friends: (theirData.data()?.friends || []).filter(f => f.email !== currentUser.email)
                 });
 
                 alert('Friend removed');
@@ -1796,20 +1915,21 @@
 
             try {
                 const myData = await getDoc(doc(db, 'users', currentUser.email));
-                const friendEmails = myData.data()?.friends || [];
+                const friends = myData.data()?.friends || [];
 
-                if (friendEmails.length === 0) {
-                    container.innerHTML = '<div class="text-slate-500 text-center py-8">No friends yet. Add your first friend!</div>';
+                if (friends.length === 0) {
+                    container.innerHTML = '<div class="text-slate-500 text-center py-8">No friends yet. Find users to add!</div>';
                     return;
                 }
 
                 container.innerHTML = '';
-                for (const friendEmail of friendEmails) {
+                for (const friend of friends) {
                     try {
-                        const friendDoc = await getDoc(doc(db, 'users', friendEmail));
+                        const friendDoc = await getDoc(doc(db, 'users', friend.email));
                         if (friendDoc.exists()) {
                             const friendData = friendDoc.data();
                             const mcName = friendData.mc_name || 'Unknown';
+                            const showEmail = friend.showTheirEmail;
                             
                             const friendCard = document.createElement('div');
                             friendCard.className = 'glass p-4 flex items-center justify-between border border-white/5';
@@ -1818,10 +1938,10 @@
                                     <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                     <div>
                                         <div class="font-bold">${mcName}</div>
-                                        <div class="text-xs text-slate-500">${friendEmail}</div>
+                                        <div class="text-xs text-slate-500">${showEmail ? friend.email : 'Email hidden'}</div>
                                     </div>
                                 </div>
-                                <button onclick="removeFriend('${friendEmail}')" 
+                                <button onclick="removeFriend('${friend.email}')" 
                                     class="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -1831,12 +1951,203 @@
                             container.appendChild(friendCard);
                         }
                     } catch (err) {
-                        console.error('Error loading friend:', friendEmail, err);
+                        console.error('Error loading friend:', friend.email, err);
                     }
                 }
             } catch (error) {
                 console.error('Error loading friends:', error);
                 container.innerHTML = '<div class="text-red-400 text-center py-8">Failed to load friends</div>';
+            }
+        }
+
+        async function loadRequests() {
+            if (!currentUser) return;
+            
+            const container = document.getElementById('requests-list-container');
+            const countBadge = document.getElementById('requests-count');
+            container.innerHTML = '<div class="text-slate-500 text-center py-8">Loading...</div>';
+
+            try {
+                const myData = await getDoc(doc(db, 'users', currentUser.email));
+                const received = myData.data()?.friend_requests_received || [];
+                const sent = myData.data()?.friend_requests_sent || [];
+
+                if (received.length > 0) {
+                    countBadge.textContent = received.length;
+                    countBadge.classList.remove('hidden');
+                } else {
+                    countBadge.classList.add('hidden');
+                }
+
+                if (received.length === 0 && sent.length === 0) {
+                    container.innerHTML = '<div class="text-slate-500 text-center py-8">No friend requests</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                
+                // Received requests
+                if (received.length > 0) {
+                    const receivedTitle = document.createElement('h4');
+                    receivedTitle.className = 'text-sm font-bold text-slate-400 mb-3';
+                    receivedTitle.textContent = 'Received Requests';
+                    container.appendChild(receivedTitle);
+                }
+                
+                for (const request of received) {
+                    try {
+                        const userDoc = await getDoc(doc(db, 'users', request.from));
+                        if (userDoc.exists()) {
+                            const userData = userDoc.data();
+                            const mcName = userData.mc_name || 'Unknown';
+                            const showEmail = request.showTheirEmail;
+                            
+                            const card = document.createElement('div');
+                            card.className = 'glass p-4 flex items-center justify-between border border-white/5';
+                            card.innerHTML = `
+                                <div class="flex items-center gap-3">
+                                    <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
+                                    <div>
+                                        <div class="font-bold">${mcName}</div>
+                                        <div class="text-xs text-slate-500">${showEmail ? request.from : 'Email hidden by user'}</div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="acceptFriendRequest('${request.from}', ${request.showTheirEmail})" 
+                                        class="px-4 py-2 bg-green-600 rounded-lg font-bold hover:bg-green-500 transition-colors text-sm">
+                                        Accept
+                                    </button>
+                                    <button onclick="declineFriendRequest('${request.from}')" 
+                                        class="px-4 py-2 bg-red-600 rounded-lg font-bold hover:bg-red-500 transition-colors text-sm">
+                                        Decline
+                                    </button>
+                                </div>
+                            `;
+                            container.appendChild(card);
+                        }
+                    } catch (err) {
+                        console.error('Error loading request:', err);
+                    }
+                }
+                
+                // Sent requests
+                if (sent.length > 0) {
+                    const sentTitle = document.createElement('h4');
+                    sentTitle.className = 'text-sm font-bold text-slate-400 mb-3 mt-6';
+                    sentTitle.textContent = 'Sent Requests';
+                    container.appendChild(sentTitle);
+                    
+                    for (const request of sent) {
+                        try {
+                            const userDoc = await getDoc(doc(db, 'users', request.to));
+                            if (userDoc.exists()) {
+                                const userData = userDoc.data();
+                                const mcName = userData.mc_name || 'Unknown';
+                                
+                                const card = document.createElement('div');
+                                card.className = 'glass p-4 flex items-center justify-between border border-white/5';
+                                card.innerHTML = `
+                                    <div class="flex items-center gap-3">
+                                        <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
+                                        <div>
+                                            <div class="font-bold">${mcName}</div>
+                                            <div class="text-xs text-slate-500">Request pending...</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-yellow-400 text-sm font-bold">Pending</div>
+                                `;
+                                container.appendChild(card);
+                            }
+                        } catch (err) {
+                            console.error('Error loading sent request:', err);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                container.innerHTML = '<div class="text-red-400 text-center py-8">Failed to load requests</div>';
+            }
+        }
+
+        async function loadAllUsers() {
+            if (!currentUser) return;
+            
+            const container = document.getElementById('users-list-container');
+            const searchInput = document.getElementById('user-search-input');
+            
+            container.innerHTML = '<div class="text-slate-500 text-center py-8">Loading...</div>';
+
+            try {
+                const usersSnapshot = await getDocs(collection(db, 'users'));
+                const myData = await getDoc(doc(db, 'users', currentUser.email));
+                const myFriends = (myData.data()?.friends || []).map(f => f.email);
+                const sentRequests = (myData.data()?.friend_requests_sent || []).map(r => r.to);
+                const receivedRequests = (myData.data()?.friend_requests_received || []).map(r => r.from);
+                
+                let users = [];
+                usersSnapshot.forEach(doc => {
+                    if (doc.id !== currentUser.email) {
+                        users.push({ email: doc.id, ...doc.data() });
+                    }
+                });
+
+                const renderUsers = (filterText = '') => {
+                    const filtered = users.filter(user => {
+                        const searchTerm = filterText.toLowerCase();
+                        const mcName = (user.mc_name || '').toLowerCase();
+                        const email = user.email.toLowerCase();
+                        return mcName.includes(searchTerm) || email.includes(searchTerm);
+                    });
+
+                    container.innerHTML = '';
+                    
+                    if (filtered.length === 0) {
+                        container.innerHTML = '<div class="text-slate-500 text-center py-8">No users found</div>';
+                        return;
+                    }
+
+                    filtered.forEach(user => {
+                        const mcName = user.mc_name || 'Unknown';
+                        const isFriend = myFriends.includes(user.email);
+                        const requestSent = sentRequests.includes(user.email);
+                        const requestReceived = receivedRequests.includes(user.email);
+                        
+                        let statusHtml = '';
+                        if (isFriend) {
+                            statusHtml = '<div class="text-green-400 text-sm font-bold">Friends</div>';
+                        } else if (requestSent) {
+                            statusHtml = '<div class="text-yellow-400 text-sm font-bold">Request Sent</div>';
+                        } else if (requestReceived) {
+                            statusHtml = '<div class="text-blue-400 text-sm font-bold">Request Received</div>';
+                        } else {
+                            statusHtml = `<button onclick="sendFriendRequest('${user.email}')" 
+                                class="px-4 py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-500 transition-colors text-sm">
+                                Add Friend
+                            </button>`;
+                        }
+                        
+                        const card = document.createElement('div');
+                        card.className = 'glass p-4 flex items-center justify-between border border-white/5';
+                        card.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
+                                <div>
+                                    <div class="font-bold">${mcName}</div>
+                                    <div class="text-xs text-slate-500">${isFriend ? user.email : 'Email hidden'}</div>
+                                </div>
+                            </div>
+                            ${statusHtml}
+                        `;
+                        container.appendChild(card);
+                    });
+                };
+
+                searchInput.oninput = (e) => renderUsers(e.target.value);
+                renderUsers();
+                
+            } catch (error) {
+                console.error('Error loading users:', error);
+                container.innerHTML = '<div class="text-red-400 text-center py-8">Failed to load users</div>';
             }
         }
 
