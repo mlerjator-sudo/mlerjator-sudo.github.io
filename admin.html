@@ -11,18 +11,52 @@
         rel="stylesheet">
     <style>
         :root[data-theme="dark"] {
+            --bg-general: url('https://i.imgur.com/bdomv6b.png');
+            --bg-convenience: url('https://i.imgur.com/tkTVHx6.png');
+            --bg-food: url('https://i.imgur.com/4TnRt4u.png');
+            --bg-worldgen: url('https://i.imgur.com/bV0zPVK.png');
+            --bg-adventure: url('https://i.imgur.com/vQseaHR.png');
+            --bg-transportation: url('https://i.imgur.com/2dE1gIf.png');
+            --bg-horror: url('https://i.imgur.com/XQ6SARM.png');
+            --bg-decoration: url('https://i.imgur.com/Q4hcllF.png');
+            --bg-economy: url('https://i.imgur.com/BJShHn0.png');
+            --bg-gamemechanics: url('https://i.imgur.com/VqxjZYc.png');
+            --bg-library: url('https://i.imgur.com/LonhnG6.png');
+            --bg-magic: url('https://i.imgur.com/bhmccZ4.png');
+            --bg-management: url('https://i.imgur.com/v5Ss1vN.png');
+            --bg-minigame: url('https://i.imgur.com/RtvJW8Q.png');
             --bg-equipment: url('https://i.imgur.com/8xMC7DI.png');
-            --bg-time: url('https://i.imgur.com/bV0zPVK.png');
-            --bg-difficulty: url('https://i.imgur.com/2dE1gIf.png');
+            --bg-mobs: url('https://i.imgur.com/HkKstM6.png');
+            --bg-optimization: url('https://i.imgur.com/gVvH3xN.png');
+            --bg-social: url('https://i.imgur.com/xbaQlSW.png');
+            --bg-storage: url('https://i.imgur.com/AjoAcKJ.png');
+            --bg-technology: url('https://i.imgur.com/mOn0jfR.png');
             --bg-primary: #0f172a;
             --text-primary: #f8fafc;
             --gradient-overlay: rgba(15, 23, 42, 0.98);
         }
 
         :root[data-theme="light"] {
+            --bg-general: url('https://i.imgur.com/UVF1O71.png');
+            --bg-convenience: url('https://i.imgur.com/egPJEIy.png');
+            --bg-food: url('https://i.imgur.com/bshbJZN.png');
+            --bg-worldgen: url('https://i.imgur.com/FKnjOph.png');
+            --bg-adventure: url('Category%20Theme/Adventure/white.png');
+            --bg-transportation: url('https://i.imgur.com/MwC3J8v.png');
+            --bg-horror: url('https://i.imgur.com/1p6lwci.png');
+            --bg-decoration: url('https://i.imgur.com/VsOr7yM.png');
+            --bg-economy: url('https://i.imgur.com/aXJFQOK.png');
+            --bg-gamemechanics: url('https://i.imgur.com/9qlwxkW.png');
+            --bg-library: url('https://i.imgur.com/9axqQU9.png');
+            --bg-magic: url('https://i.imgur.com/LlIwrdE.png');
+            --bg-management: url('https://i.imgur.com/aFQkvpT.png');
+            --bg-minigame: url('https://i.imgur.com/46rmCIx.png');
             --bg-equipment: url('https://i.imgur.com/m5J4zkN.png');
-            --bg-time: url('https://i.imgur.com/FKnjOph.png');
-            --bg-difficulty: url('https://i.imgur.com/1p6lwci.png');
+            --bg-mobs: url('https://i.imgur.com/CXN3MnX.png');
+            --bg-optimization: url('https://i.imgur.com/gryd6LR.png');
+            --bg-social: url('https://i.imgur.com/d8CggAE.png');
+            --bg-storage: url('https://i.imgur.com/GoJD0yA.png');
+            --bg-technology: url('https://i.imgur.com/VGYKLCU.png');
             --bg-primary: #f1f5f9;
             --text-primary: #0f172a;
             --gradient-overlay: rgba(241, 245, 249, 0.98);
@@ -70,26 +104,84 @@
         }
 
         .card-with-bg,
+        .card-with-bg-general,
+        .card-with-bg-convenience,
+        .card-with-bg-food,
+        .card-with-bg-worldgen,
+        .card-with-bg-adventure,
+        .card-with-bg-transportation,
+        .card-with-bg-horror,
+        .card-with-bg-decoration,
+        .card-with-bg-economy,
+        .card-with-bg-gamemechanics,
+        .card-with-bg-library,
+        .card-with-bg-magic,
+        .card-with-bg-management,
+        .card-with-bg-minigame,
         .card-with-bg-equipment,
-        .card-with-bg-time,
-        .card-with-bg-difficulty {
+        .card-with-bg-mobs,
+        .card-with-bg-optimization,
+        .card-with-bg-social,
+        .card-with-bg-storage,
+        .card-with-bg-technology {
             position: relative;
             overflow: hidden;
         }
 
         .card-with-bg::before,
+        .card-with-bg-general::before,
+        .card-with-bg-convenience::before,
+        .card-with-bg-food::before,
+        .card-with-bg-worldgen::before,
+        .card-with-bg-adventure::before,
+        .card-with-bg-transportation::before,
+        .card-with-bg-horror::before,
+        .card-with-bg-decoration::before,
+        .card-with-bg-economy::before,
+        .card-with-bg-gamemechanics::before,
+        .card-with-bg-library::before,
+        .card-with-bg-magic::before,
+        .card-with-bg-management::before,
+        .card-with-bg-minigame::before,
         .card-with-bg-equipment::before,
-        .card-with-bg-time::before,
-        .card-with-bg-difficulty::before {
+        .card-with-bg-mobs::before,
+        .card-with-bg-optimization::before,
+        .card-with-bg-social::before,
+        .card-with-bg-storage::before,
+        .card-with-bg-technology::before {
             content: "";
             position: absolute;
             inset: 0;
             background-size: cover;
-            background-position: center;
+            background-position: top center;
+            background-repeat: no-repeat;
+            border-radius: 24px;
             z-index: 0;
+            pointer-events: none;
         }
 
-        :root[data-theme="dark"] .card-with-bg-equipment::before {
+        /* Dark theme gradients for all categories */
+        :root[data-theme="dark"] .card-with-bg::before,
+        :root[data-theme="dark"] .card-with-bg-general::before,
+        :root[data-theme="dark"] .card-with-bg-convenience::before,
+        :root[data-theme="dark"] .card-with-bg-food::before,
+        :root[data-theme="dark"] .card-with-bg-worldgen::before,
+        :root[data-theme="dark"] .card-with-bg-adventure::before,
+        :root[data-theme="dark"] .card-with-bg-transportation::before,
+        :root[data-theme="dark"] .card-with-bg-horror::before,
+        :root[data-theme="dark"] .card-with-bg-decoration::before,
+        :root[data-theme="dark"] .card-with-bg-economy::before,
+        :root[data-theme="dark"] .card-with-bg-gamemechanics::before,
+        :root[data-theme="dark"] .card-with-bg-library::before,
+        :root[data-theme="dark"] .card-with-bg-magic::before,
+        :root[data-theme="dark"] .card-with-bg-management::before,
+        :root[data-theme="dark"] .card-with-bg-minigame::before,
+        :root[data-theme="dark"] .card-with-bg-equipment::before,
+        :root[data-theme="dark"] .card-with-bg-mobs::before,
+        :root[data-theme="dark"] .card-with-bg-optimization::before,
+        :root[data-theme="dark"] .card-with-bg-social::before,
+        :root[data-theme="dark"] .card-with-bg-storage::before,
+        :root[data-theme="dark"] .card-with-bg-technology::before {
             background-image: 
                 linear-gradient(to bottom, 
                     rgba(15, 23, 42, 0) 0%, 
@@ -97,11 +189,31 @@
                     rgba(15, 23, 42, 0.8) 50%,
                     rgba(15, 23, 42, 0.98) 70%,
                     rgba(15, 23, 42, 1) 100%
-                ),
-                var(--bg-equipment);
+                );
         }
 
-        :root[data-theme="light"] .card-with-bg-equipment::before {
+        /* Light theme gradients for all categories */
+        :root[data-theme="light"] .card-with-bg::before,
+        :root[data-theme="light"] .card-with-bg-general::before,
+        :root[data-theme="light"] .card-with-bg-convenience::before,
+        :root[data-theme="light"] .card-with-bg-food::before,
+        :root[data-theme="light"] .card-with-bg-worldgen::before,
+        :root[data-theme="light"] .card-with-bg-adventure::before,
+        :root[data-theme="light"] .card-with-bg-transportation::before,
+        :root[data-theme="light"] .card-with-bg-horror::before,
+        :root[data-theme="light"] .card-with-bg-decoration::before,
+        :root[data-theme="light"] .card-with-bg-economy::before,
+        :root[data-theme="light"] .card-with-bg-gamemechanics::before,
+        :root[data-theme="light"] .card-with-bg-library::before,
+        :root[data-theme="light"] .card-with-bg-magic::before,
+        :root[data-theme="light"] .card-with-bg-management::before,
+        :root[data-theme="light"] .card-with-bg-minigame::before,
+        :root[data-theme="light"] .card-with-bg-equipment::before,
+        :root[data-theme="light"] .card-with-bg-mobs::before,
+        :root[data-theme="light"] .card-with-bg-optimization::before,
+        :root[data-theme="light"] .card-with-bg-social::before,
+        :root[data-theme="light"] .card-with-bg-storage::before,
+        :root[data-theme="light"] .card-with-bg-technology::before {
             background-image: 
                 linear-gradient(to bottom, 
                     rgba(241, 245, 249, 0) 0%, 
@@ -109,62 +221,75 @@
                     rgba(241, 245, 249, 0.8) 50%,
                     rgba(241, 245, 249, 0.98) 70%,
                     rgba(241, 245, 249, 1) 100%
-                ),
-                var(--bg-equipment);
+                );
         }
 
-        :root[data-theme="dark"] .card-with-bg-time::before {
-            background-image: 
-                linear-gradient(to bottom, 
-                    rgba(15, 23, 42, 0) 0%, 
-                    rgba(15, 23, 42, 0.3) 25%,
-                    rgba(15, 23, 42, 0.8) 50%,
-                    rgba(15, 23, 42, 0.98) 70%,
-                    rgba(15, 23, 42, 1) 100%
-                ),
-                var(--bg-time);
-        }
+        /* Category-specific backgrounds */
+        .card-with-bg::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-general); }
+        .card-with-bg-general::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-general); }
+        .card-with-bg-convenience::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-convenience); }
+        .card-with-bg-food::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-food); }
+        .card-with-bg-worldgen::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-worldgen); }
+        .card-with-bg-adventure::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-adventure); }
+        .card-with-bg-transportation::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-transportation); }
+        .card-with-bg-horror::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-horror); }
+        .card-with-bg-decoration::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-decoration); }
+        .card-with-bg-economy::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-economy); }
+        .card-with-bg-gamemechanics::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-gamemechanics); }
+        .card-with-bg-library::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-library); }
+        .card-with-bg-magic::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-magic); }
+        .card-with-bg-management::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-management); }
+        .card-with-bg-minigame::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-minigame); }
+        .card-with-bg-equipment::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-equipment); }
+        .card-with-bg-mobs::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-mobs); }
+        .card-with-bg-optimization::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-optimization); }
+        .card-with-bg-social::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-social); }
+        .card-with-bg-storage::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-storage); }
+        .card-with-bg-technology::before { background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.3) 25%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 1) 100%), var(--bg-technology); }
 
-        :root[data-theme="light"] .card-with-bg-time::before {
-            background-image: 
-                linear-gradient(to bottom, 
-                    rgba(241, 245, 249, 0) 0%, 
-                    rgba(241, 245, 249, 0.3) 25%,
-                    rgba(241, 245, 249, 0.8) 50%,
-                    rgba(241, 245, 249, 0.98) 70%,
-                    rgba(241, 245, 249, 1) 100%
-                ),
-                var(--bg-time);
-        }
-
-        :root[data-theme="dark"] .card-with-bg-difficulty::before {
-            background-image: 
-                linear-gradient(to bottom, 
-                    rgba(15, 23, 42, 0) 0%, 
-                    rgba(15, 23, 42, 0.3) 25%,
-                    rgba(15, 23, 42, 0.8) 50%,
-                    rgba(15, 23, 42, 0.98) 70%,
-                    rgba(15, 23, 42, 1) 100%
-                ),
-                var(--bg-difficulty);
-        }
-
-        :root[data-theme="light"] .card-with-bg-difficulty::before {
-            background-image: 
-                linear-gradient(to bottom, 
-                    rgba(241, 245, 249, 0) 0%, 
-                    rgba(241, 245, 249, 0.3) 25%,
-                    rgba(241, 245, 249, 0.8) 50%,
-                    rgba(241, 245, 249, 0.98) 70%,
-                    rgba(241, 245, 249, 1) 100%
-                ),
-                var(--bg-difficulty);
-        }
+        :root[data-theme="light"] .card-with-bg::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-general); }
+        :root[data-theme="light"] .card-with-bg-general::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-general); }
+        :root[data-theme="light"] .card-with-bg-convenience::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-convenience); }
+        :root[data-theme="light"] .card-with-bg-food::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-food); }
+        :root[data-theme="light"] .card-with-bg-worldgen::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-worldgen); }
+        :root[data-theme="light"] .card-with-bg-adventure::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-adventure); }
+        :root[data-theme="light"] .card-with-bg-transportation::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-transportation); }
+        :root[data-theme="light"] .card-with-bg-horror::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-horror); }
+        :root[data-theme="light"] .card-with-bg-decoration::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-decoration); }
+        :root[data-theme="light"] .card-with-bg-economy::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-economy); }
+        :root[data-theme="light"] .card-with-bg-gamemechanics::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-gamemechanics); }
+        :root[data-theme="light"] .card-with-bg-library::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-library); }
+        :root[data-theme="light"] .card-with-bg-magic::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-magic); }
+        :root[data-theme="light"] .card-with-bg-management::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-management); }
+        :root[data-theme="light"] .card-with-bg-minigame::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-minigame); }
+        :root[data-theme="light"] .card-with-bg-equipment::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-equipment); }
+        :root[data-theme="light"] .card-with-bg-mobs::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-mobs); }
+        :root[data-theme="light"] .card-with-bg-optimization::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-optimization); }
+        :root[data-theme="light"] .card-with-bg-social::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-social); }
+        :root[data-theme="light"] .card-with-bg-storage::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-storage); }
+        :root[data-theme="light"] .card-with-bg-technology::before { background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0) 0%, rgba(241, 245, 249, 0.3) 25%, rgba(241, 245, 249, 0.8) 50%, rgba(241, 245, 249, 0.98) 70%, rgba(241, 245, 249, 1) 100%), var(--bg-technology); }
 
         .card-with-bg > *,
+        .card-with-bg-general > *,
+        .card-with-bg-convenience > *,
+        .card-with-bg-food > *,
+        .card-with-bg-worldgen > *,
+        .card-with-bg-adventure > *,
+        .card-with-bg-transportation > *,
+        .card-with-bg-horror > *,
+        .card-with-bg-decoration > *,
+        .card-with-bg-economy > *,
+        .card-with-bg-gamemechanics > *,
+        .card-with-bg-library > *,
+        .card-with-bg-magic > *,
+        .card-with-bg-management > *,
+        .card-with-bg-minigame > *,
         .card-with-bg-equipment > *,
-        .card-with-bg-time > *,
-        .card-with-bg-difficulty > * {
+        .card-with-bg-mobs > *,
+        .card-with-bg-optimization > *,
+        .card-with-bg-social > *,
+        .card-with-bg-storage > *,
+        .card-with-bg-technology > * {
             position: relative;
             z-index: 1;
         }
@@ -821,6 +946,9 @@
             localStorage.setItem('f34_admin_theme', newTheme);
             updateThemeIcon(newTheme);
         }
+
+        // 전역 스코프에 노출
+        window.toggleTheme = toggleTheme;
 
         function updateThemeIcon(theme) {
             const sunIcon = document.getElementById('sun-icon');
