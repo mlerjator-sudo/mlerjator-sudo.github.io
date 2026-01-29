@@ -989,7 +989,7 @@
         }
 
         function initTheme() {
-            const savedTheme = localStorage.getItem('f34_admin_theme') || 'dark';
+            const savedTheme = localStorage.getItem('f34_admin_theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
             const checkbox = document.getElementById('theme-toggle');
             if (checkbox) {
@@ -1227,8 +1227,9 @@
                 let configsHtml = '';
                 snap.forEach(doc => {
                     const data = doc.data();
+                    const category = data.category || 'general';
                     configsHtml += `
-                        <div class="glass p-4 flex justify-between items-center border border-white/5">
+                        <div class="glass p-4 flex justify-between items-center border border-white/5 card-${category}">
                             <div>
                                 <div class="font-bold">${data.name || 'Untitled'}</div>
                                 <div class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">${data.status}</div>
@@ -1266,9 +1267,12 @@
                                 </div>
                                 ${isBanned ? `<p class="text-red-400 text-xs font-bold">${t.banStatus} ${banExpiry} <button onclick="unbanPlayer('${email}')" class="ml-2 underline">${t.playerUnban}</button></p>` : `<p class="text-green-400 text-xs font-bold">${t.activeStatus}</p>`}
                             </div>
-                            <div class="flex gap-3">
-                                <button onclick="warnPlayer('${email}')" class="flex-1 py-3 bg-yellow-600/20 text-yellow-400 rounded-xl font-bold hover:bg-yellow-600/30 transition-colors">${t.playerWarn} (${player.warnings || 0})</button>
-                                <button onclick="deletePlayer('${email}')" class="flex-1 py-3 bg-red-600/20 text-red-400 rounded-xl font-bold hover:bg-red-600/30 transition-colors">${t.playerDelete}</button>
+                            <div class="glass p-6 border border-white/5">
+                                <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">빠른 작업</h3>
+                                <div class="flex gap-3">
+                                    <button onclick="warnPlayer('${email}')" class="flex-1 py-3 bg-yellow-600/20 text-yellow-400 rounded-xl font-bold hover:bg-yellow-600/30 transition-colors">${t.playerWarn} (${player.warnings || 0})</button>
+                                    <button onclick="deletePlayer('${email}')" class="flex-1 py-3 bg-red-600/20 text-red-400 rounded-xl font-bold hover:bg-red-600/30 transition-colors">${t.playerDelete}</button>
+                                </div>
                             </div>
                             <div class="glass p-6 border border-white/5">
                                 <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">${t.playerGrade}</h3>
