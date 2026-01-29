@@ -712,25 +712,25 @@
         let filteredConfigs = [];
 
         const categoryIcons = {
-            'General': '?��',
-            'Equipment': '?���?,
-            'Food': '?��',
-            'Magic': '?��',
-            'Management': '?�️',
-            'Technology': '?��',
-            'Transportation': '?��',
-            'Adventure': '?���?,
-            'Horror': '?��',
-            'Social': '?��',
-            'Storage': '?��',
-            'Mobs': '?��',
-            'Optimization': '??,
-            'Minigame': '?��',
-            'Library': '?��',
-            'Decoration': '?��',
-            'Economy': '?��',
-            'Convenience': '?��',
-            'World Gen': '?��'
+            'General': '📦',
+            'Equipment': '⚔️',
+            'Food': '🍗',
+            'Magic': '✨',
+            'Management': '📋️',
+            'Technology': '⚙️',
+            'Transportation': '🚂',
+            'Adventure': '🗺️',
+            'Horror': '👻',
+            'Social': '👥',
+            'Storage': '📦',
+            'Mobs': '🐉',
+            'Optimization': '⚡',
+            'Minigame': '🎮',
+            'Library': '📚',
+            'Decoration': '🎨',
+            'Economy': '💰',
+            'Convenience': '🔧',
+            'World Gen': '🌍'
         };
 
         function normalizeCategory(cat) {
@@ -1123,12 +1123,16 @@
                     const errorEl = document.getElementById('login-error');
                     if (errorEl) errorEl.classList.add('hidden');
                     try {
+                        console.log("[F34 Admin] Attempting Google Sign-In...");
                         await signInWithPopup(auth, provider).catch(async (err) => {
+                            console.log("[F34 Admin] Popup error:", err.code);
                             if (['auth/popup-blocked', 'auth/popup-closed-by-user', 'auth/cancelled-popup-request', 'auth/internal-error'].includes(err.code)) {
+                                console.log("[F34 Admin] Fallback to redirect...");
                                 await signInWithRedirect(auth, provider);
                             } else throw err;
                         });
                     } catch (e) {
+                        console.error("[F34 Admin] Login Error:", e);
                         if (errorEl) {
                             errorEl.textContent = "Login failed: " + e.message;
                             errorEl.classList.remove('hidden');
