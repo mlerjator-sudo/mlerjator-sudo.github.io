@@ -260,6 +260,65 @@
             z-index: 1;
         }
 
+        /* Player modal config cards with backgrounds */
+        #player-modal .card-with-bg-general,
+        #player-modal .card-with-bg-convenience,
+        #player-modal .card-with-bg-food,
+        #player-modal .card-with-bg-worldgen,
+        #player-modal .card-with-bg-adventure,
+        #player-modal .card-with-bg-transportation,
+        #player-modal .card-with-bg-horror,
+        #player-modal .card-with-bg-decoration,
+        #player-modal .card-with-bg-economy,
+        #player-modal .card-with-bg-gamemechanics,
+        #player-modal .card-with-bg-library,
+        #player-modal .card-with-bg-magic,
+        #player-modal .card-with-bg-management,
+        #player-modal .card-with-bg-minigame,
+        #player-modal .card-with-bg-equipment,
+        #player-modal .card-with-bg-mobs,
+        #player-modal .card-with-bg-optimization,
+        #player-modal .card-with-bg-social,
+        #player-modal .card-with-bg-storage,
+        #player-modal .card-with-bg-technology {
+            position: relative;
+            background: transparent !important;
+            overflow: hidden;
+        }
+
+        #player-modal .card-with-bg-general::before,
+        #player-modal .card-with-bg-convenience::before,
+        #player-modal .card-with-bg-food::before,
+        #player-modal .card-with-bg-worldgen::before,
+        #player-modal .card-with-bg-adventure::before,
+        #player-modal .card-with-bg-transportation::before,
+        #player-modal .card-with-bg-horror::before,
+        #player-modal .card-with-bg-decoration::before,
+        #player-modal .card-with-bg-economy::before,
+        #player-modal .card-with-bg-gamemechanics::before,
+        #player-modal .card-with-bg-library::before,
+        #player-modal .card-with-bg-magic::before,
+        #player-modal .card-with-bg-management::before,
+        #player-modal .card-with-bg-minigame::before,
+        #player-modal .card-with-bg-equipment::before,
+        #player-modal .card-with-bg-mobs::before,
+        #player-modal .card-with-bg-optimization::before,
+        #player-modal .card-with-bg-social::before,
+        #player-modal .card-with-bg-storage::before,
+        #player-modal .card-with-bg-technology::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            border-radius: 24px;
+        }
+
         /* Minecraft switch */
         .minecraft-switch {
             font-size: 17px;
