@@ -695,6 +695,15 @@
                         My Configs
                     </button>
 
+                    <!-- Friends Button -->
+                    <button id="friends-btn" onclick="openFriendsModal()"
+                        class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all hidden text-sm flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <span id="t-friends">Friends</span>
+                    </button>
+
                     <!-- Download Mod Button -->
                     <a href="download.html" id="t-nav-download"
                         class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all text-sm download-tooltip-container">
@@ -824,6 +833,47 @@
                 <button onclick="submitTicket()"
                     class="btn-download px-8 py-3 rounded-xl font-bold text-white transition-all"
                     id="t-support-submit">Submit Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friends Modal -->
+    <div id="friends-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeFriendsModal()"></div>
+        <div class="glass relative max-w-2xl w-full max-h-[90vh] overflow-auto p-8">
+            <div class="flex justify-between items-start mb-8">
+                <div>
+                    <h2 class="text-3xl font-black tracking-tighter" id="t-friends-title">Friends</h2>
+                    <p class="text-slate-500 text-sm mt-2" id="t-friends-subtitle">Manage your friends</p>
+                </div>
+                <button onclick="closeFriendsModal()"
+                    class="text-slate-400 hover:text-white transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Add Friend Section -->
+            <div class="glass p-6 mb-6 border border-white/5">
+                <h3 class="text-lg font-bold mb-4" id="t-add-friend">Add Friend</h3>
+                <div class="flex gap-3">
+                    <input type="email" id="friend-email-input" placeholder="Enter friend's email"
+                        class="flex-1 bg-black/20 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500 transition-colors">
+                    <button onclick="addFriend()"
+                        class="px-6 py-2 bg-blue-600 rounded-xl font-bold hover:bg-blue-500 transition-colors whitespace-nowrap">
+                        <span id="t-add-friend-btn">Add</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Friends List -->
+            <div>
+                <h3 class="text-lg font-bold mb-4" id="t-friends-list">Friends List</h3>
+                <div id="friends-list-container" class="space-y-3">
+                    <!-- Friends will be loaded here -->
+                </div>
             </div>
         </div>
     </div>
@@ -1589,6 +1639,7 @@
             const loginBtn = document.getElementById('auth-btn-login');
             const userProfile = document.getElementById('user-profile');
             const myConfigsBtn = document.getElementById('my-configs-btn');
+            const friendsBtn = document.getElementById('friends-btn');
             const adminLink = document.getElementById('t-admin-panel');
 
             if (currentUser) {
@@ -1602,6 +1653,7 @@
 
                 document.getElementById('auth-btn-logout').onclick = () => signOut(auth);
                 myConfigsBtn.classList.remove('hidden');
+                friendsBtn.classList.remove('hidden');
 
                 // Only show Admin Panel for the specific admin email
                 if (currentUser.email === 'gangminseogg13@gmail.com') {
@@ -1615,6 +1667,7 @@
                 loginBtn.textContent = t.login;
                 loginBtn.onclick = () => signInWithPopup(auth, provider);
                 myConfigsBtn.classList.add('hidden');
+                friendsBtn.classList.add('hidden');
                 adminLink.classList.add('hidden');
             }
         }
@@ -1658,6 +1711,134 @@
             document.getElementById('profile-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         };
+
+        window.openFriendsModal = () => {
+            if (!currentUser) return;
+            document.getElementById('friends-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            loadFriends();
+        };
+
+        window.closeFriendsModal = () => {
+            document.getElementById('friends-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        window.addFriend = async () => {
+            if (!currentUser) return;
+            const friendEmail = document.getElementById('friend-email-input').value.trim();
+            if (!friendEmail) {
+                alert('Please enter an email address');
+                return;
+            }
+            if (friendEmail === currentUser.email) {
+                alert('You cannot add yourself as a friend');
+                return;
+            }
+
+            try {
+                // Check if user exists
+                const userDoc = await getDoc(doc(db, 'users', friendEmail));
+                if (!userDoc.exists()) {
+                    alert('User not found');
+                    return;
+                }
+
+                // Add to friends list
+                const myFriendsRef = doc(db, 'users', currentUser.email);
+                const myData = await getDoc(myFriendsRef);
+                const currentFriends = myData.data()?.friends || [];
+                
+                if (currentFriends.includes(friendEmail)) {
+                    alert('Already in your friends list');
+                    return;
+                }
+
+                await updateDoc(myFriendsRef, {
+                    friends: [...currentFriends, friendEmail]
+                });
+
+                document.getElementById('friend-email-input').value = '';
+                alert('Friend added successfully!');
+                loadFriends();
+            } catch (error) {
+                console.error('Error adding friend:', error);
+                alert('Failed to add friend');
+            }
+        };
+
+        window.removeFriend = async (friendEmail) => {
+            if (!currentUser) return;
+            if (!confirm(`Remove ${friendEmail} from friends?`)) return;
+
+            try {
+                const myFriendsRef = doc(db, 'users', currentUser.email);
+                const myData = await getDoc(myFriendsRef);
+                const currentFriends = myData.data()?.friends || [];
+                
+                await updateDoc(myFriendsRef, {
+                    friends: currentFriends.filter(email => email !== friendEmail)
+                });
+
+                alert('Friend removed');
+                loadFriends();
+            } catch (error) {
+                console.error('Error removing friend:', error);
+                alert('Failed to remove friend');
+            }
+        };
+
+        async function loadFriends() {
+            if (!currentUser) return;
+            
+            const container = document.getElementById('friends-list-container');
+            container.innerHTML = '<div class="text-slate-500 text-center py-8">Loading...</div>';
+
+            try {
+                const myData = await getDoc(doc(db, 'users', currentUser.email));
+                const friendEmails = myData.data()?.friends || [];
+
+                if (friendEmails.length === 0) {
+                    container.innerHTML = '<div class="text-slate-500 text-center py-8">No friends yet. Add your first friend!</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                for (const friendEmail of friendEmails) {
+                    try {
+                        const friendDoc = await getDoc(doc(db, 'users', friendEmail));
+                        if (friendDoc.exists()) {
+                            const friendData = friendDoc.data();
+                            const mcName = friendData.mc_name || 'Unknown';
+                            
+                            const friendCard = document.createElement('div');
+                            friendCard.className = 'glass p-4 flex items-center justify-between border border-white/5';
+                            friendCard.innerHTML = `
+                                <div class="flex items-center gap-3">
+                                    <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
+                                    <div>
+                                        <div class="font-bold">${mcName}</div>
+                                        <div class="text-xs text-slate-500">${friendEmail}</div>
+                                    </div>
+                                </div>
+                                <button onclick="removeFriend('${friendEmail}')" 
+                                    class="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            `;
+                            container.appendChild(friendCard);
+                        }
+                    } catch (err) {
+                        console.error('Error loading friend:', friendEmail, err);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading friends:', error);
+                container.innerHTML = '<div class="text-red-400 text-center py-8">Failed to load friends</div>';
+            }
+        }
 
         window.closeProfileModal = () => {
             document.getElementById('profile-modal').classList.add('hidden');
