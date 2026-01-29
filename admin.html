@@ -1333,14 +1333,14 @@
                 const themeMode = document.documentElement.getAttribute('data-theme') || 'light';
                 snap.forEach(doc => {
                     const data = doc.data();
-                    const category = data.category || 'general';
+                    const category = (data.category || 'general').toLowerCase();
                     const bgUrl = bgImages[themeMode][category] || bgImages[themeMode]['general'];
                     const gradientColor = 'rgba(15, 23, 42, 0.7)';
                     configsHtml += `
                         <div class="p-4 flex justify-between items-center border border-white/5 rounded-2xl" style="background: linear-gradient(to bottom, ${gradientColor}, ${gradientColor}), url('${bgUrl}'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; overflow: hidden;">
                             <div style="position: relative; z-index: 1;">
                                 <div class="font-bold">${data.name || 'Untitled'}</div>
-                                <div class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">${data.status}</div>
+                                <div class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">${data.status} • ${category}</div>
                             </div>
                             <button onclick="deleteConfig('${doc.id}', '${email}')" class="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" style="position: relative; z-index: 1;">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
