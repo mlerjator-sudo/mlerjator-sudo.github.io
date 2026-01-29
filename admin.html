@@ -1284,14 +1284,60 @@
                 const q = query(collection(db, "shared_configs"), where("author", "==", email));
                 const snap = await getDocs(q);
                 let configsHtml = '';
+                const bgImages = {
+                    'dark': {
+                        'general': 'https://i.imgur.com/bdomv6b.png',
+                        'convenience': 'https://i.imgur.com/tkTVHx6.png',
+                        'food': 'https://i.imgur.com/4TnRt4u.png',
+                        'worldgen': 'https://i.imgur.com/bV0zPVK.png',
+                        'adventure': 'https://i.imgur.com/vQseaHR.png',
+                        'transportation': 'https://i.imgur.com/2dE1gIf.png',
+                        'horror': 'https://i.imgur.com/XQ6SARM.png',
+                        'decoration': 'https://i.imgur.com/Q4hcllF.png',
+                        'economy': 'https://i.imgur.com/BJShHn0.png',
+                        'gamemechanics': 'https://i.imgur.com/VqxjZYc.png',
+                        'library': 'https://i.imgur.com/LonhnG6.png',
+                        'magic': 'https://i.imgur.com/bhmccZ4.png',
+                        'management': 'https://i.imgur.com/v5Ss1vN.png',
+                        'minigame': 'https://i.imgur.com/RtvJW8Q.png',
+                        'equipment': 'https://i.imgur.com/8xMC7DI.png',
+                        'mobs': 'https://i.imgur.com/HkKstM6.png',
+                        'optimization': 'https://i.imgur.com/gVvH3xN.png',
+                        'social': 'https://i.imgur.com/xbaQlSW.png',
+                        'storage': 'https://i.imgur.com/AjoAcKJ.png',
+                        'technology': 'https://i.imgur.com/mOn0jfR.png'
+                    },
+                    'light': {
+                        'general': 'https://i.imgur.com/UVF1O71.png',
+                        'convenience': 'https://i.imgur.com/egPJEIy.png',
+                        'food': 'https://i.imgur.com/bshbJZN.png',
+                        'worldgen': 'https://i.imgur.com/FKnjOph.png',
+                        'adventure': 'https://i.imgur.com/vQseaHR.png',
+                        'transportation': 'https://i.imgur.com/MwC3J8v.png',
+                        'horror': 'https://i.imgur.com/1p6lwci.png',
+                        'decoration': 'https://i.imgur.com/VsOr7yM.png',
+                        'economy': 'https://i.imgur.com/aXJFQOK.png',
+                        'gamemechanics': 'https://i.imgur.com/9qlwxkW.png',
+                        'library': 'https://i.imgur.com/9axqQU9.png',
+                        'magic': 'https://i.imgur.com/LlIwrdE.png',
+                        'management': 'https://i.imgur.com/aFQkvpT.png',
+                        'minigame': 'https://i.imgur.com/46rmCIx.png',
+                        'equipment': 'https://i.imgur.com/m5J4zkN.png',
+                        'mobs': 'https://i.imgur.com/CXN3MnX.png',
+                        'optimization': 'https://i.imgur.com/gryd6LR.png',
+                        'social': 'https://i.imgur.com/d8CggAE.png',
+                        'storage': 'https://i.imgur.com/GoJD0yA.png',
+                        'technology': 'https://i.imgur.com/VGYKLCU.png'
+                    }
+                };
+                const themeMode = document.documentElement.getAttribute('data-theme') || 'light';
                 snap.forEach(doc => {
                     const data = doc.data();
                     const category = data.category || 'general';
-                    const bgVar = `var(--bg-${category})`;
-                    const themeMode = document.documentElement.getAttribute('data-theme') || 'light';
+                    const bgUrl = bgImages[themeMode][category] || bgImages[themeMode]['general'];
                     const gradientColor = 'rgba(15, 23, 42, 0.7)';
                     configsHtml += `
-                        <div class="p-4 flex justify-between items-center border border-white/5 rounded-2xl" style="background: linear-gradient(to bottom, ${gradientColor}, ${gradientColor}), ${bgVar}; background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; overflow: hidden;">
+                        <div class="p-4 flex justify-between items-center border border-white/5 rounded-2xl" style="background: linear-gradient(to bottom, ${gradientColor}, ${gradientColor}), url('${bgUrl}'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; overflow: hidden;">
                             <div style="position: relative; z-index: 1;">
                                 <div class="font-bold">${data.name || 'Untitled'}</div>
                                 <div class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">${data.status}</div>
@@ -1324,8 +1370,8 @@
                             <div class="glass p-6 border border-white/5">
                                 <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">${t.playerBan}</h3>
                                 <div class="flex gap-3">
-                                    <input type="number" id="ban-hours" placeholder="${t.banHours}" class="flex-1 bg-black/20 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500 transition-colors">
-                                    <button onclick="banPlayer('${email}')" class="px-6 py-2 bg-red-600 rounded-xl font-bold hover:bg-red-500 transition-colors">${t.playerBan}</button>
+                                    <input type="number" id="ban-hours" placeholder="${t.banHours}" class="w-24 bg-black/20 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500 transition-colors">
+                                    <button onclick="banPlayer('${email}')" class="px-6 py-2 bg-red-600 rounded-xl font-bold hover:bg-red-500 transition-colors whitespace-nowrap">${t.playerBan}</button>
                                 </div>
                                 ${isBanned ? `<p class="text-red-400 text-xs font-bold mt-3">${t.banStatus} ${banExpiry} <button onclick="unbanPlayer('${email}')" class="ml-2 underline">${t.playerUnban}</button></p>` : `<p class="text-green-400 text-xs font-bold mt-3">${t.activeStatus}</p>`}
                             </div>
