@@ -1034,6 +1034,27 @@
                     All: "All", Adventure: "Adventure", Horror: "Horror", Decoration: "Decoration", Economy: "Economy", Equipment: "Equipment", Food: "Food", "Game Mechanics": "Game Mechanics", Library: "Library", Magic: "Magic", Management: "Management", Minigame: "Minigame", Mobs: "Mobs", Optimization: "Optimization", Social: "Social", Storage: "Storage", Technology: "Technology", Transportation: "Transportation", Utility: "Utility", "World Gen": "World Gen", General: "General", Convenience: "Convenience"
                 },
                 friends: {
+                    title: "Friends",
+                    subtitle: "Manage your friends",
+                    tabFriends: "Friends",
+                    tabRequests: "Requests",
+                    tabFind: "Find Users",
+                    noFriends: "No friends yet. Find users to add!",
+                    loading: "Loading...",
+                    noRequests: "No friend requests",
+                    receivedRequests: "Received Requests",
+                    sentRequests: "Sent Requests",
+                    pending: "Pending",
+                    emailHidden: "Email hidden",
+                    emailHiddenByUser: "Email hidden by user",
+                    accept: "Accept",
+                    decline: "Decline",
+                    addFriend: "Add Friend",
+                    friends: "Friends",
+                    requestSent: "Request Sent",
+                    requestReceived: "Request Received",
+                    noUsers: "No users found",
+                    search: "Search by email or Minecraft name...",
                     confirmTitle: "Confirm",
                     confirmMessage: "Are you sure?",
                     cancel: "Cancel",
@@ -1102,6 +1123,27 @@
                     All: "전체", Adventure: "모험", Horror: "공포", Decoration: "장식", Economy: "경제", Equipment: "장비", Food: "음식", "Game Mechanics": "게임 매커즘", Library: "라이브러리", Magic: "마법", Management: "관리", Minigame: "미니게임", Mobs: "몹", Optimization: "최적화", Social: "소셜", Storage: "저장", Technology: "기술", Transportation: "운송", Utility: "유틸리티", "World Gen": "월드 생성", General: "일반", Convenience: "편의"
                 },
                 friends: {
+                    title: "친구",
+                    subtitle: "친구를 관리하세요",
+                    tabFriends: "친구 목록",
+                    tabRequests: "친구 요청",
+                    tabFind: "사용자 찾기",
+                    noFriends: "아직 친구가 없습니다. 사용자를 찾아 추가하세요!",
+                    loading: "로딩 중...",
+                    noRequests: "친구 요청이 없습니다",
+                    receivedRequests: "받은 요청",
+                    sentRequests: "보낸 요청",
+                    pending: "대기 중",
+                    emailHidden: "이메일 숨김",
+                    emailHiddenByUser: "사용자가 이메일을 숨겼습니다",
+                    accept: "수락",
+                    decline: "거절",
+                    addFriend: "친구 추가",
+                    friends: "친구",
+                    requestSent: "요청 전송됨",
+                    requestReceived: "요청 받음",
+                    noUsers: "사용자를 찾을 수 없습니다",
+                    search: "이메일 또는 마인크래프트 닉네임으로 검색...",
                     confirmTitle: "확인",
                     confirmMessage: "정말로 진행하시겠습니까?",
                     cancel: "취소",
@@ -1170,6 +1212,27 @@
                     All: "すべて", Adventure: "冒険", Horror: "ホラー", Decoration: "装飾", Economy: "経済", Equipment: "装備", Food: "食べ物", "Game Mechanics": "ゲームメカニクス", Library: "ライブラリ", Magic: "魔法", Management: "管理", Minigame: "ミニゲーム", Mobs: "モブ", Optimization: "最適化", Social: "ソーシャル", Storage: "ストレージ", Technology: "技術", Transportation: "輸送", Utility: "ユーティリティ", "World Gen": "ワールド生成", General: "一般", Convenience: "便宜"
                 },
                 friends: {
+                    title: "フレンド",
+                    subtitle: "フレンドを管理",
+                    tabFriends: "フレンド一覧",
+                    tabRequests: "リクエスト",
+                    tabFind: "ユーザー検索",
+                    noFriends: "まだフレンドがいません。ユーザーを探して追加しましょう！",
+                    loading: "読み込み中...",
+                    noRequests: "フレンドリクエストはありません",
+                    receivedRequests: "受信したリクエスト",
+                    sentRequests: "送信したリクエスト",
+                    pending: "保留中",
+                    emailHidden: "メール非公開",
+                    emailHiddenByUser: "ユーザーがメールを非公開にしています",
+                    accept: "承認",
+                    decline: "拒否",
+                    addFriend: "フレンド追加",
+                    friends: "フレンド",
+                    requestSent: "リクエスト送信済",
+                    requestReceived: "リクエスト受信",
+                    noUsers: "ユーザーが見つかりません",
+                    search: "メールまたはMinecraftの名前で検索...",
                     confirmTitle: "確認",
                     confirmMessage: "本当によろしいですか？",
                     cancel: "キャンセル",
@@ -2071,8 +2134,20 @@
             document.body.style.overflow = 'hidden';
         };
 
+        // Update Friends modal texts with current language
+        function updateFriendsModalTexts() {
+            const t = i18n[currentLang].friends;
+            document.getElementById('t-friends-title').textContent = t.title;
+            document.getElementById('t-friends-subtitle').textContent = t.subtitle;
+            document.getElementById('friends-tab-friends').childNodes[0].textContent = t.tabFriends + ' ';
+            document.getElementById('friends-tab-requests').childNodes[0].textContent = t.tabRequests + ' ';
+            document.getElementById('friends-tab-find').textContent = t.tabFind;
+            document.getElementById('user-search-input').placeholder = t.search;
+        }
+
         window.openFriendsModal = () => {
             if (!currentUser) return;
+            updateFriendsModalTexts();
             document.getElementById('friends-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             switchFriendsTab('friends');
@@ -2233,15 +2308,16 @@
         async function loadFriends() {
             if (!currentUser) return;
             
+            const t = i18n[currentLang].friends;
             const container = document.getElementById('friends-list-container');
-            container.innerHTML = '<div class="text-slate-500 text-center py-8">Loading...</div>';
+            container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.loading}</div>`;
 
             try {
                 const myData = await getDoc(doc(db, 'users', currentUser.email));
                 const friends = myData.data()?.friends || [];
 
                 if (friends.length === 0) {
-                    container.innerHTML = '<div class="text-slate-500 text-center py-8">No friends yet. Find users to add!</div>';
+                    container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.noFriends}</div>`;
                     return;
                 }
 
@@ -2265,7 +2341,7 @@
                                     <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                     <div>
                                         <div class="font-bold">${mcName}</div>
-                                        <div class="text-xs text-slate-500">${showEmail ? friend.email : 'Email hidden'}</div>
+                                        <div class="text-xs text-slate-500">${showEmail ? friend.email : t.emailHidden}</div>
                                     </div>
                                 </div>
                                 <button onclick="removeFriend('${userId}')" 
@@ -2290,9 +2366,10 @@
         async function loadRequests() {
             if (!currentUser) return;
             
+            const t = i18n[currentLang].friends;
             const container = document.getElementById('requests-list-container');
             const countBadge = document.getElementById('requests-count');
-            container.innerHTML = '<div class="text-slate-500 text-center py-8">Loading...</div>';
+            container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.loading}</div>`;
 
             try {
                 const myData = await getDoc(doc(db, 'users', currentUser.email));
@@ -2307,7 +2384,7 @@
                 }
 
                 if (received.length === 0 && sent.length === 0) {
-                    container.innerHTML = '<div class="text-slate-500 text-center py-8">No friend requests</div>';
+                    container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.noRequests}</div>`;
                     return;
                 }
 
@@ -2317,7 +2394,7 @@
                 if (received.length > 0) {
                     const receivedTitle = document.createElement('h4');
                     receivedTitle.className = 'text-sm font-bold text-slate-400 mb-3';
-                    receivedTitle.textContent = 'Received Requests';
+                    receivedTitle.textContent = t.receivedRequests;
                     container.appendChild(receivedTitle);
                 }
                 
@@ -2340,17 +2417,17 @@
                                     <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                     <div>
                                         <div class="font-bold">${mcName}</div>
-                                        <div class="text-xs text-slate-500">${showEmail ? request.from : 'Email hidden by user'}</div>
+                                        <div class="text-xs text-slate-500">${showEmail ? request.from : t.emailHiddenByUser}</div>
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
                                     <button onclick="acceptFriendRequest('${userId}', ${request.showTheirEmail})" 
                                         class="px-4 py-2 bg-green-600 rounded-lg font-bold hover:bg-green-500 transition-colors text-sm">
-                                        Accept
+                                        ${t.accept}
                                     </button>
                                     <button onclick="declineFriendRequest('${userId}')" 
                                         class="px-4 py-2 bg-red-600 rounded-lg font-bold hover:bg-red-500 transition-colors text-sm">
-                                        Decline
+                                        ${t.decline}
                                     </button>
                                 </div>
                             `;
@@ -2365,7 +2442,7 @@
                 if (sent.length > 0) {
                     const sentTitle = document.createElement('h4');
                     sentTitle.className = 'text-sm font-bold text-slate-400 mb-3 mt-6';
-                    sentTitle.textContent = 'Sent Requests';
+                    sentTitle.textContent = t.sentRequests;
                     container.appendChild(sentTitle);
                     
                     for (const request of sent) {
@@ -2382,10 +2459,10 @@
                                         <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                         <div>
                                             <div class="font-bold">${mcName}</div>
-                                            <div class="text-xs text-slate-500">Request pending...</div>
+                                            <div class="text-xs text-slate-500">${t.pending}...</div>
                                         </div>
                                     </div>
-                                    <div class="text-yellow-400 text-sm font-bold">Pending</div>
+                                    <div class="text-yellow-400 text-sm font-bold">${t.pending}</div>
                                 `;
                                 container.appendChild(card);
                             }
@@ -2403,6 +2480,7 @@
         async function loadAllUsers() {
             if (!currentUser) return;
             
+            const t = i18n[currentLang].friends;
             const container = document.getElementById('users-list-container');
             const searchInput = document.getElementById('user-search-input');
             
@@ -2434,7 +2512,7 @@
                     usersCache = {}; // Clear cache
                     
                     if (filtered.length === 0) {
-                        container.innerHTML = '<div class="text-slate-500 text-center py-8">No users found</div>';
+                        container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.noUsers}</div>`;
                         return;
                     }
 
@@ -2449,15 +2527,15 @@
                         
                         let statusHtml = '';
                         if (isFriend) {
-                            statusHtml = '<div class="text-green-400 text-sm font-bold">Friends</div>';
+                            statusHtml = `<div class="text-green-400 text-sm font-bold">${t.friends}</div>`;
                         } else if (requestSent) {
-                            statusHtml = '<div class="text-yellow-400 text-sm font-bold">Request Sent</div>';
+                            statusHtml = `<div class="text-yellow-400 text-sm font-bold">${t.requestSent}</div>`;
                         } else if (requestReceived) {
-                            statusHtml = '<div class="text-blue-400 text-sm font-bold">Request Received</div>';
+                            statusHtml = `<div class="text-blue-400 text-sm font-bold">${t.requestReceived}</div>`;
                         } else {
                             statusHtml = `<button onclick="sendFriendRequest('${userId}')" 
                                 class="px-4 py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-500 transition-colors text-sm">
-                                Add Friend
+                                ${t.addFriend}
                             </button>`;
                         }
                         
@@ -2468,7 +2546,7 @@
                                 <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                 <div>
                                     <div class="font-bold">${mcName}</div>
-                                    <div class="text-xs text-slate-500">${isFriend ? user.email : 'Email hidden'}</div>
+                                    <div class="text-xs text-slate-500">${isFriend ? user.email : t.emailHidden}</div>
                                 </div>
                             </div>
                             ${statusHtml}
