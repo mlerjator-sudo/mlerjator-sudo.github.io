@@ -2054,6 +2054,7 @@
             renderConfigs();
             updateAuthUI();
             updateUI(); // Also update general UI elements
+            updateFriendsModalTexts(); // Update Friends modal if open
         }
 
         function updateAuthUI() {
@@ -2137,12 +2138,33 @@
         // Update Friends modal texts with current language
         function updateFriendsModalTexts() {
             const t = i18n[currentLang].friends;
+            const friendsModal = document.getElementById('friends-modal');
+            
+            // Only update if modal exists
+            if (!friendsModal) return;
+            
             document.getElementById('t-friends-title').textContent = t.title;
             document.getElementById('t-friends-subtitle').textContent = t.subtitle;
-            document.getElementById('friends-tab-friends').childNodes[0].textContent = t.tabFriends + ' ';
-            document.getElementById('friends-tab-requests').childNodes[0].textContent = t.tabRequests + ' ';
-            document.getElementById('friends-tab-find').textContent = t.tabFind;
-            document.getElementById('user-search-input').placeholder = t.search;
+            
+            // Update tab buttons
+            const friendsTabBtn = document.getElementById('friends-tab-friends');
+            const requestsTabBtn = document.getElementById('friends-tab-requests');
+            const findTabBtn = document.getElementById('friends-tab-find');
+            
+            if (friendsTabBtn) friendsTabBtn.childNodes[0].textContent = t.tabFriends + ' ';
+            if (requestsTabBtn) requestsTabBtn.childNodes[0].textContent = t.tabRequests + ' ';
+            if (findTabBtn) findTabBtn.textContent = t.tabFind;
+            
+            // Update search input placeholder
+            const searchInput = document.getElementById('user-search-input');
+            if (searchInput) searchInput.placeholder = t.search;
+            
+            // Reload current tab content
+            const activeTab = friendsModal.querySelector('.border-blue-500');
+            if (activeTab) {
+                const tabId = activeTab.id.replace('friends-tab-', '');
+                switchFriendsTab(tabId);
+            }
         }
 
         window.openFriendsModal = () => {
