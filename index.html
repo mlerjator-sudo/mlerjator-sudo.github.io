@@ -1636,9 +1636,11 @@
                 const sentRequests = myData.data()?.friend_requests_sent || [];
                 const myFriends = myData.data()?.friends || [];
                 const friendEmails = myFriends.map(f => f.email);
+                const receivedRequests = myData.data()?.friend_requests_received || [];
                 
                 let needsUpdate = false;
                 const updatedSentRequests = [];
+                const updatedReceivedRequests = [];
                 const newFriends = [...myFriends];
                 
                 // Check each sent request
@@ -1657,6 +1659,7 @@
                                     showTheirEmail: acceptedByThem.showMyEmail,
                                     timestamp: Date.now()
                                 });
+                                friendEmails.push(request.to);
                                 needsUpdate = true;
                             }
                         } else {
@@ -1666,9 +1669,48 @@
                     }
                 }
                 
+                // Check for new received requests from people who sent requests
+                for (const receivedReq of receivedRequests) {
+                    const theirDoc = await getDoc(doc(db, 'users', receivedReq.from));
+                    if (theirDoc.exists()) {
+                        const theirSentRequests = theirDoc.data()?.friend_requests_sent || [];
+                        const stillPending = theirSentRequests.find(r => r.to === currentUser.email);
+                        
+                        if (stillPending) {
+                            // Request still exists
+                            updatedReceivedRequests.push(receivedReq);
+                        } else {
+                            // They cancelled or something, remove it
+                            needsUpdate = true;
+                        }
+                    }
+                }
+                
+                // Scan all users for new incoming requests
+                const allUsersSnapshot = await getDocs(collection(db, 'users'));
+                const currentReceivedEmails = receivedRequests.map(r => r.from);
+                
+                for (const userDoc of allUsersSnapshot.docs) {
+                    if (userDoc.id === currentUser.email) continue;
+                    
+                    const theirSentRequests = userDoc.data()?.friend_requests_sent || [];
+                    const requestToMe = theirSentRequests.find(r => r.to === currentUser.email);
+                    
+                    if (requestToMe && !currentReceivedEmails.includes(userDoc.id)) {
+                        // New request found!
+                        updatedReceivedRequests.push({
+                            from: userDoc.id,
+                            showTheirEmail: requestToMe.showMyEmail,
+                            timestamp: requestToMe.timestamp
+                        });
+                        needsUpdate = true;
+                    }
+                }
+                
                 if (needsUpdate) {
                     await updateDoc(myRef, {
                         friend_requests_sent: updatedSentRequests,
+                        friend_requests_received: updatedReceivedRequests,
                         friends: newFriends
                     });
                     console.log('Friend requests synced');
@@ -1702,6 +1744,60 @@
         });
 
         function log(msg) { console.log(`[F34 Hub] ${msg}`); }
+
+        // Custom confirm dialog
+        function customConfirm(message, title = 'Confirm') {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('custom-confirm-modal');
+                const titleEl = document.getElementById('confirm-title');
+                const messageEl = document.getElementById('confirm-message');
+                const okBtn = document.getElementById('confirm-ok');
+                const cancelBtn = document.getElementById('confirm-cancel');
+                
+                titleEl.textContent = title;
+                messageEl.textContent = message;
+                modal.classList.remove('hidden');
+                
+                const handleOk = () => {
+                    modal.classList.add('hidden');
+                    okBtn.removeEventListener('click', handleOk);
+                    cancelBtn.removeEventListener('click', handleCancel);
+                    resolve(true);
+                };
+                
+                const handleCancel = () => {
+                    modal.classList.add('hidden');
+                    okBtn.removeEventListener('click', handleOk);
+                    cancelBtn.removeEventListener('click', handleCancel);
+                    resolve(false);
+                };
+                
+                okBtn.addEventListener('click', handleOk);
+                cancelBtn.addEventListener('click', handleCancel);
+            });
+        }
+
+        // Custom alert dialog
+        function customAlert(message, title = 'Notice') {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('custom-alert-modal');
+                const titleEl = document.getElementById('alert-title');
+                const messageEl = document.getElementById('alert-message');
+                const okBtn = document.getElementById('alert-ok');
+                
+                titleEl.textContent = title;
+                messageEl.textContent = message;
+                modal.classList.remove('hidden');
+                
+                const handleOk = () => {
+                    modal.classList.add('hidden');
+                    okBtn.removeEventListener('click', handleOk);
+                    resolve();
+                };
+                
+                okBtn.addEventListener('click', handleOk);
+            });
+        }
 
         window.setLang = (lang) => {
             currentLang = lang;
@@ -1833,19 +1929,15 @@
             if (!toEmail) return;
             
             // Show email visibility dialog
-            const showEmail = confirm('Do you want to show your email to this user?\n\nYes = Show email\nNo = Hide email');
+            const showEmail = await customConfirm('Do you want to show your email to this user?', 'Email Visibility');
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
-                const theirRef = doc(db, 'users', toEmail);
-                
                 const myData = await getDoc(myRef);
-                const theirData = await getDoc(theirRef);
                 
                 const mySentRequests = myData.data()?.friend_requests_sent || [];
-                const theirReceivedRequests = theirData.data()?.friend_requests_received || [];
                 
-                // Add to my sent requests
+                // Add to my sent requests only
                 await updateDoc(myRef, {
                     friend_requests_sent: [...mySentRequests, {
                         to: toEmail,
@@ -1854,20 +1946,11 @@
                     }]
                 });
                 
-                // Add to their received requests
-                await updateDoc(theirRef, {
-                    friend_requests_received: [...theirReceivedRequests, {
-                        from: currentUser.email,
-                        showTheirEmail: showEmail,
-                        timestamp: Date.now()
-                    }]
-                });
-                
-                alert('Friend request sent!');
+                await customAlert('Friend request sent!', 'Success');
                 loadAllUsers();
             } catch (error) {
                 console.error('Error sending request:', error);
-                alert('Failed to send friend request');
+                await customAlert('Failed to send friend request', 'Error');
             }
         };
 
@@ -1878,7 +1961,7 @@
             if (!fromEmail) return;
             
             // Ask if they want to show their email
-            const showEmail = confirm('Do you want to show your email to this user?\n\nYes = Show email\nNo = Hide email');
+            const showEmail = await customConfirm('Do you want to show your email to this user?', 'Email Visibility');
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
@@ -1897,7 +1980,7 @@
                     friend_requests_received: (myData.data()?.friend_requests_received || []).filter(r => r.from !== fromEmail)
                 });
                 
-                alert('Friend request accepted!');
+                await customAlert('Friend request accepted!', 'Success');
                 loadRequests();
                 loadFriends();
             } catch (error) {
@@ -1912,7 +1995,7 @@
             const fromEmail = usersCache[userId];
             if (!fromEmail) return;
             
-            if (!confirm('Decline this friend request?')) return;
+            if (!await customConfirm('Decline this friend request?', 'Confirm')) return;
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
@@ -1922,7 +2005,7 @@
                     friend_requests_received: (myData.data()?.friend_requests_received || []).filter(r => r.from !== fromEmail)
                 });
                 
-                alert('Friend request declined');
+                await customAlert('Friend request declined', 'Success');
                 loadRequests();
             } catch (error) {
                 console.error('Error declining request:', error);
@@ -1936,7 +2019,7 @@
             const friendEmail = usersCache[userId];
             if (!friendEmail) return;
             
-            if (!confirm('Remove this friend?')) return;
+            if (!await customConfirm('Remove this friend?', 'Confirm')) return;
 
             try {
                 const myRef = doc(db, 'users', currentUser.email);
@@ -1946,7 +2029,7 @@
                     friends: (myData.data()?.friends || []).filter(f => f.email !== friendEmail)
                 });
 
-                alert('Friend removed');
+                await customAlert('Friend removed', 'Success');
                 loadFriends();
             } catch (error) {
                 console.error('Error removing friend:', error);
