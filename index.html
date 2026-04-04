@@ -837,29 +837,6 @@
         </div>
     </div>
 
-    <!-- Custom Confirm Modal -->
-    <div id="custom-confirm-modal" class="fixed inset-0 z-[300] items-center justify-center bg-black/50 backdrop-blur-sm" style="display:none;">
-        <div class="glass relative max-w-md w-full mx-4 border border-white/10 rounded-xl p-6">
-            <h3 id="confirm-title" class="text-xl font-bold mb-4">Confirm</h3>
-            <p id="confirm-message" class="text-slate-300 mb-6">Are you sure?</p>
-            <div class="flex gap-3 justify-end">
-                <button id="confirm-cancel" class="px-6 py-2 bg-slate-700 rounded-lg font-bold hover:bg-slate-600 transition-colors">Cancel</button>
-                <button id="confirm-ok" class="px-6 py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-500 transition-colors">OK</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Custom Alert Modal -->
-    <div id="custom-alert-modal" class="fixed inset-0 z-[300] items-center justify-center bg-black/50 backdrop-blur-sm" style="display:none;">
-        <div class="glass relative max-w-md w-full mx-4 border border-white/10 rounded-xl p-6">
-            <h3 id="alert-title" class="text-xl font-bold mb-4">Notice</h3>
-            <p id="alert-message" class="text-slate-300 mb-6">Message</p>
-            <div class="flex justify-end">
-                <button id="alert-ok" class="px-6 py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-500 transition-colors">OK</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Friends Modal -->
     <div id="friends-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeFriendsModal()"></div>
@@ -969,10 +946,59 @@
         </div>
     </div>
 
+    <!-- Login/Register Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeAuthModal()"></div>
+        <div class="glass max-w-md w-full relative z-10 p-8 animate-fade-in">
+            <button onclick="closeAuthModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <div id="login-form-container">
+                <h2 class="text-3xl font-black tracking-tighter mb-6" id="t-modal-login-title">Login</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1" id="t-login-nick-label">Minecraft Nickname</label>
+                        <input type="text" id="login-username" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all" placeholder="Nickname">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1" id="t-login-pw-label">Password</label>
+                        <input type="password" id="login-password" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all" placeholder="Password">
+                    </div>
+                    <button id="do-login-btn" class="w-full py-4 rounded-xl bg-blue-600 font-bold hover:bg-blue-500 transition-all mt-2">Login</button>
+                    <p class="text-center text-sm text-slate-400">
+                        <span id="t-no-account">Don't have an account?</span> <button onclick="toggleAuthMode()" class="text-blue-400 hover:underline font-bold" id="t-goto-register">Register</button>
+                    </p>
+                </div>
+            </div>
+
+            <div id="register-form-container" class="hidden">
+                <h2 class="text-3xl font-black tracking-tighter mb-6" id="t-modal-register-title">Register</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1" id="t-reg-nick-label">Minecraft Nickname</label>
+                        <input type="text" id="register-username" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all" placeholder="Nickname">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1" id="t-reg-pw-label">Password</label>
+                        <input type="password" id="register-password" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all" placeholder="New Password">
+                        <p class="text-[10px] text-yellow-500 mt-1 font-medium" id="t-pw-warning">※ 진짜 마인크래프트 비밀번호는 사용하지 마세요! 당신이 비밀번호를 새롭게 만드세요.</p>
+                    </div>
+                    <button id="do-register-btn" class="w-full py-4 rounded-xl bg-green-600 font-bold hover:bg-green-500 transition-all mt-2">Register</button>
+                    <p class="text-center text-sm text-slate-400">
+                        <span id="t-have-account">Already have an account?</span> <button onclick="toggleAuthMode()" class="text-blue-400 hover:underline font-bold" id="t-goto-login">Login</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { initializeFirestore, collection, query, where, onSnapshot, doc, getDoc, getDocs, updateDoc, increment, addDoc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, signInWithPopup, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, signInWithPopup, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA827pUzqfTpGpGbT9uKXKEjZo3hYl5ENo",
@@ -989,13 +1015,20 @@
                 loading: "Loading configurations...",
                 noConfigs: "No configurations found yet.",
                 noResults: "No configurations match this category.",
-                login: "Login with Google",
+                login: "Login",
+                register: "Register",
+                nickname: "Minecraft Nickname",
+                password: "Password",
+                newPassword: "New Password",
+                pwWarning: "※ Do not use your real Minecraft password! Create a new password.",
+                haveAccount: "Already have an account?",
+                noAccount: "Don't have an account?",
                 linkMod: "Link Minecraft (Login in Mod)",
                 loggedInAs: "Logged in as",
                 logout: "Logout",
                 download: "Download",
                 details: "View Details",
-                loginToDownload: "Login to Download",
+                loginToDownload: "Download",
                 link: "Link Account",
                 loginAlert: "Please login first.",
                 linkAlert: "Please link your Minecraft account first by logging in through the F34 mod.",
@@ -1032,45 +1065,6 @@
                 },
                 categories: {
                     All: "All", Adventure: "Adventure", Horror: "Horror", Decoration: "Decoration", Economy: "Economy", Equipment: "Equipment", Food: "Food", "Game Mechanics": "Game Mechanics", Library: "Library", Magic: "Magic", Management: "Management", Minigame: "Minigame", Mobs: "Mobs", Optimization: "Optimization", Social: "Social", Storage: "Storage", Technology: "Technology", Transportation: "Transportation", Utility: "Utility", "World Gen": "World Gen", General: "General", Convenience: "Convenience"
-                },
-                friends: {
-                    title: "Friends",
-                    subtitle: "Manage your friends",
-                    tabFriends: "Friends",
-                    tabRequests: "Requests",
-                    tabFind: "Find Users",
-                    noFriends: "No friends yet. Find users to add!",
-                    loading: "Loading...",
-                    noRequests: "No friend requests",
-                    receivedRequests: "Received Requests",
-                    sentRequests: "Sent Requests",
-                    pending: "Pending",
-                    emailHidden: "Email hidden",
-                    emailHiddenByUser: "Email hidden by user",
-                    accept: "Accept",
-                    decline: "Decline",
-                    addFriend: "Add Friend",
-                    friends: "Friends",
-                    requestSent: "Request Sent",
-                    requestReceived: "Request Received",
-                    noUsers: "No users found",
-                    search: "Search by email or Minecraft name...",
-                    confirmTitle: "Confirm",
-                    confirmMessage: "Are you sure?",
-                    cancel: "Cancel",
-                    ok: "OK",
-                    noticeTitle: "Notice",
-                    emailVisibility: "Email Visibility",
-                    emailVisibilityMsg: "Do you want to show your email to this user?",
-                    requestSent: "Friend request sent!",
-                    success: "Success",
-                    error: "Error",
-                    requestFailed: "Failed to send friend request",
-                    requestAccepted: "Friend request accepted!",
-                    declineConfirm: "Decline this friend request?",
-                    requestDeclined: "Friend request declined",
-                    removeConfirm: "Remove this friend?",
-                    friendRemoved: "Friend removed"
                 }
             },
             ko: {
@@ -1078,13 +1072,20 @@
                 loading: "설정을 불러오는 중...",
                 noConfigs: "아직 공유된 설정이 없습니다.",
                 noResults: "이 카테고리에 해당하는 설정이 없습니다.",
-                login: "Google로 로그인",
+                login: "로그인",
+                register: "회원가입",
+                nickname: "마인크래프트 닉네임",
+                password: "비밀번호",
+                newPassword: "새 비밀번호",
+                pwWarning: "※ 진짜 마인크래프트 비밀번호는 사용하지 마세요! 당신이 비밀번호를 새롭게 만드세요.",
+                haveAccount: "이미 계정이 있으신가요?",
+                noAccount: "계정이 없으신가요?",
                 linkMod: "마인크래프트 연동 필요 (모드에서 로그인)",
                 loggedInAs: "로그인됨:",
                 logout: "로그아웃",
                 download: "다운로드",
                 details: "상세 보기",
-                loginToDownload: "로그인 후 다운로드",
+                loginToDownload: "다운로드",
                 link: "계정 연동",
                 loginAlert: "먼저 로그인해주세요.",
                 linkAlert: "F34 모드에서 로그인하여 마인크래프트 계정을 먼저 연동해주세요.",
@@ -1121,45 +1122,6 @@
                 },
                 categories: {
                     All: "전체", Adventure: "모험", Horror: "공포", Decoration: "장식", Economy: "경제", Equipment: "장비", Food: "음식", "Game Mechanics": "게임 매커즘", Library: "라이브러리", Magic: "마법", Management: "관리", Minigame: "미니게임", Mobs: "몹", Optimization: "최적화", Social: "소셜", Storage: "저장", Technology: "기술", Transportation: "운송", Utility: "유틸리티", "World Gen": "월드 생성", General: "일반", Convenience: "편의"
-                },
-                friends: {
-                    title: "친구",
-                    subtitle: "친구를 관리하세요",
-                    tabFriends: "친구 목록",
-                    tabRequests: "친구 요청",
-                    tabFind: "사용자 찾기",
-                    noFriends: "아직 친구가 없습니다. 사용자를 찾아 추가하세요!",
-                    loading: "로딩 중...",
-                    noRequests: "친구 요청이 없습니다",
-                    receivedRequests: "받은 요청",
-                    sentRequests: "보낸 요청",
-                    pending: "대기 중",
-                    emailHidden: "이메일 숨김",
-                    emailHiddenByUser: "사용자가 이메일을 숨겼습니다",
-                    accept: "수락",
-                    decline: "거절",
-                    addFriend: "친구 추가",
-                    friends: "친구",
-                    requestSent: "요청 전송됨",
-                    requestReceived: "요청 받음",
-                    noUsers: "사용자를 찾을 수 없습니다",
-                    search: "이메일 또는 마인크래프트 닉네임으로 검색...",
-                    confirmTitle: "확인",
-                    confirmMessage: "정말로 진행하시겠습니까?",
-                    cancel: "취소",
-                    ok: "확인",
-                    noticeTitle: "알림",
-                    emailVisibility: "이메일 공개 설정",
-                    emailVisibilityMsg: "이 사용자에게 이메일을 공개하시겠습니까?",
-                    requestSent: "친구 요청을 보냈습니다!",
-                    success: "성공",
-                    error: "오류",
-                    requestFailed: "친구 요청 전송에 실패했습니다",
-                    requestAccepted: "친구 요청을 수락했습니다!",
-                    declineConfirm: "이 친구 요청을 거절하시겠습니까?",
-                    requestDeclined: "친구 요청을 거절했습니다",
-                    removeConfirm: "이 친구를 삭제하시겠습니까?",
-                    friendRemoved: "친구가 삭제되었습니다"
                 }
             },
             jp: {
@@ -1167,13 +1129,20 @@
                 loading: "設定を読み込み中...",
                 noConfigs: "まだ共有された設定はありません。",
                 noResults: "このカテゴリに該当する設定はありません。",
-                login: "Googleでログイン",
+                login: "ログイン",
+                register: "会員登録",
+                nickname: "Minecraftユーザー名",
+                password: "パスワード",
+                newPassword: "新しいパスワード",
+                pwWarning: "※ 実際のMinecraftパスワードは使用しないでください。新しいパスワードを作成してください。",
+                haveAccount: "すでにアカウントをお持ちですか？",
+                noAccount: "アカウントを持っていませんか？",
                 linkMod: "Minecraft連携が必要 (MODでログイン)",
                 loggedInAs: "로그인중:",
                 logout: "ログアウト",
                 download: "ダウンロード",
                 details: "詳細を見る",
-                loginToDownload: "ログインしてダウンロード",
+                loginToDownload: "ダウンロード",
                 link: "アカウント連携",
                 loginAlert: "まずログインしてください。",
                 linkAlert: "F34 MODでログインして、Minecraftアカウントを先に連携してください。",
@@ -1210,45 +1179,6 @@
                 },
                 categories: {
                     All: "すべて", Adventure: "冒険", Horror: "ホラー", Decoration: "装飾", Economy: "経済", Equipment: "装備", Food: "食べ物", "Game Mechanics": "ゲームメカニクス", Library: "ライブラリ", Magic: "魔法", Management: "管理", Minigame: "ミニゲーム", Mobs: "モブ", Optimization: "最適化", Social: "ソーシャル", Storage: "ストレージ", Technology: "技術", Transportation: "輸送", Utility: "ユーティリティ", "World Gen": "ワールド生成", General: "一般", Convenience: "便宜"
-                },
-                friends: {
-                    title: "フレンド",
-                    subtitle: "フレンドを管理",
-                    tabFriends: "フレンド一覧",
-                    tabRequests: "リクエスト",
-                    tabFind: "ユーザー検索",
-                    noFriends: "まだフレンドがいません。ユーザーを探して追加しましょう！",
-                    loading: "読み込み中...",
-                    noRequests: "フレンドリクエストはありません",
-                    receivedRequests: "受信したリクエスト",
-                    sentRequests: "送信したリクエスト",
-                    pending: "保留中",
-                    emailHidden: "メール非公開",
-                    emailHiddenByUser: "ユーザーがメールを非公開にしています",
-                    accept: "承認",
-                    decline: "拒否",
-                    addFriend: "フレンド追加",
-                    friends: "フレンド",
-                    requestSent: "リクエスト送信済",
-                    requestReceived: "リクエスト受信",
-                    noUsers: "ユーザーが見つかりません",
-                    search: "メールまたはMinecraftの名前で検索...",
-                    confirmTitle: "確認",
-                    confirmMessage: "本当によろしいですか？",
-                    cancel: "キャンセル",
-                    ok: "OK",
-                    noticeTitle: "お知らせ",
-                    emailVisibility: "メール公開設定",
-                    emailVisibilityMsg: "このユーザーにメールアドレスを公開しますか？",
-                    requestSent: "友達リクエストを送信しました！",
-                    success: "成功",
-                    error: "エラー",
-                    requestFailed: "友達リクエストの送信に失敗しました",
-                    requestAccepted: "友達リクエストを承認しました！",
-                    declineConfirm: "この友達リクエストを拒否しますか？",
-                    requestDeclined: "友達リクエストを拒否しました",
-                    removeConfirm: "この友達を削除しますか？",
-                    friendRemoved: "友達が削除されました"
                 }
             },
             cn: {
@@ -1256,13 +1186,20 @@
                 loading: "正在加载配置...",
                 noConfigs: "尚无共享配置。",
                 noResults: "没有符合此类别的配置。",
-                login: "使用 Google 登录",
+                login: "登录",
+                register: "注册",
+                nickname: "Minecraft 昵称",
+                password: "密码",
+                newPassword: "新密码",
+                pwWarning: "※ 请勿使用您真实的 Minecraft 密码！请创建一个新密码。",
+                haveAccount: "已有账号？",
+                noAccount: "没有账号？",
                 linkMod: "需要关联 Minecraft (在模组中登录)",
                 loggedInAs: "已登录为:",
                 logout: "登出",
                 download: "下载",
                 details: "查看详情",
-                loginToDownload: "登录后下载",
+                loginToDownload: "下载",
                 link: "关联账号",
                 loginAlert: "请先登录。",
                 linkAlert: "请先通过 F34 模组登录以关联您的 Minecraft 账号。",
@@ -1299,24 +1236,6 @@
                 },
                 categories: {
                     All: "全部", Adventure: "冒险", Horror: "恐怖", Decoration: "装饰", Economy: "经济", Equipment: "装备", Food: "食物", "Game Mechanics": "游戏机制", Library: "库", Magic: "魔法", Management: "管理", Minigame: "小游戏", Mobs: "生物", Optimization: "优化", Social: "社交", Storage: "存储", Technology: "技术", Transportation: "运输", Utility: "工具", "World Gen": "世界生成", General: "常规", Convenience: "便捷"
-                },
-                friends: {
-                    confirmTitle: "确认",
-                    confirmMessage: "你确定吗？",
-                    cancel: "取消",
-                    ok: "确定",
-                    noticeTitle: "通知",
-                    emailVisibility: "邮箱可见性",
-                    emailVisibilityMsg: "你想向该用户显示你的邮箱吗？",
-                    requestSent: "好友请求已发送！",
-                    success: "成功",
-                    error: "错误",
-                    requestFailed: "发送好友请求失败",
-                    requestAccepted: "好友请求已接受！",
-                    declineConfirm: "拒绝此好友请求？",
-                    requestDeclined: "好友请求已拒绝",
-                    removeConfirm: "删除此好友？",
-                    friendRemoved: "好友已删除"
                 }
             },
             es: {
@@ -1367,24 +1286,6 @@
                 },
                 categories: {
                     All: "Todo", Adventure: "Aventura", Horror: "Terror", Decoration: "Decoración", Economy: "Economía", Equipment: "Equipamiento", Food: "Comida", "Game Mechanics": "Mecánicas", Library: "Biblioteca", Magic: "Magia", Management: "Gestión", Minijuego: "Minijuego", Mobs: "Criaturas", Optimization: "Optimización", Social: "Social", Storage: "Almacenamiento", Technology: "Tecnología", Transportation: "Transporte", Utility: "Utilidad", "World Gen": "Gen. de Mundo", General: "General", Convenience: "Conveniencia"
-                },
-                friends: {
-                    confirmTitle: "Confirmar",
-                    confirmMessage: "¿Estás seguro?",
-                    cancel: "Cancelar",
-                    ok: "Aceptar",
-                    noticeTitle: "Aviso",
-                    emailVisibility: "Visibilidad del correo",
-                    emailVisibilityMsg: "¿Quieres mostrar tu correo a este usuario?",
-                    requestSent: "¡Solicitud de amistad enviada!",
-                    success: "Éxito",
-                    error: "Error",
-                    requestFailed: "Error al enviar solicitud de amistad",
-                    requestAccepted: "¡Solicitud de amistad aceptada!",
-                    declineConfirm: "¿Rechazar esta solicitud de amistad?",
-                    requestDeclined: "Solicitud de amistad rechazada",
-                    removeConfirm: "¿Eliminar este amigo?",
-                    friendRemoved: "Amigo eliminado"
                 }
             },
             fr: {
@@ -1435,24 +1336,6 @@
                 },
                 categories: {
                     All: "Tout", Adventure: "Aventure", Horror: "Horreur", Decoration: "Décoration", Economy: "Économie", Equipment: "Équipement", Food: "Nourriture", "Game Mechanics": "Mécaniques", Library: "Bibliothèque", Magic: "Magie", Management: "Gestion", Minigame: "Mini-jeu", Mobs: "Créatures", Optimization: "Optimisation", Social: "Social", Storage: "Stockage", Technology: "Technologie", Transportation: "Transport", Utility: "Utilité", "World Gen": "Gén. du Monde", General: "Général", Convenience: "Commodité"
-                },
-                friends: {
-                    confirmTitle: "Confirmer",
-                    confirmMessage: "Êtes-vous sûr ?",
-                    cancel: "Annuler",
-                    ok: "OK",
-                    noticeTitle: "Avis",
-                    emailVisibility: "Visibilité de l'email",
-                    emailVisibilityMsg: "Voulez-vous montrer votre email à cet utilisateur ?",
-                    requestSent: "Demande d'ami envoyée !",
-                    success: "Succès",
-                    error: "Erreur",
-                    requestFailed: "Échec de l'envoi de la demande d'ami",
-                    requestAccepted: "Demande d'ami acceptée !",
-                    declineConfirm: "Refuser cette demande d'ami ?",
-                    requestDeclined: "Demande d'ami refusée",
-                    removeConfirm: "Supprimer cet ami ?",
-                    friendRemoved: "Ami supprimé"
                 }
             },
             de: {
@@ -1503,24 +1386,6 @@
                 },
                 categories: {
                     All: "Alle", Adventure: "Abenteuer", Horror: "Horror", Decoration: "Dekoration", Economy: "Wirtschaft", Equipment: "Ausrüstung", Food: "Essen", "Game Mechanics": "Spielmechanik", Library: "Bibliothek", Magic: "Magie", Management: "Verwaltung", Minigame: "Minispiel", Mobs: "Kreaturen", Optimization: "Optimierung", Social: "Sozial", Storage: "Lagerung", Technology: "Technologie", Transportation: "Transport", Utility: "Dienstprogramm", "World Gen": "Weltgen.", General: "Allgemein", Convenience: "Komfort"
-                },
-                friends: {
-                    confirmTitle: "Bestätigen",
-                    confirmMessage: "Bist du sicher?",
-                    cancel: "Abbrechen",
-                    ok: "OK",
-                    noticeTitle: "Hinweis",
-                    emailVisibility: "E-Mail-Sichtbarkeit",
-                    emailVisibilityMsg: "Möchtest du diesem Benutzer deine E-Mail zeigen?",
-                    requestSent: "Freundschaftsanfrage gesendet!",
-                    success: "Erfolg",
-                    error: "Fehler",
-                    requestFailed: "Fehler beim Senden der Freundschaftsanfrage",
-                    requestAccepted: "Freundschaftsanfrage akzeptiert!",
-                    declineConfirm: "Diese Freundschaftsanfrage ablehnen?",
-                    requestDeclined: "Freundschaftsanfrage abgelehnt",
-                    removeConfirm: "Diesen Freund entfernen?",
-                    friendRemoved: "Freund entfernt"
                 }
             },
             ru: {
@@ -1571,24 +1436,6 @@
                 },
                 categories: {
                     All: "Все", Adventure: "Приключения", Horror: "Хоррор", Decoration: "Декор", Economy: "Экономика", Equipment: "Снаряжение", Food: "Еда", "Game Mechanics": "Механики", Library: "Библиотека", Magic: "Магия", Management: "Управление", Minigame: "Мини-игра", Mobs: "Мобы", Optimization: "Оптимизация", Social: "Социальное", Storage: "Хранение", Technology: "Технологии", Transportation: "Транспорт", Utility: "Утилиты", "World Gen": "Ген. мира", General: "Общее", Convenience: "Удобство"
-                },
-                friends: {
-                    confirmTitle: "Подтвердить",
-                    confirmMessage: "Вы уверены?",
-                    cancel: "Отмена",
-                    ok: "ОК",
-                    noticeTitle: "Уведомление",
-                    emailVisibility: "Видимость email",
-                    emailVisibilityMsg: "Хотите показать свой email этому пользователю?",
-                    requestSent: "Запрос на добавление в друзья отправлен!",
-                    success: "Успешно",
-                    error: "Ошибка",
-                    requestFailed: "Не удалось отправить запрос на добавление в друзья",
-                    requestAccepted: "Запрос на добавление в друзья принят!",
-                    declineConfirm: "Отклонить этот запрос на добавление в друзья?",
-                    requestDeclined: "Запрос на добавление в друзья отклонен",
-                    removeConfirm: "Удалить этого друга?",
-                    friendRemoved: "Друг удален"
                 }
             },
             es: {
@@ -1785,24 +1632,6 @@
                 },
                 categories: {
                     All: "Все", Adventure: "Приключения", Horror: "Хоррор", Decoration: "Декор", Economy: "Экономика", Equipment: "Снаряжение", Food: "Еда", "Game Mechanics": "Механики", Library: "Библиотека", Magic: "Магия", Management: "Управление", Minigame: "Мини-игра", Mobs: "Мобы", Optimization: "Оптимизация", Social: "Социальное", Storage: "Хранение", Technology: "Технологии", Transportation: "Транспорт", Utility: "Утилиты", "World Gen": "Ген. мира", General: "Общее", Convenience: "Удобство"
-                },
-                friends: {
-                    confirmTitle: "Подтвердить",
-                    confirmMessage: "Вы уверены?",
-                    cancel: "Отмена",
-                    ok: "ОК",
-                    noticeTitle: "Уведомление",
-                    emailVisibility: "Видимость email",
-                    emailVisibilityMsg: "Хотите показать свой email этому пользователю?",
-                    requestSent: "Запрос на добавление в друзья отправлен!",
-                    success: "Успешно",
-                    error: "Ошибка",
-                    requestFailed: "Не удалось отправить запрос на добавление в друзья",
-                    requestAccepted: "Запрос на добавление в друзья принят!",
-                    declineConfirm: "Отклонить этот запрос на добавление в друзья?",
-                    requestDeclined: "Запрос на добавление в друзья отклонен",
-                    removeConfirm: "Удалить этого друга?",
-                    friendRemoved: "Друг удален"
                 }
             }
         };
@@ -2004,17 +1833,17 @@
                 
                 titleEl.textContent = title;
                 messageEl.textContent = message;
-                modal.style.display = 'flex';
+                modal.classList.remove('hidden');
                 
                 const handleOk = () => {
-                    modal.style.display = 'none';
+                    modal.classList.add('hidden');
                     okBtn.removeEventListener('click', handleOk);
                     cancelBtn.removeEventListener('click', handleCancel);
                     resolve(true);
                 };
                 
                 const handleCancel = () => {
-                    modal.style.display = 'none';
+                    modal.classList.add('hidden');
                     okBtn.removeEventListener('click', handleOk);
                     cancelBtn.removeEventListener('click', handleCancel);
                     resolve(false);
@@ -2035,10 +1864,10 @@
                 
                 titleEl.textContent = title;
                 messageEl.textContent = message;
-                modal.style.display = 'flex';
+                modal.classList.remove('hidden');
                 
                 const handleOk = () => {
-                    modal.style.display = 'none';
+                    modal.classList.add('hidden');
                     okBtn.removeEventListener('click', handleOk);
                     resolve();
                 };
@@ -2054,7 +1883,6 @@
             renderConfigs();
             updateAuthUI();
             updateUI(); // Also update general UI elements
-            updateFriendsModalTexts(); // Update Friends modal if open
         }
 
         function updateAuthUI() {
@@ -2088,15 +1916,121 @@
                 loginBtn.classList.remove('hidden');
                 userProfile.classList.add('hidden');
                 loginBtn.textContent = t.login;
-                loginBtn.onclick = () => signInWithPopup(auth, provider);
+                loginBtn.onclick = () => openAuthModal();
                 myConfigsBtn.classList.add('hidden');
                 friendsBtn.classList.add('hidden');
                 adminLink.classList.add('hidden');
             }
         }
 
+        window.openAuthModal = () => {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            document.getElementById('login-form-container').classList.remove('hidden');
+            document.getElementById('register-form-container').classList.add('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeAuthModal = () => {
+            document.getElementById('auth-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        window.toggleAuthMode = () => {
+            const loginForm = document.getElementById('login-form-container');
+            const registerForm = document.getElementById('register-form-container');
+            loginForm.classList.toggle('hidden');
+            registerForm.classList.toggle('hidden');
+        };
+
+        const handleEmailAuth = async (mode) => {
+            const username = document.getElementById(mode === 'login' ? 'login-username' : 'register-username').value.trim();
+            const password = document.getElementById(mode === 'login' ? 'login-password' : 'register-password').value;
+
+            if (!username || !password) {
+                alert('Please enter both nickname and password.');
+                return;
+            }
+
+            // Simple pseudo-email for Firebase Auth: nickname@f34-di.com
+            const email = `${username.toLowerCase()}@f34-di.com`;
+
+            try {
+                if (mode === 'register') {
+                    // Check if user already exists in Firestore (nickname check)
+                    const nicknameCheck = query(collection(db, "users"), where("mc_name", "==", username));
+                    const nickSnap = await getDocs(nicknameCheck);
+                    if (!nickSnap.empty) {
+                        alert('This nickname is already registered.');
+                        return;
+                    }
+
+                    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+                    // Create Firestore profile
+                    await addDoc(collection(db, "users"), {
+                        email: email,
+                        mc_name: username,
+                        grade: 'General',
+                        friends: [],
+                        friend_requests_sent: [],
+                        friend_requests_received: [],
+                        reg_date: new Date().toISOString()
+                    });
+                    alert('Registration successful!');
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+                closeAuthModal();
+            } catch (error) {
+                console.error('Auth error:', error);
+                if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                    alert('Invalid nickname or password.');
+                } else if (error.code === 'auth/email-already-in-use') {
+                    alert('This nickname is already in use.');
+                } else if (error.code === 'auth/weak-password') {
+                    alert('Password should be at least 6 characters.');
+                } else {
+                    alert('Authentication failed: ' + error.message);
+                }
+            }
+        };
+
+        document.getElementById('do-login-btn').onclick = () => handleEmailAuth('login');
+        document.getElementById('do-register-btn').onclick = () => handleEmailAuth('register');
+
         function updateUI() {
             const t = i18n[currentLang] || i18n.en;
+
+            // Auth Modal translations
+            const modalLoginTitle = document.getElementById('t-modal-login-title');
+            const loginNickLabel = document.getElementById('t-login-nick-label');
+            const loginPwLabel = document.getElementById('t-login-pw-label');
+            const registerBtn = document.getElementById('do-register-btn');
+            const loginBtnSubmit = document.getElementById('do-login-btn');
+            const noAccountText = document.getElementById('t-no-account');
+            const gotoRegisterBtn = document.getElementById('t-goto-register');
+            
+            const modalRegisterTitle = document.getElementById('t-modal-register-title');
+            const regNickLabel = document.getElementById('t-reg-nick-label');
+            const regPwLabel = document.getElementById('t-reg-pw-label');
+            const pwWarningText = document.getElementById('t-pw-warning');
+            const haveAccountText = document.getElementById('t-have-account');
+            const gotoLoginBtn = document.getElementById('t-goto-login');
+
+            if (modalLoginTitle) modalLoginTitle.textContent = t.login;
+            if (loginNickLabel) loginNickLabel.textContent = t.nickname;
+            if (loginPwLabel) loginPwLabel.textContent = t.password;
+            if (loginBtnSubmit) loginBtnSubmit.textContent = t.login;
+            if (noAccountText) noAccountText.textContent = t.noAccount;
+            if (gotoRegisterBtn) gotoRegisterBtn.textContent = t.register;
+
+            if (modalRegisterTitle) modalRegisterTitle.textContent = t.register;
+            if (regNickLabel) regNickLabel.textContent = t.nickname;
+            if (regPwLabel) regPwLabel.textContent = t.password;
+            if (registerBtn) registerBtn.textContent = t.register;
+            if (pwWarningText) pwWarningText.textContent = t.pwWarning;
+            if (haveAccountText) haveAccountText.textContent = t.haveAccount;
+            if (gotoLoginBtn) gotoLoginBtn.textContent = t.login;
+
             const subtitleEl = document.getElementById('t-subtitle');
             const loadingEl = document.getElementById('t-loading');
             const supportEl = document.getElementById('t-support');
@@ -2135,41 +2069,8 @@
             document.body.style.overflow = 'hidden';
         };
 
-        // Update Friends modal texts with current language
-        function updateFriendsModalTexts() {
-            const t = i18n[currentLang].friends;
-            const friendsModal = document.getElementById('friends-modal');
-            
-            // Only update if modal exists
-            if (!friendsModal) return;
-            
-            document.getElementById('t-friends-title').textContent = t.title;
-            document.getElementById('t-friends-subtitle').textContent = t.subtitle;
-            
-            // Update tab buttons
-            const friendsTabBtn = document.getElementById('friends-tab-friends');
-            const requestsTabBtn = document.getElementById('friends-tab-requests');
-            const findTabBtn = document.getElementById('friends-tab-find');
-            
-            if (friendsTabBtn) friendsTabBtn.childNodes[0].textContent = t.tabFriends + ' ';
-            if (requestsTabBtn) requestsTabBtn.childNodes[0].textContent = t.tabRequests + ' ';
-            if (findTabBtn) findTabBtn.textContent = t.tabFind;
-            
-            // Update search input placeholder
-            const searchInput = document.getElementById('user-search-input');
-            if (searchInput) searchInput.placeholder = t.search;
-            
-            // Reload current tab content
-            const activeTab = friendsModal.querySelector('.border-blue-500');
-            if (activeTab) {
-                const tabId = activeTab.id.replace('friends-tab-', '');
-                switchFriendsTab(tabId);
-            }
-        }
-
         window.openFriendsModal = () => {
             if (!currentUser) return;
-            updateFriendsModalTexts();
             document.getElementById('friends-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             switchFriendsTab('friends');
@@ -2210,10 +2111,8 @@
             const toEmail = usersCache[userId];
             if (!toEmail) return;
             
-            const t = i18n[currentLang].friends;
-            
             // Show email visibility dialog
-            const showEmail = await customConfirm(t.emailVisibilityMsg, t.emailVisibility);
+            const showEmail = await customConfirm('Do you want to show your email to this user?', 'Email Visibility');
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
@@ -2230,11 +2129,11 @@
                     }]
                 });
                 
-                await customAlert(t.requestSent, t.success);
+                await customAlert('Friend request sent!', 'Success');
                 loadAllUsers();
             } catch (error) {
                 console.error('Error sending request:', error);
-                await customAlert(t.requestFailed, t.error);
+                await customAlert('Failed to send friend request', 'Error');
             }
         };
 
@@ -2244,10 +2143,8 @@
             const fromEmail = usersCache[userId];
             if (!fromEmail) return;
             
-            const t = i18n[currentLang].friends;
-            
             // Ask if they want to show their email
-            const showEmail = await customConfirm(t.emailVisibilityMsg, t.emailVisibility);
+            const showEmail = await customConfirm('Do you want to show your email to this user?', 'Email Visibility');
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
@@ -2266,7 +2163,7 @@
                     friend_requests_received: (myData.data()?.friend_requests_received || []).filter(r => r.from !== fromEmail)
                 });
                 
-                await customAlert(t.requestAccepted, t.success);
+                await customAlert('Friend request accepted!', 'Success');
                 loadRequests();
                 loadFriends();
             } catch (error) {
@@ -2281,9 +2178,7 @@
             const fromEmail = usersCache[userId];
             if (!fromEmail) return;
             
-            const t = i18n[currentLang].friends;
-            
-            if (!await customConfirm(t.declineConfirm, t.confirmTitle)) return;
+            if (!await customConfirm('Decline this friend request?', 'Confirm')) return;
             
             try {
                 const myRef = doc(db, 'users', currentUser.email);
@@ -2293,7 +2188,7 @@
                     friend_requests_received: (myData.data()?.friend_requests_received || []).filter(r => r.from !== fromEmail)
                 });
                 
-                await customAlert(t.requestDeclined, t.success);
+                await customAlert('Friend request declined', 'Success');
                 loadRequests();
             } catch (error) {
                 console.error('Error declining request:', error);
@@ -2307,9 +2202,7 @@
             const friendEmail = usersCache[userId];
             if (!friendEmail) return;
             
-            const t = i18n[currentLang].friends;
-            
-            if (!await customConfirm(t.removeConfirm, t.confirmTitle)) return;
+            if (!await customConfirm('Remove this friend?', 'Confirm')) return;
 
             try {
                 const myRef = doc(db, 'users', currentUser.email);
@@ -2319,7 +2212,7 @@
                     friends: (myData.data()?.friends || []).filter(f => f.email !== friendEmail)
                 });
 
-                await customAlert(t.friendRemoved, t.success);
+                await customAlert('Friend removed', 'Success');
                 loadFriends();
             } catch (error) {
                 console.error('Error removing friend:', error);
@@ -2330,16 +2223,15 @@
         async function loadFriends() {
             if (!currentUser) return;
             
-            const t = i18n[currentLang].friends;
             const container = document.getElementById('friends-list-container');
-            container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.loading}</div>`;
+            container.innerHTML = '<div class="text-slate-500 text-center py-8">Loading...</div>';
 
             try {
                 const myData = await getDoc(doc(db, 'users', currentUser.email));
                 const friends = myData.data()?.friends || [];
 
                 if (friends.length === 0) {
-                    container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.noFriends}</div>`;
+                    container.innerHTML = '<div class="text-slate-500 text-center py-8">No friends yet. Find users to add!</div>';
                     return;
                 }
 
@@ -2363,7 +2255,7 @@
                                     <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                     <div>
                                         <div class="font-bold">${mcName}</div>
-                                        <div class="text-xs text-slate-500">${showEmail ? friend.email : t.emailHidden}</div>
+                                        <div class="text-xs text-slate-500">${showEmail ? friend.email : 'Email hidden'}</div>
                                     </div>
                                 </div>
                                 <button onclick="removeFriend('${userId}')" 
@@ -2388,10 +2280,9 @@
         async function loadRequests() {
             if (!currentUser) return;
             
-            const t = i18n[currentLang].friends;
             const container = document.getElementById('requests-list-container');
             const countBadge = document.getElementById('requests-count');
-            container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.loading}</div>`;
+            container.innerHTML = '<div class="text-slate-500 text-center py-8">Loading...</div>';
 
             try {
                 const myData = await getDoc(doc(db, 'users', currentUser.email));
@@ -2406,7 +2297,7 @@
                 }
 
                 if (received.length === 0 && sent.length === 0) {
-                    container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.noRequests}</div>`;
+                    container.innerHTML = '<div class="text-slate-500 text-center py-8">No friend requests</div>';
                     return;
                 }
 
@@ -2416,7 +2307,7 @@
                 if (received.length > 0) {
                     const receivedTitle = document.createElement('h4');
                     receivedTitle.className = 'text-sm font-bold text-slate-400 mb-3';
-                    receivedTitle.textContent = t.receivedRequests;
+                    receivedTitle.textContent = 'Received Requests';
                     container.appendChild(receivedTitle);
                 }
                 
@@ -2439,17 +2330,17 @@
                                     <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                     <div>
                                         <div class="font-bold">${mcName}</div>
-                                        <div class="text-xs text-slate-500">${showEmail ? request.from : t.emailHiddenByUser}</div>
+                                        <div class="text-xs text-slate-500">${showEmail ? request.from : 'Email hidden by user'}</div>
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
                                     <button onclick="acceptFriendRequest('${userId}', ${request.showTheirEmail})" 
                                         class="px-4 py-2 bg-green-600 rounded-lg font-bold hover:bg-green-500 transition-colors text-sm">
-                                        ${t.accept}
+                                        Accept
                                     </button>
                                     <button onclick="declineFriendRequest('${userId}')" 
                                         class="px-4 py-2 bg-red-600 rounded-lg font-bold hover:bg-red-500 transition-colors text-sm">
-                                        ${t.decline}
+                                        Decline
                                     </button>
                                 </div>
                             `;
@@ -2464,7 +2355,7 @@
                 if (sent.length > 0) {
                     const sentTitle = document.createElement('h4');
                     sentTitle.className = 'text-sm font-bold text-slate-400 mb-3 mt-6';
-                    sentTitle.textContent = t.sentRequests;
+                    sentTitle.textContent = 'Sent Requests';
                     container.appendChild(sentTitle);
                     
                     for (const request of sent) {
@@ -2481,10 +2372,10 @@
                                         <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                         <div>
                                             <div class="font-bold">${mcName}</div>
-                                            <div class="text-xs text-slate-500">${t.pending}...</div>
+                                            <div class="text-xs text-slate-500">Request pending...</div>
                                         </div>
                                     </div>
-                                    <div class="text-yellow-400 text-sm font-bold">${t.pending}</div>
+                                    <div class="text-yellow-400 text-sm font-bold">Pending</div>
                                 `;
                                 container.appendChild(card);
                             }
@@ -2502,7 +2393,6 @@
         async function loadAllUsers() {
             if (!currentUser) return;
             
-            const t = i18n[currentLang].friends;
             const container = document.getElementById('users-list-container');
             const searchInput = document.getElementById('user-search-input');
             
@@ -2534,7 +2424,7 @@
                     usersCache = {}; // Clear cache
                     
                     if (filtered.length === 0) {
-                        container.innerHTML = `<div class="text-slate-500 text-center py-8">${t.noUsers}</div>`;
+                        container.innerHTML = '<div class="text-slate-500 text-center py-8">No users found</div>';
                         return;
                     }
 
@@ -2549,15 +2439,15 @@
                         
                         let statusHtml = '';
                         if (isFriend) {
-                            statusHtml = `<div class="text-green-400 text-sm font-bold">${t.friends}</div>`;
+                            statusHtml = '<div class="text-green-400 text-sm font-bold">Friends</div>';
                         } else if (requestSent) {
-                            statusHtml = `<div class="text-yellow-400 text-sm font-bold">${t.requestSent}</div>`;
+                            statusHtml = '<div class="text-yellow-400 text-sm font-bold">Request Sent</div>';
                         } else if (requestReceived) {
-                            statusHtml = `<div class="text-blue-400 text-sm font-bold">${t.requestReceived}</div>`;
+                            statusHtml = '<div class="text-blue-400 text-sm font-bold">Request Received</div>';
                         } else {
                             statusHtml = `<button onclick="sendFriendRequest('${userId}')" 
                                 class="px-4 py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-500 transition-colors text-sm">
-                                ${t.addFriend}
+                                Add Friend
                             </button>`;
                         }
                         
@@ -2568,7 +2458,7 @@
                                 <img src="https://mc-heads.net/avatar/${mcName}/32" class="w-8 h-8 rounded-lg">
                                 <div>
                                     <div class="font-bold">${mcName}</div>
-                                    <div class="text-xs text-slate-500">${isFriend ? user.email : t.emailHidden}</div>
+                                    <div class="text-xs text-slate-500">${isFriend ? user.email : 'Email hidden'}</div>
                                 </div>
                             </div>
                             ${statusHtml}
@@ -2738,7 +2628,7 @@
             const downloadBtn = document.getElementById('modal-download-btn');
 
             title.textContent = config.name || t.modalTitle;
-            downloadBtn.textContent = currentUser ? t.download : t.loginToDownload;
+            downloadBtn.textContent = t.download;
             downloadBtn.onclick = () => downloadConfig(id);
 
             let buttonsHtml = '';
@@ -2795,18 +2685,21 @@
 
         window.downloadConfig = async (id) => {
             const t = i18n[currentLang] || i18n.en;
-            if (!currentUser) { alert(t.loginAlert); return; }
-            if (!mcAccount) { alert(t.linkAlert); return; }
 
             try {
                 const config = allConfigs.find(c => c.id === id);
+                if (!config) return;
                 const blob = new Blob([config.data], { type: 'application/json' });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = `${config.name || 'config'}.json`;
                 a.click();
-                await updateDoc(doc(db, "shared_configs", id), { downloads: increment(1) });
+                
+                // If DB connection is available via SDK
+                if (db) {
+                     await updateDoc(doc(db, "shared_configs", id), { downloads: increment(1) });
+                }
             } catch (e) { log("Download Error: " + e.message); }
         };
 
