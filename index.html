@@ -1805,7 +1805,14 @@
                     if (!snap.empty) {
                         mcAccount = snap.docs[0].data();
                     } else {
-                        mcAccount = null;
+                        // If user is logged in but no Firestore document exists (e.g. initial register step or migration issues)
+                        // Fallback to name from Auth email if possible
+                        const nameFromEmail = user.email.split('@')[0];
+                        mcAccount = {
+                            mc_name: nameFromEmail || 'Guest',
+                            email: user.email,
+                            grade: 'General'
+                        };
                     }
                     updateAuthUI(); // Call updateAuthUI here
                     updateUI(); // Call updateUI for general elements
@@ -1957,6 +1964,8 @@
             try {
                 if (mode === 'register') {
                     // Check if user already exists in Firestore (nickname check)
+                    // Note: This check might fail if security rules block listing the collection.
+                    // But typically 'users' allows read for auth check.
                     const nicknameCheck = query(collection(db, "users"), where("mc_name", "==", username));
                     const nickSnap = await getDocs(nicknameCheck);
                     if (!nickSnap.empty) {
@@ -1966,16 +1975,28 @@
 
                     const userCred = await createUserWithEmailAndPassword(auth, email, password);
                     // Create Firestore profile
-                    await addDoc(collection(db, "users"), {
-                        email: email,
-                        mc_name: username,
-                        grade: 'General',
-                        friends: [],
-                        friend_requests_sent: [],
-                        friend_requests_received: [],
-                        reg_date: new Date().toISOString()
-                    });
-                    alert('Registration successful!');
+                    // IMPORTANT: user is now signed in, so we can write if rules allow 'auth != null'
+                    try {
+                        await addDoc(collection(db, "users"), {
+                            email: email,
+                            mc_name: username,
+                            grade: 'General',
+                            friends: [],
+                            friend_requests_sent: [],
+                            friend_requests_received: [],
+                            reg_date: new Date().toISOString()
+                        });
+                        alert('Registration successful!');
+                    } catch (fsError) {
+                        console.error('Firestore Error during registration:', fsError);
+                        // If firestore fails, we might still have the auth account.
+                        // But we want to let the user know.
+                        if (fsError.code === 'permission-denied') {
+                            alert('Registration saved in Auth, but profile creation failed due to permissions. Checking profile...');
+                        } else {
+                            throw fsError;
+                        }
+                    }
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
                 }
