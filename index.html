@@ -5,7 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F34 DI-Community Hub</title>
+    <!-- Tailwind CSS Script -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // 여기에 필요한 테마 확장 설정을 추가할 수 있습니다.
+                }
+            }
+        }
+    </script>
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700;900&display=swap"
         rel="stylesheet">
@@ -695,15 +705,6 @@
                         My Configs
                     </button>
 
-                    <!-- Friends Button -->
-                    <button id="friends-btn" onclick="openFriendsModal()"
-                        class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all hidden text-sm flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                        <span id="t-friends">Friends</span>
-                    </button>
-
                     <!-- Download Mod Button -->
                     <a href="download.html" id="t-nav-download"
                         class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all text-sm download-tooltip-container">
@@ -836,68 +837,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Friends Modal -->
-    <div id="friends-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeFriendsModal()"></div>
-        <div class="glass relative max-w-2xl w-full max-h-[90vh] overflow-auto p-8">
-            <div class="flex justify-between items-start mb-8">
-                <div>
-                    <h2 class="text-3xl font-black tracking-tighter" id="t-friends-title">Friends</h2>
-                    <p class="text-slate-500 text-sm mt-2" id="t-friends-subtitle">Manage your friends</p>
-                </div>
-                <button onclick="closeFriendsModal()"
-                    class="text-slate-400 hover:text-white transition-colors">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex gap-2 mb-6 border-b border-white/10">
-                <button onclick="switchFriendsTab('friends')" id="friends-tab-friends"
-                    class="px-6 py-3 font-bold border-b-2 border-blue-500 text-blue-400">
-                    Friends
-                </button>
-                <button onclick="switchFriendsTab('requests')" id="friends-tab-requests"
-                    class="px-6 py-3 font-bold border-b-2 border-transparent text-slate-500 hover:text-white">
-                    Requests <span id="requests-count" class="ml-2 px-2 py-0.5 bg-red-500 rounded-full text-xs hidden">0</span>
-                </button>
-                <button onclick="switchFriendsTab('find')" id="friends-tab-find"
-                    class="px-6 py-3 font-bold border-b-2 border-transparent text-slate-500 hover:text-white">
-                    Find Users
-                </button>
-            </div>
-
-            <!-- Friends Tab -->
-            <div id="friends-content-friends">
-                <div id="friends-list-container" class="space-y-3">
-                    <!-- Friends will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Requests Tab -->
-            <div id="friends-content-requests" class="hidden">
-                <div id="requests-list-container" class="space-y-3">
-                    <!-- Requests will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Find Users Tab -->
-            <div id="friends-content-find" class="hidden">
-                <div class="mb-4">
-                    <input type="text" id="user-search-input" placeholder="Search by email or Minecraft name..."
-                        class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500 transition-colors">
-                </div>
-                <div id="users-list-container" class="space-y-3 max-h-96 overflow-y-auto">
-                    <!-- Users will be loaded here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Profile Modal -->
     <div id="profile-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeProfileModal()"></div>
@@ -1700,101 +1639,9 @@
         });
         provider = new GoogleAuthProvider();
 
-        // Sync friend requests automatically
+        // Sync friend requests automatically (DEPRECATED: Friends feature removed)
         async function syncFriendRequests() {
-            if (!currentUser) return;
-            
-            try {
-                const myRef = doc(db, 'users', currentUser.email);
-                const myData = await getDoc(myRef);
-                
-                if (!myData.exists()) return;
-                
-                const sentRequests = myData.data()?.friend_requests_sent || [];
-                const myFriends = myData.data()?.friends || [];
-                const friendEmails = myFriends.map(f => f.email);
-                const receivedRequests = myData.data()?.friend_requests_received || [];
-                
-                let needsUpdate = false;
-                const updatedSentRequests = [];
-                const updatedReceivedRequests = [];
-                const newFriends = [...myFriends];
-                
-                // Check each sent request
-                for (const request of sentRequests) {
-                    const theirDoc = await getDoc(doc(db, 'users', request.to));
-                    if (theirDoc.exists()) {
-                        const theirFriends = theirDoc.data()?.friends || [];
-                        const acceptedByThem = theirFriends.find(f => f.email === currentUser.email);
-                        
-                        if (acceptedByThem) {
-                            // They accepted! Add to my friends if not already there
-                            if (!friendEmails.includes(request.to)) {
-                                newFriends.push({
-                                    email: request.to,
-                                    showMyEmail: request.showMyEmail,
-                                    showTheirEmail: acceptedByThem.showMyEmail,
-                                    timestamp: Date.now()
-                                });
-                                friendEmails.push(request.to);
-                                needsUpdate = true;
-                            }
-                        } else {
-                            // Still pending
-                            updatedSentRequests.push(request);
-                        }
-                    }
-                }
-                
-                // Check for new received requests from people who sent requests
-                for (const receivedReq of receivedRequests) {
-                    const theirDoc = await getDoc(doc(db, 'users', receivedReq.from));
-                    if (theirDoc.exists()) {
-                        const theirSentRequests = theirDoc.data()?.friend_requests_sent || [];
-                        const stillPending = theirSentRequests.find(r => r.to === currentUser.email);
-                        
-                        if (stillPending) {
-                            // Request still exists
-                            updatedReceivedRequests.push(receivedReq);
-                        } else {
-                            // They cancelled or something, remove it
-                            needsUpdate = true;
-                        }
-                    }
-                }
-                
-                // Scan all users for new incoming requests
-                const allUsersSnapshot = await getDocs(collection(db, 'users'));
-                const currentReceivedEmails = receivedRequests.map(r => r.from);
-                
-                for (const userDoc of allUsersSnapshot.docs) {
-                    if (userDoc.id === currentUser.email) continue;
-                    
-                    const theirSentRequests = userDoc.data()?.friend_requests_sent || [];
-                    const requestToMe = theirSentRequests.find(r => r.to === currentUser.email);
-                    
-                    if (requestToMe && !currentReceivedEmails.includes(userDoc.id)) {
-                        // New request found!
-                        updatedReceivedRequests.push({
-                            from: userDoc.id,
-                            showTheirEmail: requestToMe.showMyEmail,
-                            timestamp: requestToMe.timestamp
-                        });
-                        needsUpdate = true;
-                    }
-                }
-                
-                if (needsUpdate) {
-                    await updateDoc(myRef, {
-                        friend_requests_sent: updatedSentRequests,
-                        friend_requests_received: updatedReceivedRequests,
-                        friends: newFriends
-                    });
-                    console.log('Friend requests synced');
-                }
-            } catch (error) {
-                console.error('Error syncing friend requests:', error);
-            }
+            return;
         }
 
         onAuthStateChanged(auth, async (user) => {
@@ -1816,9 +1663,6 @@
                     }
                     updateAuthUI(); // Call updateAuthUI here
                     updateUI(); // Call updateUI for general elements
-                    
-                    // Sync friend requests
-                    await syncFriendRequests();
                 });
             } else {
                 mcAccount = null;
@@ -1897,7 +1741,6 @@
             const loginBtn = document.getElementById('auth-btn-login');
             const userProfile = document.getElementById('user-profile');
             const myConfigsBtn = document.getElementById('my-configs-btn');
-            const friendsBtn = document.getElementById('friends-btn');
             const adminLink = document.getElementById('t-admin-panel');
 
             if (currentUser) {
@@ -1911,7 +1754,6 @@
 
                 document.getElementById('auth-btn-logout').onclick = () => signOut(auth);
                 myConfigsBtn.classList.remove('hidden');
-                friendsBtn.classList.remove('hidden');
 
                 // Only show Admin Panel for the specific admin email
                 if (currentUser.email === 'gangminseogg13@gmail.com') {
@@ -1925,7 +1767,6 @@
                 loginBtn.textContent = t.login;
                 loginBtn.onclick = () => openAuthModal();
                 myConfigsBtn.classList.add('hidden');
-                friendsBtn.classList.add('hidden');
                 adminLink.classList.add('hidden');
             }
         }
