@@ -1,0 +1,118 @@
+<nav class="fixed top-0 w-full z-120 glass border-b border-white/5 px-6 py-3 flex justify-between items-center transition-all duration-300">
+    <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <img src="f34_title.png" class="h-10 w-auto object-contain group-hover:scale-105 transition-transform" alt="F34 DI Logo">
+            <span class="font-black text-xl tracking-tighter uppercase italic hidden sm:block">F34 <span class="text-orange-500 drop-shadow-[0_0_8px_rgba(249,115,22,0.4)]">DI</span></span>
+        </a>
+    </div>
+    <div class="flex items-center gap-4 md:gap-8">
+        <div class="hidden md:flex items-center gap-6">
+            <a href="index.html" class="nav-link text-sm font-bold transition-all hover:text-white" data-page="home">HOME</a>
+            <a href="Community.html" class="nav-link text-sm font-bold transition-all hover:text-white" data-page="community">COMMUNITY</a>
+            <a href="download.html" class="nav-link text-sm font-bold transition-all hover:text-white" data-page="download">DOWNLOAD</a>
+        </div>
+        
+        <div class="flex items-center gap-3 border-l border-white/10 pl-4 md:pl-8">
+            <!-- Language Selector -->
+            <div class="relative group/lang">
+                <button class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-3 py-1.5 transition-all">
+                    <span id="current-lang-flag">🇺🇸</span>
+                    <i class="fas fa-chevron-down text-[10px] opacity-50 group-hover/lang:rotate-180 transition-transform"></i>
+                </button>
+                <div class="absolute right-0 top-full mt-2 w-48 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-2 opacity-0 translate-y-2 pointer-events-none group-hover/lang:opacity-100 group-hover/lang:translate-y-0 group-hover/lang:pointer-events-auto transition-all shadow-2xl z-[200]">
+                    <button onclick="changeLang('en')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                        <span>🇺🇸</span> English
+                    </button>
+                    <button onclick="changeLang('ko')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                        <span>🇰🇷</span> 한국어
+                    </button>
+                    <button onclick="changeLang('ja')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                        <span>🇯🇵</span> 日本語
+                    </button>
+                    <button onclick="changeLang('zh')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                        <span>🇨🇳</span> 中文
+                    </button>
+                    <button onclick="changeLang('es')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                        <span>🇪🇸</span> Español
+                    </button>
+                    <button onclick="changeLang('fr')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                        <span>🇫🇷</span> Français
+                    </button>
+                    <button onclick="changeLang('de')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                        <span>🇩🇪</span> Deutsch
+                    </button>
+                    <button onclick="changeLang('ru')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                        <span>🇷🇺</span> Русский
+                    </button>
+                </div>
+            </div>
+
+            <!-- Login Button -->
+            <a href="Community.html?login=true" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 px-4 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-blue-600/20 active:scale-95">
+                <i class="fas fa-user-circle"></i>
+                <span>Login</span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .nav-link {
+        color: rgba(148, 163, 184, 0.8);
+        position: relative;
+    }
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #3b82f6;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+        width: 100%;
+    }
+    .nav-link.active {
+        color: white;
+    }
+</style>
+
+<script>
+    function updateActiveNav() {
+        const path = window.location.pathname;
+        const page = path.split("/").pop() || "index.html";
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('href') === page) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+    
+    // Flag update
+    function updateFlag(lang) {
+        const flags = { en: '🇺🇸', ko: '🇰🇷', ja: '🇯🇵', zh: '🇨🇳' };
+        const flagEl = document.getElementById('current-lang-flag');
+        if (flagEl) flagEl.textContent = flags[lang] || '🇺🇸';
+    }
+
+    // Wrap the existing changeLang if it exists
+    const originalChangeLang = window.changeLang;
+    window.changeLang = (lang) => {
+        updateFlag(lang);
+        if (typeof originalChangeLang === 'function') {
+            originalChangeLang(lang);
+        } else {
+            localStorage.setItem('lang', lang);
+            location.reload(); // Simple fallback
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateActiveNav();
+        updateFlag(localStorage.getItem('lang') || 'en');
+    });
+</script>
