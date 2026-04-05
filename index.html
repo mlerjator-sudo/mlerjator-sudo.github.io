@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F34 DI - Home</title>
+    <!-- Use standard Tailwind via CDN for ease of development, but note the production warning -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Disable production warning for custom environment
+        window.tailwind = window.tailwind || {};
+        tailwind.config = tailwind.config || {};
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        html {
+            background-color: #0f172a;
+        }
+        body {
+            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+        body.loaded {
+            opacity: 1;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.1), transparent);
+        }
+        .card-with-bg {
+            position: relative;
+            overflow: hidden;
+        }
+        .card-with-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--bg-url);
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: -1;
+            transition: opacity 0.3s;
+        }
+        .card-hover:hover::before {
+            opacity: 0.3;
+        }
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        /* Navbar specific styles (restored) */
+        .nav-link {
+            color: rgba(148, 163, 184, 0.8);
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #3b82f6;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: white;
+        }
+        .dropdown-gap {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: transparent;
+        }
+    </style>
+</head>
+<body class="hero-gradient min-h-screen">
+    <!-- Navbar (Restored Hardcoded to fix CORS) -->
+    <nav class="fixed top-0 w-full z-[1000] glass border-b border-white/5 px-6 py-3 flex justify-between items-center transition-all duration-300">
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <img src="f34_title.png" class="h-10 w-auto object-contain group-hover:scale-105 transition-transform" alt="F34 DI Logo">
+                <span class="font-black text-xl tracking-tighter uppercase italic hidden sm:block">F34 <span class="text-orange-500 drop-shadow-[0_0_12px_rgba(249,115,22,0.6)]">DI</span></span>
+            </a>
+        </div>
+        <div class="flex items-center gap-4 md:gap-8">
+            <div class="hidden md:flex items-center gap-6">
+                <a href="index.html" class="nav-link text-sm font-bold transition-all hover:text-white active" data-page="home">HOME</a>
+                <a href="Community.html" class="nav-link text-sm font-bold transition-all hover:text-white" data-page="community">COMMUNITY</a>
+                <a href="download.html" class="nav-link text-sm font-bold transition-all hover:text-white" data-page="download">DOWNLOAD</a>
+            </div>
+            
+            <div class="flex items-center gap-3 border-l border-white/10 pl-4 md:pl-8">
+                <!-- Language Selector -->
+                <div class="relative group/lang py-2">
+                    <button class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-3 py-1.5 transition-all">
+                        <span id="current-lang-flag">🇺🇸</span>
+                        <i class="fas fa-chevron-down text-[10px] opacity-50 group-hover/lang:rotate-180 transition-transform"></i>
+                    </button>
+                    <!-- Floating Bridge Segment to prevent hover gap -->
+                    <div class="dropdown-gap"></div>
+                    <div class="absolute right-0 top-[calc(100%+8px)] w-32 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-2 opacity-0 translate-y-2 pointer-events-none group-hover/lang:opacity-100 group-hover/lang:translate-y-0 group-hover/lang:pointer-events-auto transition-all shadow-2xl z-[1001]">
+                        <button onclick="changeLang('en')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                            <span>🇺🇸</span> English
+                        </button>
+                        <button onclick="changeLang('ko')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                            <span>��</span> 한국어
+                        </button>
+                        <button onclick="changeLang('ja')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                            <span>��</span> 日本語
+                        </button>
+                        <button onclick="changeLang('zh')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                            <span>��</span> 中文
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-16 px-6 text-center">
+        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight" id="hero-title">Discover the Best <span class="text-blue-500 underline decoration-blue-500/30">Instances</span></h1>
+        <p class="text-slate-400 max-w-2xl mx-auto text-lg mb-10" id="hero-subtitle">The ultimate hub for Minecraft configurations and modded instances. Share, discover, and build together.</p>
+        <div class="flex justify-center gap-4">
+            <a href="Community.html" class="px-8 py-4 bg-blue-600 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-500 transition-all shadow-xl shadow-blue-500/20" id="hero-explore">Explore Community</a>
+            <a href="https://discord.gg/yourlink" target="_blank" class="px-8 py-4 glass rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all" id="hero-discord"><i class="fab fa-discord mr-2"></i>Discord</a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 pb-20 space-y-20">
+        <!-- Trending Section -->
+        <section>
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-black italic uppercase tracking-tight" id="section-trending-title">Trending <span class="text-blue-500">This Month</span></h2>
+                    <p class="text-slate-500 text-sm mt-1" id="section-trending-desc">Most downloaded and liked instances recently.</p>
+                </div>
+                <a href="Community.html" class="text-blue-500 text-sm font-bold hover:underline" id="view-all-trending">View All →</a>
+            </div>
+            <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Skeleton Loading -->
+                <div class="animate-pulse glass h-[300px] rounded-3xl"></div>
+                <div class="animate-pulse glass h-[300px] rounded-3xl"></div>
+                <div class="animate-pulse glass h-[300px] rounded-3xl"></div>
+                <div class="animate-pulse glass h-[300px] rounded-3xl"></div>
+            </div>
+        </section>
+
+        <!-- New Arrivals Section -->
+        <section>
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-black italic uppercase tracking-tight" id="section-new-title">New <span class="text-blue-500">Arrivals</span></h2>
+                    <p class="text-slate-500 text-sm mt-1" id="section-new-desc">The latest configurations shared by the community.</p>
+                </div>
+                <a href="Community.html" class="text-blue-500 text-sm font-bold hover:underline" id="view-all-new">View All →</a>
+            </div>
+            <div id="new-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Skeleton Loading -->
+                <div class="animate-pulse glass h-[300px] rounded-3xl"></div>
+                <div class="animate-pulse glass h-[300px] rounded-3xl"></div>
+                <div class="animate-pulse glass h-[300px] rounded-3xl"></div>
+                <div class="animate-pulse glass h-[300px] rounded-3xl"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Upload Instance Promotion Modal (Styled to Match Image) -->
+    <div id="promo-modal" class="fixed inset-0 z-[120] flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="window.closePromoModal()"></div>
+        <div class="relative w-[680px] max-w-full bg-[#1e293b]/80 backdrop-blur-xl shadow-[0px_8px_32px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden flex flex-col items-center p-0 animate-fade-in">
+            <!-- Image Area -->
+            <div class="w-full pt-10 flex justify-center">
+                <img src="Upload Instance.png" class="w-[380px] h-auto object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)]" alt="Upload Icon">
+            </div>
+
+            <!-- Text Area -->
+            <div class="py-8 px-8">
+                <h3 class="font-['Inter','sans-serif'] text-[32px] leading-[1.2] text-center text-slate-200 font-medium tracking-tight">
+                    당신의 인스턴스를 업로드 하여<br>사람들에게 공유해보세요!
+                </h3>
+            </div>
+            
+            <!-- Bottom Action Bar -->
+            <div class="w-full flex justify-between items-end p-6 bg-black/20 mt-4">
+                <!-- Checkbox and Label -->
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="window.togglePromoCheckbox()">
+                    <span class="font-['Inter'] text-[16px] text-slate-400 group-hover:text-white transition-colors">하루동안 보지 않기</span>
+                    <div id="promo-checkbox" class="w-6 h-6 bg-white/5 border border-white/20 flex items-center justify-center transition-all group-hover:border-white/40">
+                        <svg id="promo-check-icon" class="w-4 h-4 text-blue-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                </div>
+
+                <!-- Close Button -->
+                <button onclick="window.handlePromoClose()" class="bg-white/10 px-10 py-2.5 flex items-center justify-center hover:bg-white/20 transition-all border border-white/10 rounded-lg">
+                    <span class="font-['Inter'] text-[24px] text-white leading-none font-bold">닫기</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Area -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyA827pUzqfTpGpGbT9uKXKEjZo3hYl5ENo",
+            authDomain: "f34-di.firebaseapp.com",
+            projectId: "f34-di",
+            storageBucket: "f34-di.firebasestorage.app",
+            messagingSenderId: "660590227115",
+            appId: "1:660590227115:web:0f1ca3aa9464f2406c11ee"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const i18n = {
+            en: {
+                navHome: "HOME",
+                navCommunity: "COMMUNITY",
+                heroTitle: "Discover the Best <span class=\"text-blue-500 underline decoration-blue-500/30\">Instances</span>",
+                heroSubtitle: "The ultimate hub for Minecraft configurations and modded instances. Share, discover, and build together.",
+                heroExplore: "Explore Community",
+                heroDiscord: "Discord",
+                trendingTitle: "Trending <span class=\"text-blue-500\">This Month</span>",
+                trendingDesc: "Most downloaded and liked instances recently.",
+                newTitle: "New <span class=\"text-blue-500\">Arrivals</span>",
+                newDesc: "The latest configurations shared by the community.",
+                viewAll: "View All →",
+                loading: "Loading...",
+                noData: "No data available.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT IS A TRADEMARK OF MOJANG AB.</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+             ko: {
+                navHome: "홈",
+                navCommunity: "커뮤니티",
+                heroTitle: "최고의 <span class=\"text-blue-500 underline decoration-blue-500/30\">인스턴스</span>를 찾아보세요",
+                heroSubtitle: "마인크래프트 설정과 모드 인스턴스를 위한 최고의 허브입니다. 공유하고, 발견하고, 함께 만들어가세요.",
+                heroExplore: "커뮤니티 탐색",
+                heroDiscord: "디스코드",
+                trendingTitle: "이달의 <span class=\"text-blue-500\">인기 항목</span>",
+                trendingDesc: "최근 가장 많이 다운로드되고 좋아요를 받은 인스턴스입니다.",
+                newTitle: "최신 <span class=\"text-blue-500\">업데이트</span>",
+                newDesc: "커뮤니티에서 공유된 최신 설정들입니다.",
+                viewAll: "전체 보기 →",
+                loading: "로딩 중...",
+                noData: "데이터가 없습니다.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT는 MOJANG AB의 상표입니다.</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            ja: {
+                navHome: "ホーム",
+                navCommunity: "コミュニティ",
+                heroTitle: "最高の<span class=\"text-blue-500 underline decoration-blue-500/30\">インスタンス</span>を見つけよう",
+                heroSubtitle: "Minecraftの設定とModインスタンスの究極のハブ。共有し、発見し、共に作り上げましょう。",
+                heroExplore: "コミュニティを探索",
+                heroDiscord: "Discord",
+                trendingTitle: "今月の<span class=\"text-blue-500\">トレンド</span>",
+                trendingDesc: "最近最もダウンロードされ、高評価を得たインスタンス。",
+                newTitle: "最新の<span class=\"text-blue-500\">到着</span>",
+                newDesc: "コミュニ티で共有された最新の設定。",
+                viewAll: "すべて表示 →",
+                loading: "読み込み中...",
+                noData: "데이터가 없습니다.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT は MOJANG AB の商標です。</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            zh: {
+                navHome: "首页",
+                navCommunity: "社区",
+                heroTitle: "发现最佳<span class=\"text-blue-500 underline decoration-blue-500/30\">实例</span>",
+                heroSubtitle: "Minecraft 配置和模组实例的终极中心。分享、发现并共同构建。",
+                heroExplore: "探索社区",
+                heroDiscord: "Discord",
+                trendingTitle: "本月<span class=\"text-blue-500\">热门</span>",
+                trendingDesc: "最近下载和点赞最多的实例。",
+                newTitle: "最新<span class=\"text-blue-500\">发布</span>",
+                newDesc: "社区分享的最新配置。",
+                viewAll: "查看全部 →",
+                loading: "加载中...",
+                noData: "暂无数据",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT 是 MOJANG AB 的商标。</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            }
+        };
+
+        const currentLang = localStorage.getItem('f34_lang') || 'en';
+
+        window.changeLang = (lang) => {
+            // Standardize language codes: jp -> ja, cn -> zh for index.html
+            let targetLang = lang;
+            if (lang === 'jp') targetLang = 'ja';
+            if (lang === 'cn') targetLang = 'zh';
+
+            localStorage.setItem('f34_lang', targetLang);
+            location.reload();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+        });
+
+        function updateUIStrings() {
+            // Helper for codes used in Community
+            const langMap = { jp: 'ja', cn: 'zh' };
+            const effectiveLang = langMap[currentLang] || currentLang;
+            const t = i18n[effectiveLang] || i18n.en;
+            
+            // Update flag
+            const flags = { en: '🇺🇸', ko: '🇰🇷', ja: '🇯🇵', zh: '🇨🇳', jp: '🇯🇵', cn: '🇨🇳' };
+            const flagEl = document.getElementById('current-lang-flag');
+            if (flagEl) flagEl.textContent = flags[currentLang] || '🇺🇸';
+
+            // Update nav links
+            const navHome = document.querySelector('[data-page="home"]');
+            const navComm = document.querySelector('[data-page="community"]');
+            const navDown = document.querySelector('[data-page="download"]');
+            
+            if (navHome) navHome.textContent = t.navHome.toUpperCase();
+            if (navComm) navComm.textContent = t.navCommunity.toUpperCase();
+            if (navDown) navDown.textContent = currentLang === 'ko' ? "다운로드" : (currentLang === 'ja' ? "ダウンロード" : (currentLang === 'zh' ? "下载" : "DOWNLOAD"));
+
+            document.getElementById('hero-title').innerHTML = t.heroTitle;
+            document.getElementById('hero-subtitle').textContent = t.heroSubtitle;
+            document.getElementById('hero-explore').textContent = t.heroExplore;
+            document.getElementById('hero-discord').innerHTML = `<i class="fab fa-discord mr-2"></i>${t.heroDiscord}`;
+            document.getElementById('section-trending-title').innerHTML = t.trendingTitle;
+            document.getElementById('section-trending-desc').textContent = t.trendingDesc;
+            document.getElementById('section-new-title').innerHTML = t.newTitle;
+            document.getElementById('section-new-desc').textContent = t.newDesc;
+            document.getElementById('view-all-trending').textContent = t.viewAll;
+            document.getElementById('view-all-new').textContent = t.viewAll;
+
+            const footerText = document.getElementById('footer-text');
+            if (footerText) footerText.innerHTML = t.footer;
+        }
+
+        async function fetchHomeData() {
+            try {
+                const q = query(collection(db, "shared_configs"), where("status", "==", "approved"), limit(20));
+                const snap = await getDocs(q);
+                let configs = [];
+                snap.forEach(doc => configs.push({ id: doc.id, ...doc.data() }));
+
+                // "New" - Sort by timestamp DESC
+                const newArrivals = [...configs].sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0)).slice(0, 4);
+                
+                // "Trending" - Sort by downloads/likes DESC
+                const trending = [...configs].sort((a, b) => (b.downloads || 0) - (a.downloads || 0)).slice(0, 4);
+
+                renderGrid('new-grid', newArrivals);
+                renderGrid('trending-grid', trending);
+            } catch (e) {
+                console.error("Home Fetch Error:", e);
+            }
+        }
+
+        function renderGrid(containerId, list) {
+            const container = document.getElementById(containerId);
+            if (!list.length) {
+                container.innerHTML = `<div class="col-span-full py-10 text-center opacity-50">No instances found.</div>`;
+                return;
+            }
+            container.innerHTML = list.map(item => {
+                const bgUrl = getCategoryBG(item.category);
+                return `
+                <div class="glass p-6 rounded-3xl card-hover flex flex-col justify-between group overflow-hidden border-white/5 relative bg-black/40 card-with-bg" style="--bg-url: url('${bgUrl}')">
+                    <div class="absolute inset-0 bg-cover bg-center opacity-[0.08] group-hover:opacity-[0.15] transition-opacity" style="background-image: var(--bg-url)"></div>
+                    <div class="relative z-10 flex flex-col h-full justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-12 h-12 bg-white/5 backdrop-blur-md rounded-2xl flex items-center justify-center text-xl shadow-inner border border-white/5">
+                                    ${getCategoryIcon(item.category)}
+                                </div>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-1 rounded-lg bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase tracking-wider border border-blue-500/20">${item.mc_version || '--'}</span>
+                                    <span class="px-2 py-1 rounded-lg bg-white/5 text-slate-500 text-[10px] font-black uppercase tracking-wider border border-white/10 italic">${item.language || 'en'}</span>
+                                </div>
+                            </div>
+                            <h3 class="font-black text-xl mb-2 truncate group-hover:text-blue-400 transition-colors tracking-tight">${item.name}</h3>
+                            <p class="text-slate-500 text-[13px] line-clamp-2 leading-relaxed mb-6 font-medium italic">"${item.description || 'No description'}"</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                            <div class="flex items-center gap-2.5">
+                                <div class="p-[2px] rounded-lg bg-gradient-to-br from-blue-500/50 to-purple-500/50">
+                                    <img src="https://render.crafty.gg/3d/bust/${item.user_mc_name || item.author}" class="w-7 h-7 rounded-md bg-slate-900" onerror="this.src='https://minotar.net/bust/steve/100'">
+                                </div>
+                                <span class="text-[11px] font-black text-slate-400 truncate max-w-[90px] uppercase tracking-tighter">${item.author.split('@')[0]}</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-slate-500 text-[11px] font-black">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-arrow-down-long text-blue-500/50"></i>${item.downloads || 0}</span>
+                                <span class="flex items-center gap-1.5"><i class="fas fa-heart text-red-500/50"></i>${item.likes || 0}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;}).join('');
+        }
+
+        function getCategoryBG(cat) {
+            const bgs = {
+                adventure: 'https://i.imgur.com/vQseaHR.png',
+                worldgen: 'https://i.imgur.com/bV0zPVK.png',
+                magic: 'https://i.imgur.com/bhmccZ4.png',
+                technology: 'https://i.imgur.com/mOn0jfR.png'
+            };
+            return bgs[cat?.toLowerCase()] || 'https://i.imgur.com/bdomv6b.png';
+        }
+
+        function getCategoryIcon(cat) {
+            const icons = {
+                adventure: '🗺️',
+                worldgen: '🌍',
+                magic: '🪄',
+                technology: '⚙️',
+                optimization: '🚀',
+                equipment: '⚔️'
+            };
+            return icons[cat?.toLowerCase()] || '📦';
+        }
+
+        // Initialize
+        updateUIStrings();
+        fetchHomeData();
+        // checkPromoModal(); // Removed missing promo modal check to avoid errors
+    </script>
+    <footer class="mt-20 py-16 border-t border-white/5 text-center px-6">
+        <p id="footer-text" class="text-slate-500 text-[10px] font-black uppercase tracking-[0.25em] leading-loose opacity-60">
+            © 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br>
+            <span class="opacity-40">MINECRAFT IS A TRADEMARK OF MOJANG AB.</span>
+        </p>
+    </footer>
+</body>
+</html>
