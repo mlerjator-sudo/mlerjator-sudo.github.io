@@ -1038,6 +1038,13 @@
                         </button>
                     </div>
 
+                    <div id="login-container">
+                        <button onclick="openAuthModal()"
+                            class="glass px-10 py-3 bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600/40 transition-all font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-500/10">
+                            Login
+                        </button>
+                    </div>
+
                     <!-- My Configs Button -->
                     <button id="my-configs-btn" onclick="openMyConfigsModal()"
                         class="glass px-8 py-3 font-bold hover:bg-white/5 transition-all hidden text-sm">
@@ -2911,7 +2918,7 @@
             const t = i18n[currentLang] || i18n.en;
             
             // 1. Navigation Elements Sync
-            const navLoginBtn = document.getElementById('auth-btn-login'); 
+            const navLoginContainer = document.getElementById('login-container'); 
             const navUserProfile = document.getElementById('user-profile');
             
             // 2. Local Profile Sync (Profile card section)
@@ -2920,7 +2927,7 @@
 
             if (currentUser) {
                 // User is Logged In
-                if (navLoginBtn) navLoginBtn.remove(); // Redundant top button removed
+                if (navLoginContainer) navLoginContainer.classList.add('hidden');
                 if (navUserProfile) navUserProfile.classList.remove('hidden');
                 
                 if (localUserProfile) localUserProfile.classList.remove('hidden');
@@ -2958,11 +2965,11 @@
                     if (adminLink) adminLink.classList.add('hidden');
                 }
             } else {
-                // Show Login Button (Top & Local)
-                if (navLoginBtn) {
-                    navLoginBtn.classList.remove('hidden');
-                    navLoginBtn.textContent = t.login || 'Login';
-                    navLoginBtn.onclick = () => openAuthModal();
+                // User is Logged Out
+                if (navLoginContainer) {
+                    navLoginContainer.classList.remove('hidden');
+                    const loginBtn = navLoginContainer.querySelector('button');
+                    if (loginBtn) loginBtn.textContent = t.login || 'Login';
                 }
                 if (navUserProfile) navUserProfile.classList.add('hidden');
                 
@@ -2971,6 +2978,10 @@
                 
                 const myConfigsBtn = document.getElementById('my-configs-btn');
                 if (myConfigsBtn) myConfigsBtn.classList.add('hidden');
+            }
+            
+            renderConfigs();
+        }
                 
                 const uploadBtn = document.getElementById('upload-f34-btn');
                 if (uploadBtn) uploadBtn.classList.add('hidden');
