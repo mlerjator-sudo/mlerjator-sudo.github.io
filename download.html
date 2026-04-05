@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F34 DI - Download</title>
+    <!-- Use standard Tailwind via CDN for ease of development -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        html {
+            background-color: #0f172a;
+        }
+        body {
+            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+        body.loaded {
+            opacity: 1;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.1), transparent);
+        }
+        .download-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .download-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Navbar specific styles (restored) */
+        .nav-link {
+            color: rgba(148, 163, 184, 0.8);
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #3b82f6;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: white;
+        }
+    </style>
+</head>
+<body class="hero-gradient min-h-screen">
+    <!-- Navbar (Restored Hardcoded to fix CORS) -->
+    <nav class="fixed top-0 w-full z-[1000] glass border-b border-white/5 px-6 py-3 flex justify-between items-center transition-all duration-300">
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <img src="f34_title.png" class="h-10 w-auto object-contain group-hover:scale-105 transition-transform" alt="F34 DI Logo">
+                <span class="font-black text-xl tracking-tighter uppercase italic hidden sm:block">F34 <span class="text-orange-500 drop-shadow-[0_0_8px_rgba(249,115,22,0.4)]">DI</span></span>
+            </a>
+        </div>
+        <div class="flex items-center gap-4 md:gap-8">
+            <div class="hidden md:flex items-center gap-6">
+                <a href="index.html" class="nav-link text-sm font-bold transition-all hover:text-white" data-page="home">HOME</a>
+                <a href="Community.html" class="nav-link text-sm font-bold transition-all hover:text-white" data-page="community">COMMUNITY</a>
+                <a href="download.html" class="nav-link text-sm font-bold transition-all hover:text-white" data-page="download">DOWNLOAD</a>
+            </div>
+            
+            <div class="flex items-center gap-3 border-l border-white/10 pl-4 md:pl-8">
+                <!-- Language Selector -->
+                <div class="relative group/lang py-2">
+                    <button class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-3 py-1.5 transition-all">
+                        <span id="current-lang-flag">🇺🇸</span>
+                        <i class="fas fa-chevron-down text-[10px] opacity-50 group-hover/lang:rotate-180 transition-transform"></i>
+                    </button>
+                    <div class="absolute right-0 top-full w-32 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-2 opacity-0 translate-y-2 pointer-events-none group-hover/lang:opacity-100 group-hover/lang:translate-y-0 group-hover/lang:pointer-events-auto transition-all shadow-2xl z-[1001]">
+                        <button onclick="changeLang('en')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                            <span>🇺🇸</span> English
+                        </button>
+                        <button onclick="changeLang('ko')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                            <span>🇰🇷</span> 한국어
+                        </button>
+                        <button onclick="changeLang('ja')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                            <span>🇯🇵</span> 日本語
+                        </button>
+                        <button onclick="changeLang('zh')" class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg transition-colors text-xs font-bold">
+                            <span>🇨🇳</span> 中文
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Download Hero -->
+    <header class="pt-40 pb-20 px-6 text-center">
+        <div class="inline-block px-4 py-1.5 mb-6 glass rounded-full border border-blue-500/20 text-blue-400 text-xs font-black tracking-widest uppercase animate-pulse">
+            LATEST VERSION: 1.2.0
+        </div>
+        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight">Get <span class="text-blue-500">F34 Mod</span></h1>
+        <p class="text-slate-400 max-w-2xl mx-auto text-lg mb-10">Download the companion mod to easily browse, import, and deploy instances directly within Minecraft.</p>
+        
+        <div class="flex flex-wrap justify-center gap-6">
+            <!-- CurseForge Download -->
+            <a href="https://curseforge.com/minecraft/mc-mods/f34-di" target="_blank" class="download-card glass p-8 rounded-3xl w-72 text-center border-white/10 flex flex-col items-center">
+                <div class="h-16 w-16 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6 text-orange-500 text-3xl transition-transform group-hover:scale-110">
+                    <img src="https://simpleicons.org/icons/curseforge.svg" class="w-8 h-8 filter brightness-0 invert opacity-60 group-hover:opacity-100" style="filter: invert(48%) sepia(79%) sar(1707%) hue-rotate(352deg) brightness(101%) contrast(105%);" alt="CurseForge">
+                </div>
+                <h3 class="font-black text-xl mb-2 italic tracking-tighter uppercase">CurseForge</h3>
+                <p class="text-slate-500 text-[13px] leading-relaxed mb-6 font-medium italic opacity-70 px-4">The classic ecosystem for Minecraft enthusiasts world-wide.</p>
+                <div class="mt-auto w-full py-3.5 bg-orange-600 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] group-hover:bg-orange-500 transition-all shadow-lg shadow-orange-600/20 active:scale-95">
+                    DOWNLOAD MOD
+                </div>
+            </a>
+
+            <!-- Modrinth Download -->
+            <a href="https://modrinth.com/mod/f34-di" target="_blank" class="download-card glass p-8 rounded-3xl w-72 text-center border-white/10 flex flex-col items-center group">
+                <div class="h-16 w-16 bg-green-500/10 rounded-2xl flex items-center justify-center mb-6 text-green-500 text-3xl transition-transform group-hover:scale-110">
+                    <img src="https://simpleicons.org/icons/modrinth.svg" class="w-8 h-8 filter brightness-0 invert opacity-60 group-hover:opacity-100" style="filter: invert(61%) sepia(38%) sar(416%) hue-rotate(94deg) brightness(91%) contrast(88%);" alt="Modrinth">
+                </div>
+                <h3 class="font-black text-xl mb-2 italic tracking-tighter uppercase">Modrinth</h3>
+                <p class="text-slate-500 text-[13px] leading-relaxed mb-6 font-medium italic opacity-70 px-4">Experience the speed of a modern, open-source modding home.</p>
+                <div class="mt-auto w-full py-3.5 bg-green-600 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] group-hover:bg-green-500 transition-all shadow-lg shadow-green-600/20 active:scale-95">
+                    DOWNLOAD MOD
+                </div>
+            </a>
+
+            <!-- Direct Download -->
+            <a href="https://drive.google.com/file/d/16fql-OCZUk-Qj_yCKoLwyHDbVxuOdRcv/view?usp=sharing" target="_blank" class="download-card glass p-8 rounded-3xl w-72 text-center border-white/10 flex flex-col items-center group">
+                <div class="h-16 w-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 text-blue-500 text-3xl transition-transform group-hover:scale-110">
+                    <i class="fas fa-file-archive opacity-60 group-hover:opacity-100"></i>
+                </div>
+                <h3 class="font-black text-xl mb-2 italic tracking-tighter uppercase">Direct JAR</h3>
+                <p class="text-slate-500 text-[13px] leading-relaxed mb-6 font-medium italic opacity-70 px-4">Download the latest <span class="text-blue-400">f34-4.2.jar</span> directly to your PC.</p>
+                <div class="mt-auto w-full py-3.5 bg-blue-600 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] group-hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20 active:scale-95">
+                    GET JAR FILE
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- Installation Guide -->
+    <section class="max-w-4xl mx-auto px-6 pb-32">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-black italic uppercase tracking-tight">How to <span class="text-blue-500">Install</span></h2>
+            <div class="h-1 w-20 bg-blue-500 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <div class="space-y-12">
+            <!-- Step 1 -->
+            <div class="flex flex-col md:flex-row gap-8 items-center bg-white/5 p-8 rounded-3xl border border-white/5">
+                <div class="text-6xl font-black step-number opacity-50 shrink-0">01</div>
+                <div>
+                    <h4 class="text-xl font-black mb-2 italic">Download Forge</h4>
+                    <p class="text-slate-400">Ensure you have <span class="text-white font-bold">Minecraft Forge 1.12.2</span> installed. Other versions are currently not supported.</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex flex-col md:flex-row gap-8 items-center bg-white/5 p-8 rounded-3xl border border-white/5">
+                <div class="text-6xl font-black step-number opacity-50 shrink-0">02</div>
+                <div>
+                    <h4 class="text-xl font-black mb-2 italic">Place Mod File</h4>
+                    <p class="text-slate-400">Drag and drop the downloaded <span class="text-white font-bold">F34-DI.jar</span> file into your <code class="bg-black/40 px-2 py-1 rounded text-blue-400">.minecraft/mods</code> folder.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flex flex-col md:flex-row gap-8 items-center bg-white/5 p-8 rounded-3xl border border-white/5">
+                <div class="text-6xl font-black step-number opacity-50 shrink-0">03</div>
+                <div>
+                    <h4 class="text-xl font-black mb-2 italic">Launch Game</h4>
+                    <p class="text-slate-400">Start Minecraft with the Forge profile. Press the <span class="text-white font-bold">[F34]</span> button in the main menu to start exploring instances.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-20 py-16 border-t border-white/5 text-center px-6">
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.25em] leading-loose opacity-60" id="footer-text">
+            © 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br>
+            <span class="opacity-40">MINECRAFT IS A TRADEMARK OF MOJANG AB.</span>
+        </p>
+    </footer>
+
+    <script>
+        function updateActiveNav() {
+            const path = window.location.pathname;
+            const page = path.split("/").pop() || "index.html";
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (linkHref === page) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+        
+        function updateFlag(lang) {
+            const flags = { 
+                en: '🇺🇸', ko: '🇰🇷', ja: '🇯🇵', zh: '🇨🇳', jp: '🇯🇵', cn: '🇨🇳',
+                es: '🇪🇸', fr: '🇫🇷', de: '🇩🇪', ru: '🇷🇺'
+            };
+            const flagEl = document.getElementById('current-lang-flag');
+            if (flagEl) flagEl.textContent = flags[lang] || '🇺🇸';
+        }
+
+        window.changeLang = (lang) => {
+            localStorage.setItem('f34_lang', lang);
+            location.reload();
+        };
+
+        const i18n = {
+            en: {
+                title: "Download Mod",
+                subtitle: "How to Install",
+                step1Title: "Download Forge",
+                step1Desc: "Ensure you have <span class=\"text-white font-bold\">Minecraft Forge 1.12.2</span> installed. Other versions are currently not supported.",
+                step2Title: "Place Mod File",
+                step2Desc: "Drag and drop the downloaded <span class=\"text-white font-bold\">F34-DI.jar</span> file into your <code class=\"bg-black/40 px-2 py-1 rounded text-blue-400\">.minecraft/mods</code> folder.",
+                step3Title: "Launch Game",
+                step3Desc: "Start Minecraft with the Forge profile. Press the <span class=\"text-white font-bold\">[F34]</span> button in the main menu to start exploring instances.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT IS A TRADEMARK OF MOJANG AB.</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            ko: {
+                title: "모드 다운로드",
+                subtitle: "설치 방법",
+                step1Title: "Forge 다운로드",
+                step1Desc: "<span class=\"text-white font-bold\">Minecraft Forge 1.12.2</span>가 설치되어 있어야 합니다. 다른 버전은 현재 지원되지 않습니다.",
+                step2Title: "모드 파일 배치",
+                step2Desc: "다운로드한 <span class=\"text-white font-bold\">F34-DI.jar</span> 파일을 <code class=\"bg-black/40 px-2 py-1 rounded text-blue-400\">.minecraft/mods</code> 폴더에 넣으세요.",
+                step3Title: "게임 실행",
+                step3Desc: "Forge 프로필로 마인크래프트를 시작하세요. 메인 메뉴에서 <span class=\"text-white font-bold\">[F34]</span> 버튼을 눌러 인스턴스 탐색을 시작하세요.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT는 MOJANG AB의 상표입니다.</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            ja: {
+                title: "MODダウンロード",
+                subtitle: "インストール方法",
+                step1Title: "Forgeをダウンロード",
+                step1Desc: "<span class=\"text-white font-bold\">Minecraft Forge 1.12.2</span>がインストールされていることを確認してください。他のバージョンは現在サポートされていません。",
+                step2Title: "MODファイルを配置",
+                step2Desc: "ダウンロードした <span class=\"text-white font-bold\">F34-DI.jar</span> ファイルを <code class=\"bg-black/40 px-2 py-1 rounded text-blue-400\">.minecraft/mods</code> フォルダにドラッグ＆ドロップします。",
+                step3Title: "ゲームを起動",
+                step3Desc: "ForgeプロファイルでMinecraftを起動します。メインメニューの <span class=\"text-white font-bold\">[F34]</span> ボタンを押して、インスタンスの探索を開始します。",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT は MOJANG AB の商標です。</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            zh: {
+                title: "下载模组",
+                subtitle: "安装教程",
+                step1Title: "下载 Forge",
+                step1Desc: "确保您已安装 <span class=\"text-white font-bold\">Minecraft Forge 1.12.2</span>。目前不支持其他版本。",
+                step2Title: "放置模组文件",
+                step2Desc: "将下载的 <span class=\"text-white font-bold\">F34-DI.jar</span> 文件拖放至您的 <code class=\"bg-black/40 px-2 py-1 rounded text-blue-400\">.minecraft/mods</code> 文件夹中。",
+                step3Title: "启动游戏",
+                step3Desc: "使用 Forge 配置文件启动 Minecraft。点击主菜单中的 <span class=\"text-white font-bold\">[F34]</span> 按钮开始探索实例。",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT 是 MOJANG AB 的商标。</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            es: {
+                title: "Descargar Mod",
+                subtitle: "Cómo Instalar",
+                step1Title: "Descargar Forge",
+                step1Desc: "Asegúrate de tener instalado <span class=\"text-white font-bold\">Minecraft Forge 1.12.2</span>. Otras versiones no son compatibles actualmente.",
+                step2Title: "Colocar el archivo del Mod",
+                step2Desc: "Arrastra y suelta el archivo <span class=\"text-white font-bold\">F34-DI.jar</span> descargado en tu carpeta <code class=\"bg-black/40 px-2 py-1 rounded text-blue-400\">.minecraft/mods</code>.",
+                step3Title: "Iniciar el juego",
+                step3Desc: "Inicia Minecraft con el perfil de Forge. Presiona el botón <span class=\"text-white font-bold\">[F34]</span> en el menú principal para comenzar a explorar instancias.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT ES UNA MARCA REGISTRADA DE MOJANG AB.</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            fr: {
+                title: "Télécharger le Mod",
+                subtitle: "Comment Installer",
+                step1Title: "Télécharger Forge",
+                step1Desc: "Assurez-vous d'avoir installé <span class=\"text-white font-bold\">Minecraft Forge 1.12.2</span>. Les autres versions ne sont pas supportées pour le moment.",
+                step2Title: "Placer le fichier Mod",
+                step2Desc: "Faites glisser et déposez le fichier <span class=\"text-white font-bold\">F34-DI.jar</span> téléchargé dans votre dossier <code class=\"bg-black/40 px-2 py-1 rounded text-blue-400\">.minecraft/mods</code>.",
+                step3Title: "Lancer le jeu",
+                step3Desc: "Lancez Minecraft avec le profil Forge. Appuyez sur le bouton <span class=\"text-white font-bold\">[F34]</span> dans le menu principal pour commencer à explorer les instances.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT EST UNE MARQUE DÉPOSÉE DE MOJANG AB.</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            de: {
+                title: "Mod Herunterladen",
+                subtitle: "Installationsanleitung",
+                step1Title: "Forge Herunterladen",
+                step1Desc: "Stellen Sie sicher, dass <span class=\"text-white font-bold\">Minecraft Forge 1.12.2</span> installiert ist. Andere Versionen werden derzeit nicht unterstützt.",
+                step2Title: "Mod-Datei platzieren",
+                step2Desc: "Ziehen Sie die heruntergeladene Datei <span class=\"text-white font-bold\">F34-DI.jar</span> in Ihren <code class=\"bg-black/40 px-2 py-1 rounded text-blue-400\">.minecraft/mods</code>-Ordner.",
+                step3Title: "Spiel starten",
+                step3Desc: "Starten Sie Minecraft mit dem Forge-Profil. Drücken Sie die Taste <span class=\"text-white font-bold\">[F34]</span> im Hauptmenü, um Instanzen zu erkunden.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT IST EINE EINGETRAGENE MARKE VON MOJANG AB.</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            },
+            ru: {
+                title: "Скачать Мод",
+                subtitle: "Как установить",
+                step1Title: "Скачать Forge",
+                step1Desc: "Убедитесь, что у вас установлен <span class=\"text-white font-bold\">Minecraft Forge 1.12.2</span>. Другие версии в данный момент не поддерживаются.",
+                step2Title: "Разместить файл мода",
+                step2Desc: "Перетащите загруженный файл <span class=\"text-white font-bold\">F34-DI.jar</span> в папку <code class=\"bg-black/40 px-2 py-1 rounded text-blue-400\">.minecraft/mods</code>.",
+                step3Title: "Запустить игру",
+                step3Desc: "Запустите Minecraft с профилем Forge. Нажмите кнопку <span class=\"text-white font-bold\">[F34]</span> в главном меню, чтобы начать просмотр экземпляров.",
+                footer: "© 2026 F34 DI PROJECT. ALL RIGHTS RESERVED.<br><span class=\"opacity-40\">MINECRAFT ЯВЛЯЕТСЯ ЗАРЕГИСТРИРОВАННЫМ ТОВАРНЫМ ЗНАКОМ MOJANG AB.</span><br><div class=\"mt-4 flex flex-col items-center gap-2\"><div class=\"flex items-center gap-4 text-slate-400\"><a href=\"#\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fab fa-discord font-normal\"></i> <span class=\"text-[9px] font-bold\">DISCORD</span></a><a href=\"mailto:mle.rjator@gmail.com\" class=\"hover:text-blue-400 transition-colors flex items-center gap-1\"><i class=\"fas fa-envelope font-normal\"></i> <span class=\"text-[9px] font-bold\">MLE.RJATOR@GMAIL.COM</span></a></div></div>"
+            }
+        };
+
+        function applyLanguage(lang) {
+            updateFlag(lang);
+            // Support both code styles
+            const langMap = { jp: 'ja', cn: 'zh' };
+            const effectiveLang = langMap[lang] || lang;
+            const data = i18n[effectiveLang] || i18n.en;
+            
+            // Apply text translations
+            const titleEl = document.querySelector('h2.text-3xl.font-black.italic.uppercase span.text-blue-500');
+            if (titleEl) {
+                // Find "How to Install" or localized version
+                const parent = titleEl.parentElement;
+                parent.innerHTML = `${data.subtitle.split(' ')[0]} <span class="text-blue-500">${data.subtitle.split(' ')[1]}</span>`;
+            }
+
+            // Step titles and descriptions
+            const steps = document.querySelectorAll('.space-y-12 > div');
+            if (steps.length >= 3) {
+                // Step 1
+                steps[0].querySelector('h4').textContent = data.step1Title;
+                steps[0].querySelector('p').innerHTML = data.step1Desc;
+                // Step 2
+                steps[1].querySelector('h4').textContent = data.step2Title;
+                steps[1].querySelector('p').innerHTML = data.step2Desc;
+                // Step 3
+                steps[2].querySelector('h4').textContent = data.step3Title;
+                steps[2].querySelector('p').innerHTML = data.step3Desc;
+            }
+
+            const getJarBtn = document.querySelector('a[download] .mt-auto');
+            if (getJarBtn && data.downloadBtn) {
+                getJarBtn.textContent = data.downloadBtn;
+            }
+
+            const footerEl = document.getElementById('footer-text');
+            if (footerEl) footerEl.innerHTML = data.footer;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+            updateActiveNav();
+            const savedLang = localStorage.getItem('f34_lang') || 'en';
+            applyLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>
